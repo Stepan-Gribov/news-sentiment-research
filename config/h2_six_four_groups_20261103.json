@@ -1,0 +1,148 @@
+{
+  "status": "FIXED_BEFORE_FOUR_FITS",
+  "created_utc": "2026-11-03T20:47:18.893837+00:00",
+  "run_id": "h2_six_four_groups_20261103",
+  "output_root": "./analysis_outputs/h2_six_four_groups_20261103",
+  "execution_host": "research-host",
+  "python_executable": "./local/research-data-service/venv/Scripts/python.exe",
+  "model_count": 4,
+  "model_variant": "CURRENT_PLUS_LAG1_SIX",
+  "groups": [
+    {
+      "group": "pooled",
+      "label_ru": "Общая выборка",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/REFERENCE_AUGMENTED_P99__COMMON.parquet",
+      "expected_source_sha256": "660c36e0e0b681e40c000113c42acb3ffbea67e8ec66365537f19ad5c20bc63b",
+      "expected_rows": 194041,
+      "expected_funds": 591,
+      "expected_companies": 269,
+      "expected_ordered_row_hash": "5a2783f9cc8ed5aa700fb4fe962114146d8ba142bccef71c09cbb383b4388546",
+      "minimum_history_filter": null
+    },
+    {
+      "group": "equity",
+      "label_ru": "Акционные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "de1bdb3fb17d4f739b51598959739b5cdbb13d68845b429921f12bcc0b539ff8",
+      "expected_rows": 60903,
+      "expected_funds": 91,
+      "expected_companies": 136,
+      "expected_ordered_row_hash": "8f4d874c824d52bb9de713781b18c4b3cb5035604b6cf4bd249e48482c7c6040",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": null
+    },
+    {
+      "group": "bond",
+      "label_ru": "Облигационные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "f4af4aaf73b7877c4b78adaf12c1af6c10efab46dff6345adaf336843c4bf78c",
+      "expected_rows": 39039,
+      "expected_funds": 66,
+      "expected_companies": 200,
+      "expected_ordered_row_hash": "e0b4719f875850849501362fabc8811c165f001b15ecf8abb22abb54eebd1bd2",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": null
+    },
+    {
+      "group": "mixed",
+      "label_ru": "Смешанные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "aac4eab1711f1b371a340153bfcfb0825ce5da4145d9ec487c44187c4a3e58de",
+      "expected_rows": 57131,
+      "expected_funds": 65,
+      "expected_companies": 198,
+      "expected_ordered_row_hash": "850a46a8e9db8b41de204f389f6cb16227d8c8c1edb5ef3cc1ab05457f9eedcb",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": "The mixed 60/24 source is the exact prior alias named FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet."
+    }
+  ],
+  "outcome": "quantity_change_pct",
+  "raw_signal_columns": [
+    "net_sentiment",
+    "net_sentiment_lag1"
+  ],
+  "targets": [
+    "net_positive",
+    "net_negative",
+    "net_positive_lag1",
+    "net_negative_lag1"
+  ],
+  "signed_parts": {
+    "net_positive": "max(net_sentiment,0)",
+    "net_negative": "max(-net_sentiment,0)",
+    "net_positive_lag1": "max(net_sentiment_lag1,0)",
+    "net_negative_lag1": "max(-net_sentiment_lag1,0)"
+  },
+  "controls": [
+    "closing_HHI",
+    "bond_indicator",
+    "imoex_ret",
+    "RVI",
+    "dummy_mar2014",
+    "dummy_sep2018"
+  ],
+  "control_set_provenance": "SIX6 previously selected by the H1 equity control search; this transfer is a fixed exploratory specification and involves no new control search.",
+  "explicit_const": true,
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "time_FE": false,
+  "cluster_time": false,
+  "covariance_options": {
+    "cov_type": "clustered",
+    "cluster_entity": false,
+    "cluster_time": false,
+    "group_debias": true,
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true
+  },
+  "panel_options": {
+    "entity_effects": true,
+    "time_effects": false,
+    "singletons": true,
+    "drop_absorbed": false,
+    "check_rank": true
+  },
+  "sample_policy": "Exact prior H1 lag-complete samples and existing row order after stable fund/end_date/security/interval sorting. No further cuts, support changes, new rows, weights, missing-value imputation, or lag recomputation. Pooled has no 60/24 threshold; three groups retain prior 60/24 eligibility and are not an exhaustive partition of pooled.",
+  "existing_upper_tail_rule": {
+    "quantile": 0.99,
+    "cutoff_percent": 322.7771642245575,
+    "new_trimming": false,
+    "conditional_entries_percent": 100,
+    "exits_percent": -100
+  },
+  "hypothesis": "H2: absolute response asymmetry; no prespecified direction",
+  "h2_scopes": [
+    "current",
+    "lag1",
+    "total_current_plus_lag1"
+  ],
+  "h2_null": "abs(beta_positive)=abs(beta_negative)",
+  "h2_test": "Intersection-union p_abs=max(two-sided native p(beta_positive-beta_negative=0), two-sided native p(beta_positive+beta_negative=0)); full covariance used for current+lag totals",
+  "h2_iut_is_not_multiple_testing_correction": true,
+  "multiple_testing_adjustments": false,
+  "covariance_repair": false,
+  "retain_all_four_results_regardless_of_significance": true,
+  "source_inputs_live_llm_and_old_outputs_immutable": true,
+  "helper_path": "./analysis_outputs/h2_six_four_groups_20261103/code/run_h2_sentiment_lag_20261103.py",
+  "helper_sha256": "d8ef464e2c87ca870aa10a8d22d97bbfa1e82f59f6f69f35974327682f35e7cc",
+  "bulk_outputs": "Used samples with the four signed columns stay on research-host; only small reports/tables/metadata return to Mac.",
+  "independent_QA": "Separate independent rowwise review required after four native fits."
+}

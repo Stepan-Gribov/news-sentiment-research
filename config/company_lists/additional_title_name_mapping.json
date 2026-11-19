@@ -1,0 +1,33 @@
+{
+  "kind": "additional_title_name",
+  "status": "completed",
+  "title_name_pairs": 341799,
+  "unique_articles": 308470,
+  "companies_matched": 610,
+  "host": "research-host",
+  "directory": "./news_data/company_mapping_runs/run_20261008_title_name_no_gaz_02",
+  "previous_directory": "./news_data/company_mapping_runs/run_20261008_title_name_01",
+  "excluded_company_ids": [
+    "c_90995d77be411a67f2ef2b72"
+  ],
+  "excluded_company_names": [
+    "ГАЗ"
+  ],
+  "excluded_pairs": 56979,
+  "article_company_map": "article_company_map_title_name.parquet",
+  "compact_article_company_map": "article_company_ids.parquet",
+  "company_registry": "company_registry.parquet",
+  "counts": "company_match_counts_title_name.csv",
+  "audit": "audit.json",
+  "progress": "progress.json",
+  "completion_marker": "SUCCESS",
+  "require_success_before_use": true,
+  "match_scope": "title",
+  "signals": [
+    "name"
+  ],
+  "source_mapping_version": "20261008_safe_otkritie_01",
+  "active_mapping_not_replaced": true,
+  "preserve_article_and_company_ids": true,
+  "name_inflection_policy": "existing-names-plus-conservative-consonant-declensions-v1"
+}

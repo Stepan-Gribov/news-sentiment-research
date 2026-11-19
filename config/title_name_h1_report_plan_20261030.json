@@ -1,0 +1,66 @@
+{
+  "status": "FIXED_BEFORE_TWO_AUXILIARY_H1_FITS",
+  "created_at_utc": "2026-10-30T12:36:09.087368+00:00",
+  "scope": "H1 only: three-column comparison in the supplied screenshot style; primary model is the already verified joint price-adjusted continuing-position proxy. No H2/H3 estimation or significance search.",
+  "host": "research-host",
+  "output_root": "./analysis_outputs/h1_panel_report_20261030",
+  "sample": "./analysis_outputs/title_name_exact_price_bridge_20261029/v2_deterministic_absorption/relative_common_final_sample.parquet",
+  "sample_hash": "6c171dbfcf89eef99a48594fe676510186973e1d15dbbe72ca0d2b9c3c4e8938",
+  "sealed_S_hash": "f4d0bd466525bc0855f1a5a0b190d2942db28e6288ef2d596b30bf89857e38b2",
+  "outcome": "price_adjusted_value_growth = log(V1/V0)-log(P1/P0)",
+  "models": [
+    {
+      "column": "(1)",
+      "targets": [
+        "S_positive"
+      ],
+      "role": "auxiliary one-signal model, not the full H1 test"
+    },
+    {
+      "column": "(2)",
+      "targets": [
+        "S_negative"
+      ],
+      "role": "auxiliary one-signal model, not the full H1 test"
+    },
+    {
+      "column": "(3)",
+      "targets": [
+        "S_positive",
+        "S_negative"
+      ],
+      "role": "primary existing H1 specification; reproduce verified E3 fund+issuer/full_FE_rank"
+    }
+  ],
+  "common_controls": [
+    "opening_weight",
+    "lag_log_news_count"
+  ],
+  "absorbed_controls": [
+    "opening_log_NAV",
+    "opening_HHI",
+    "log_interval_days"
+  ],
+  "FE": [
+    "fund_security_id",
+    "interval_id"
+  ],
+  "covariance": "CGM fund+issuer, component-specific G/(G-1), CR1 full exact absorbed rank, no PSD clipping, t/F df=min marginal clusters-1",
+  "sample_policy": "Identical saved final rows/order, S, outcome and controls for all columns; no additional filtering or singleton pruning; structural FE absorption checked.",
+  "stars": "*p<0.10, **p<0.05, ***p<0.01, based on raw two-sided coefficient p. Primary directional H1 IUT separately reported; auxiliary stars do not confirm full H1.",
+  "display": "Dependent variable100*log-growth (log percentage points); opening_weight is displayed per1percentagepoint; S and lag log count remain in original units. Standard errors in parentheses.",
+  "validation": [
+    "exact sample and S hashes",
+    "primary beta/SE/p/CI match verified E3",
+    "same N/FE/cluster structure in all columns",
+    "all three predefined columns shown including nonsignificant values",
+    "stars/SE/units match source numeric results"
+  ],
+  "deliverables": [
+    "h1_panel_table.png",
+    "h1_panel_table.html",
+    "h1_panel_report.txt",
+    "h1_panel_results.json"
+  ],
+  "preserve": "Protected data, live Gemma and previous results unchanged; new output root only; no bulk data on Mac."
+}

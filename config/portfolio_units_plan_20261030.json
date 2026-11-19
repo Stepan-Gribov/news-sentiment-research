@@ -1,0 +1,25 @@
+{
+  "status": "FIXED_DATASET_RULES_BEFORE_QUANTITY_CALCULATION",
+  "created_at_utc": "2026-10-30T13:15:54.792754+00:00",
+  "scope": "All normalized fund report positions, all available actual report dates2008-2026; end-of-report estimated portfolio units and prior-report changes. No new H1/H2/H3 regression.",
+  "output_root": "./analysis_outputs/portfolio_units_20261030",
+  "holdings": "./analysis_outputs/title_name_regressions_20261026_w2_v2/holdings_inventory.parquet",
+  "intervals": "./analysis_outputs/title_name_regressions_20261026_w2_v2/all_true_intervals.parquet",
+  "quote_policy": "One canonical quote per ISIN and report date; positive finite existing RUB CLOSE at/before actual date, maximum7calendar days; primaryboard preferred if unambiguous, then most recent/tradingvalue/SECID/board; conflicting per-unit prices per same instrument/board/day rejected. Shares price perunit; bonds CLOSE*historical_RUB_FACEVALUE/100, primary clean-price estimate.",
+  "units": "amount_thousand_rub*1000/price_RUB_per_security; quantity_est FLOAT with no integer rounding; observed unit count remains unavailable. market VOLUME and source_lots are never fund quantities.",
+  "missing": "No valid price/FX/nominal/identifier -> quantity unavailable, not zero. Cash/unidentified residuals remain monetary positions. No inferred count for negative/partial/missing monetary amount.",
+  "previous": "Use previous actual fund report from sealed all_true_intervals. Absent prior position counts as zero only if opening_full_portfolio is true and instrument is countable. First/missing/incomplete prior positions remain unavailable. Relative change undefined at zero previous base; no infinity or arbitrary replacement.",
+  "shares": "Reported normalized gross-asset weight, not NAV share: absolute share delta in percentagepoints and relative share delta100*(w1/w0-1).",
+  "workbook": "One downloadable XLSX, Russian labels, summary of fund periods and complete chronological data split byyear to respect Excel row limit. All source positions retained, no row sample as final file; static scientific snapshot, calculation inputs and status shown. Filters/frozen headers/identifiers, meaningful numeric formats and documented unavailable values.",
+  "execution": "Numeric processing on research-host; workbook authoring separate after excel_manifest.ready; only requested final derived workbook and small preview/metadata mirrored toMac. Protected inputs/old outputs/Gemma unchanged.",
+  "authoring_runtime": "Bundled WindowsNode/artifact-tool present; bounded resource use, no parallel with dataset processing. If actual full-scale artifact-tool error/OOM, preserve prepared data and record unavailable-capability fallback rather than repeat data extraction.",
+  "QA": [
+    "fullrowcount/keypreservation",
+    "quote endpoint dates/currency/nominal/duplicates",
+    "V/P conversion and share-delta identities",
+    "known absence/zero-base/missing vszero",
+    "no quantity forcedinteger",
+    "fund/asset names and typedExcelvalues",
+    "all workbook rows/sheets/panes/filters and visualrender"
+  ]
+}

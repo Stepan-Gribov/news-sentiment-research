@@ -1,0 +1,352 @@
+{
+  "status": "FIXED_BEFORE_NEW_COEFFICIENTS",
+  "output_root": "./analysis_outputs/h2_significance_search_20261104",
+  "input_panel": "./analysis_outputs/h1_entries_trim_20261102/samples/AUGMENTED_P99.parquet",
+  "lag_map": "./analysis_outputs/h1_sentiment_lag_20261103/data/row_lag_map.parquet",
+  "lag_helper": "./analysis_outputs/h1_sentiment_lag_20261103/code/run_h1_sentiment_lag_20261103.py",
+  "focus_support": "./analysis_outputs/h1_focus_joint_20261102/focus_fund_support.csv",
+  "focus_helper": "./analysis_outputs/h1_focus_joint_20261102/code/run_h1_focus_joint_20261102.py",
+  "cutoff_reference_sample": "./analysis_outputs/h1_macro_no_time_20261031/samples/NET_MACRO_COMMON.parquet",
+  "expected_source_sha256": {
+    "input_panel": "8bd9cfd2eef8668036c8c6c95c9863d8edbc1923d2c4d627d5b1306d03cfd43c",
+    "lag_map": "8a2ac91bb414238c219c7a6b2165dd9cce62ff92a15f8f42b2be8de63ef626a8",
+    "lag_helper": "03e0336cd790b0823ddaa89473c4d65b4c3e9ac0efeb23b4ec47787470dbbd06",
+    "focus_support": "faec6fa8aeb7026e6cbac135076f97b6f198c508375db94b773f81f5e7507cd7",
+    "focus_helper": "59061184b9c4389d3e81aad8545ba9cf006f7ab67f870b3d64b05fc9ea6f429d",
+    "cutoff_reference_sample": "79d54cb284a476f0cec1bdf7b222a2c1f3f9aea09817a455693c270aa44b4e1a"
+  },
+  "groups": [
+    "pooled",
+    "equity",
+    "bond",
+    "mixed"
+  ],
+  "support_rules": [
+    {
+      "tag": "NONE",
+      "rows": null,
+      "intervals": null
+    },
+    {
+      "tag": "R30_I12",
+      "rows": 30,
+      "intervals": 12
+    },
+    {
+      "tag": "R60_I24",
+      "rows": 60,
+      "intervals": 24
+    },
+    {
+      "tag": "R60_I36",
+      "rows": 60,
+      "intervals": 36
+    }
+  ],
+  "cutoffs": [
+    {
+      "tag": "P99",
+      "quantile": 0.99,
+      "cutoff_percent": 322.7771642245575
+    },
+    {
+      "tag": "P97_5",
+      "quantile": 0.975,
+      "cutoff_percent": 124.99558067429496
+    },
+    {
+      "tag": "P95",
+      "quantile": 0.95,
+      "cutoff_percent": 59.314221876961916
+    },
+    {
+      "tag": "P90",
+      "quantile": 0.9,
+      "cutoff_percent": 19.01802239932304
+    }
+  ],
+  "exact_samples": [
+    {
+      "group": "pooled",
+      "label_ru": "Общая выборка",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/REFERENCE_AUGMENTED_P99__COMMON.parquet",
+      "expected_source_sha256": "660c36e0e0b681e40c000113c42acb3ffbea67e8ec66365537f19ad5c20bc63b",
+      "expected_rows": 194041,
+      "expected_funds": 591,
+      "expected_companies": 269,
+      "expected_ordered_row_hash": "5a2783f9cc8ed5aa700fb4fe962114146d8ba142bccef71c09cbb383b4388546",
+      "minimum_history_filter": null
+    },
+    {
+      "group": "equity",
+      "label_ru": "Акционные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "de1bdb3fb17d4f739b51598959739b5cdbb13d68845b429921f12bcc0b539ff8",
+      "expected_rows": 60903,
+      "expected_funds": 91,
+      "expected_companies": 136,
+      "expected_ordered_row_hash": "8f4d874c824d52bb9de713781b18c4b3cb5035604b6cf4bd249e48482c7c6040",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": null
+    },
+    {
+      "group": "bond",
+      "label_ru": "Облигационные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "f4af4aaf73b7877c4b78adaf12c1af6c10efab46dff6345adaf336843c4bf78c",
+      "expected_rows": 39039,
+      "expected_funds": 66,
+      "expected_companies": 200,
+      "expected_ordered_row_hash": "e0b4719f875850849501362fabc8811c165f001b15ecf8abb22abb54eebd1bd2",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": null
+    },
+    {
+      "group": "mixed",
+      "label_ru": "Смешанные фонды",
+      "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "expected_source_sha256": "aac4eab1711f1b371a340153bfcfb0825ce5da4145d9ec487c44187c4a3e58de",
+      "expected_rows": 57131,
+      "expected_funds": 65,
+      "expected_companies": 198,
+      "expected_ordered_row_hash": "850a46a8e9db8b41de204f389f6cb16227d8c8c1edb5ef3cc1ab05457f9eedcb",
+      "minimum_history_filter": {
+        "minimum_rows": 60,
+        "minimum_intervals": 24,
+        "qualification_fixed_before_lag_completeness": true
+      },
+      "exact_sample_alias_note": "The mixed 60/24 source is the exact prior alias named FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet."
+    }
+  ],
+  "six_controls": [
+    "closing_HHI",
+    "bond_indicator",
+    "imoex_ret",
+    "RVI",
+    "dummy_mar2014",
+    "dummy_sep2018"
+  ],
+  "all16_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator",
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "h2_helper": "./analysis_outputs/h2_significance_search_20261104/code/run_h2_sentiment_lag_20261103.py",
+  "h2_helper_sha256": "d8ef464e2c87ca870aa10a8d22d97bbfa1e82f59f6f69f35974327682f35e7cc",
+  "run_id": "h2_significance_search_20261104",
+  "created_utc": "2026-11-03T21:15:50.284261+00:00",
+  "execution_host": "research-host",
+  "python_executable": "./local/research-data-service/venv/Scripts/python.exe",
+  "prefit_mask_audit_path": "./analysis_outputs/h2_significance_search_20261104/prefit_mask_audit.json",
+  "prefit_mask_audit_sha256": "6dcbb8814928c75bad48518cd729d7801f85d09bd780bb4a78c5b6b4dd849734",
+  "preflight_helper_path": "./analysis_outputs/h2_significance_search_20261104/code/preflight_h2_significance_search_20261104.py",
+  "preflight_helper_sha256": "f46216789b7628d215e67f3cafca37d8384f30746946349f944a2297822b5960",
+  "outcome": "quantity_change_pct",
+  "targets": [
+    "net_positive",
+    "net_negative",
+    "net_positive_lag1",
+    "net_negative_lag1"
+  ],
+  "variants": [
+    "CURRENT_ONLY",
+    "CURRENT_PLUS_LAG1"
+  ],
+  "model_counts": {
+    "A": 520,
+    "B": 128,
+    "C": 12,
+    "total_labels": 660,
+    "expected_unique_sample_outcome_design_control_fits": 652
+  },
+  "family_A": {
+    "control_masks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ],
+    "additional_baseline": "ALL16",
+    "samples": "The exact four previous H1 common-lag sources, without adding rows when controls or lag regressors are omitted.",
+    "models": 520
+  },
+  "family_B": {
+    "models": 128,
+    "controls": "SIX",
+    "samples": "Four fund focus scopes, four fixed support rules and four existing cuts. Support counted before cuts or lag completeness on unchanged 221899-row AUGMENTED_P99, within group for focus models and across primary rows for pooled.",
+    "common_rows_for_both_designs": true,
+    "group_masks_may_expand_beyond_prior_60_24": true
+  },
+  "family_C": {
+    "models": 12,
+    "controls": "SIX",
+    "variant": "CURRENT_PLUS_LAG1",
+    "alternatives": [
+      {
+        "tag": "CONTINUING_PERCENT",
+        "sample": "Exact A rows with finite Qopen>0 and Qclose>0",
+        "dependent_column": "h2_y_continuing_percent",
+        "formula": "Original quantity_change_pct on strictly continuing rows",
+        "interpretation": "Changes composition by removing conditional entries and exits; preserves the original percent scale."
+      },
+      {
+        "tag": "CONTINUING_LOG",
+        "sample": "Same exact continuing rows as CONTINUING_PERCENT",
+        "dependent_column": "h2_y_continuing_log",
+        "formula": "100*(log(Qclose)-log(Qopen)) for strictly positive quantities; no epsilon",
+        "interpretation": "Alternative log scale and continuing-position composition; not the primary raw-percent H2."
+      },
+      {
+        "tag": "SYMMETRIC_ALL",
+        "sample": "All exact A rows; Qopen+Qclose strictly positive",
+        "dependent_column": "h2_y_symmetric",
+        "formula": "200*(Qclose-Qopen)/(Qclose+Qopen)",
+        "interpretation": "Different bounded symmetric scale, entries+200 and exits-200; not the primary raw-percent H2."
+      }
+    ],
+    "new_cut_on_transformed_outcome": false,
+    "original_outcome_unchanged": true
+  },
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "explicit_const": true,
+  "time_FE": false,
+  "cluster_time": false,
+  "panel_options": {
+    "entity_effects": true,
+    "time_effects": false,
+    "singletons": true,
+    "drop_absorbed": false,
+    "check_rank": true
+  },
+  "covariance_options": {
+    "cov_type": "clustered",
+    "cluster_entity": false,
+    "cluster_time": false,
+    "group_debias": true,
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true
+  },
+  "h2_null": "abs(beta_positive)=abs(beta_negative)",
+  "h2_test": "Intersection-union p_abs=max(two-sided p(beta_positive-beta_negative=0),two-sided p(beta_positive+beta_negative=0)); full target covariance for total current+lag.",
+  "h2_scopes": {
+    "CURRENT_ONLY": [
+      "current"
+    ],
+    "CURRENT_PLUS_LAG1": [
+      "current",
+      "lag1",
+      "total_current_plus_lag1"
+    ]
+  },
+  "all_sign_targets_required": true,
+  "covariance_repair": false,
+  "multiple_testing_adjustments": false,
+  "h2_iut_is_not_multiple_testing_adjustment": true,
+  "selection_policy": {
+    "mandatory_A": "No controls, fixed SIX, ALL16 for each group and variant.",
+    "minima_A": "For each group/variant/scope select minimum finite p_abs, tie-break by model ID, regardless of signs.",
+    "minima_B": "For each group/variant/scope select minimum finite p_abs at fixed SIX and raw-percent Y, tie-break by model ID.",
+    "mandatory_C": "All 12 alternatives including nonsignificant results.",
+    "deduplicate": "Refit each unique shortlisted sample/outcome/design/control key once; preserve all labels/reasons.",
+    "maximum_native_shortlist_labels": 68,
+    "selected_models_not_new_primary": true
+  },
+  "required_outputs": [
+    "All 660 model rows in CSV and CSV.gz, including all target beta/SE/p/CI and H2 component p/absolute p for all applicable scopes",
+    "Full target covariance of every unique fast fit; full native parameter covariance for shortlisted fits",
+    "Native TXT/HTML and coefficient/SE/p/CI tables for every shortlisted unique model",
+    "Canonical signed panel, exact sample membership masks, support rows, cut and source provenance on research-host",
+    "Alternative outcome columns on research-host without changing source Y",
+    "Small review HTML and summary JSON locally; no bulk panel download"
+  ],
+  "interpretation": "Exploratory specification search explicitly requested after seeing earlier p values. Save and count every model and unestimable result. Minimum nominal p is selected, not confirmatory evidence; significance not guaranteed. No H2 definition or covariance/sign relabeling changes.",
+  "source_inputs_prior_results_live_llm_immutable": true
+}

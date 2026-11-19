@@ -1,0 +1,319 @@
+{
+  "status": "RAW_CONTROL_SOURCES_FOUND_AWAITING_MONTHLY_CONVENTION_REVIEW_BEFORE_FITS",
+  "date_moscow": "2026-10-30",
+  "authority": "Direct user: restore H1 portfolio volatility and H2 liquidity; find updated controls; use new news run; show equations and full variables before recalculation.",
+  "unit": [
+    "fund_key",
+    "calendar_month"
+  ],
+  "hypotheses": {
+    "H1": "portfolio volatility",
+    "H2": "fund liquidity, observed metric is Amihud illiquidity"
+  },
+  "equations": {
+    "H1": "log(sqrt(portfolio_var_ft)) = alpha1_f + beta10 NS_ft + beta11 NS_f,t-1 + gamma1 C_t + error1_ft",
+    "H2": "log(fund_liquidity_ft) = alpha2_f + beta20 NS_ft + beta21 NS_f,t-1 + gamma2 C_t + error2_ft"
+  },
+  "variants_as_original": [
+    "current NS only",
+    "exact previous-month NS only",
+    "current and lagged NS together"
+  ],
+  "baseline_control_columns": [
+    "Flow",
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022"
+  ],
+  "variables": [
+    {
+      "symbol": "y_vol",
+      "column": "log_portfolio_vol",
+      "role": "H1 dependent",
+      "definition": "log(sqrt(portfolio_var)); positive variance only",
+      "source": "registered portfolio_metrics_updated.csv",
+      "source_status": "CONFIRMED_TO_2025_11"
+    },
+    {
+      "symbol": "y_illiq",
+      "column": "log_fund_liquidity",
+      "role": "H2 dependent",
+      "definition": "log(fund_liquidity), positive only; weighted Amihud illiquidity, larger means less liquid",
+      "source": "registered portfolio_metrics_updated.csv",
+      "source_status": "CONFIRMED_TO_2025_11"
+    },
+    {
+      "symbol": "NS_ft",
+      "column": "Net_sent_score_weighted",
+      "role": "main explanatory",
+      "definition": "sum of fund exposure weights in fractions times company-month Tone from new valid relevant title/name labels; retain observed-news exposure coverage",
+      "source": "gemma_title_name_no_gaz_20261008_01 and dated holdings/identity crosswalk",
+      "source_status": "NEW_RUN_CONFIRMED_AGGREGATION_NOT_YET_REBUILT"
+    },
+    {
+      "symbol": "NS_f_t-1",
+      "column": "Net_sent_score_weighted_L1",
+      "role": "lagged explanatory",
+      "definition": "exact preceding calendar month, never previous available row across a gap",
+      "source_status": "TO_CONSTRUCT_AFTER_SOURCE_RECONCILIATION"
+    },
+    {
+      "symbol": "Flow_t",
+      "column": "Flow",
+      "role": "baseline control",
+      "definition": "Market aggregate source inflow series ID4, raw RUB. Do not sum total and constituent categories; report in billion RUB only after explicit unit/date reconciliation against legacy controls.",
+      "source_status": "FOUND_RAW_SOURCE_TO_2026_08_VERIFIED",
+      "source": "./market_data/raw_external_2026-09-30/investfunds/public_market_statistics_raw/fund_count_and_market_net_flows_public_source_points.csv"
+    },
+    {
+      "symbol": "Imoex_t",
+      "column": "Imoex",
+      "role": "baseline control",
+      "definition": "MOEX index level at a declared monthly endpoint; original average-of-daily description withdrawn after comparing saved legacy values.",
+      "source_status": "FOUND_RAW_SOURCE_TO_2026_08_VERIFIED",
+      "source": "./market_data/raw_external_2026-09-30/moex/indices/IMOEX_daily_history_2012-01-01_2026-08-31.csv"
+    },
+    {
+      "symbol": "r_Imoex_t",
+      "column": "imoex_ret",
+      "role": "baseline control",
+      "definition": "Adjacent-month ratio of consistently chosen monthly IMOEX levels minus1; exact endpoint/session convention pending.",
+      "source_status": "FOUND_RAW_SOURCE_TO_2026_08_VERIFIED",
+      "source": "./market_data/raw_external_2026-09-30/moex/indices/IMOEX_daily_history_2012-01-01_2026-08-31.csv"
+    },
+    {
+      "symbol": "Ruonia_t",
+      "column": "Ruonia",
+      "role": "baseline control",
+      "definition": "RUONIA annualized rate in percentage points, not monthly compounded RF return. Saved legacy values mostly match month-end observations, not daily monthly means; endpoint convention pending.",
+      "source": "./market_data/raw_external_2026-09-30/central_bank/RUONIA_daily.csv",
+      "source_status": "FOUND_RAW_SOURCE_TO_2026_08_VERIFIED"
+    },
+    {
+      "symbol": "USD_RUB_t",
+      "column": "USD_RUB",
+      "role": "baseline control",
+      "definition": "Official RUB per USD, VunitRate. All5checked legacy months exactly match last available fixing at/before month end, not monthly mean.",
+      "source_status": "FOUND_RAW_SOURCE_TO_2026_08_VERIFIED",
+      "source": "./market_data/raw_external_2026-09-30/central_bank/USD_RUB_official_daily.csv"
+    },
+    {
+      "symbol": "Funds_t",
+      "column": "unique_funds",
+      "role": "baseline control",
+      "definition": "number of distinct funds in the fixed original eligible monthly panel, before outcome-specific missingness filters",
+      "source_status": "DERIVABLE_FROM_PANEL"
+    },
+    {
+      "symbol": "D2014_t",
+      "column": "dummy_mar2014",
+      "role": "baseline control",
+      "definition": "1 at/after2014-03-01, otherwise0",
+      "source_status": "DETERMINISTIC"
+    },
+    {
+      "symbol": "D2022_t",
+      "column": "dummy_feb2022",
+      "role": "baseline control",
+      "definition": "1 at/after2022-02-01, otherwise0",
+      "source_status": "DETERMINISTIC"
+    },
+    {
+      "symbol": "alpha_f",
+      "role": "fund fixed effect",
+      "definition": "fund FE, no full month FE in the macro-explicit baseline",
+      "source_status": "MODEL_DESIGN"
+    }
+  ],
+  "news": {
+    "run": "gemma_title_name_no_gaz_20261008_01",
+    "mapping_pairs": 341799,
+    "candidate_articles": 308470,
+    "tone_formula": "(N_positive-N_negative)/(N_positive+N_neutral+N_negative)",
+    "raw_or_residualised": "raw valid company-month tone, weighted to fund; no substituted exact-window S",
+    "missing_policy": "Unknown/error/unprocessed labels or unavailable dates not zero. Save classification and observed-news holding coverage.",
+    "weights": "fractions of fund assets, sum exposure across distinct securities of an issuer; no duplication by article rows"
+  },
+  "original_additional_variables": {
+    "RVI": "Loaded and updated by old downloader, not in the original baseline X list; report availability and consider only an explicitly named extension.",
+    "Positive_weighted_Negative_weighted_Neutral_weighted": "Alternative original sentiment component block, replaces NS rather than enters same baseline simultaneously; transformation must be declared before fitting.",
+    "fund_size": "Computed in original notebook; not in the listed baseline controls."
+  },
+  "original_selection_to_preserve": {
+    "H2": "equity and mixed funds in older notebook",
+    "index_funds": "original name/mandate exclusions retained, not silently changed"
+  },
+  "method_notes": [
+    "Macro controls enter explicitly; full month or fund-interval FE would absorb these time-only variables.",
+    "Original portfolio metrics use90calendar-day historical price returns and holdings weights; coverage and percent-versus-fraction units must be checked before reuse.",
+    "Do not substitute risk/illiquidity missingness with0 or interpolate macro gaps silently.",
+    "Do not transport old news CSV or residualized S into the new raw-tone baseline.",
+    "Outcome-specific samples and full control coverage must be disclosed before coefficient calculations.",
+    "No directional sign for H1/H2 has been newly invented; test model coefficients and report sign and CI."
+  ],
+  "source_search": {
+    "scope": [
+      "./code",
+      "./controls_data",
+      "./research_v2\\data\\controls",
+      "./_legacy_raw\\funds\\Data\\Controls",
+      "./local/research-data-service\\imports\\mac-20261008",
+      "./analysis_outputs\\money_market_ruonia_20261027",
+      "./analysis_outputs\\title_name_hypothesis_control_diagnostics_20261029"
+    ],
+    "analysis_output_directories": [
+      "money_market_ruonia_20261027",
+      "title_name_cluster_sensitivity_20261029",
+      "title_name_exact_price_bridge_20261029",
+      "title_name_exact_price_bridge_qa_20261029",
+      "title_name_existing_fund_history_audit_20261029",
+      "title_name_hypothesis_control_diagnostics_20261029",
+      "title_name_hypothesis_research_20261029",
+      "title_name_regressions_20261026",
+      "title_name_regressions_20261026_r2_qa",
+      "title_name_regressions_20261026_w2_v1",
+      "title_name_regressions_20261026_w2_v2",
+      "title_name_regression_panel_qa_20261026",
+      "title_name_security_crosswalk_20261026"
+    ],
+    "candidate_files": [
+      {
+        "path": "./analysis_outputs\\money_market_ruonia_20261027\\ruonia_daily.csv",
+        "bytes": 115664
+      },
+      {
+        "path": "./analysis_outputs\\money_market_ruonia_20261027\\ruonia_index_daily.csv",
+        "bytes": 177876
+      },
+      {
+        "path": "./analysis_outputs\\money_market_ruonia_20261027\\ruonia_monthly_rf.csv",
+        "bytes": 12249
+      }
+    ]
+  },
+  "confirmed_metrics": {
+    "portfolio_metrics_updated.csv": {
+      "path": "./databaseresources\\funds\\mac-20261008\\portfolio_metrics_updated.csv",
+      "rows": 52594,
+      "columns": [
+        "date",
+        "fund_key",
+        "portfolio_var",
+        "fund_liquidity"
+      ],
+      "date_min": "2012-04-30",
+      "date_max": "2025-11-30",
+      "fund_keys": 1293,
+      "nonmissing": {
+        "portfolio_var": 21877,
+        "fund_liquidity": 39209
+      }
+    },
+    "portfolio_metrics_append_2024_12_2025_11.csv": {
+      "path": "./databaseresources\\funds\\mac-20261008\\portfolio_metrics_append_2024_12_2025_11.csv",
+      "rows": 4974,
+      "columns": [
+        "date",
+        "fund_key",
+        "portfolio_var",
+        "fund_liquidity"
+      ],
+      "date_min": "2024-12-31",
+      "date_max": "2025-11-30",
+      "fund_keys": 507,
+      "nonmissing": {
+        "portfolio_var": 2564,
+        "fund_liquidity": 2578
+      }
+    }
+  },
+  "confirmed_RUONIA_manifest": {
+    "downloaded_at_utc": "2026-10-26T22:24:54.152430+00:00",
+    "source": "https://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx",
+    "requested_from": "2010-01-01",
+    "requested_to": "2026-10-27",
+    "series": {
+      "RuoniaXML": {
+        "path": "./analysis_outputs\\money_market_ruonia_20261027\\RuoniaXML.xml",
+        "bytes": 446785,
+        "sha256": "acc4def49c02fa5e4ee733dcef8306177440d03cf811656a55ed47f76bca9855"
+      },
+      "RuoniaSVXML": {
+        "path": "./analysis_outputs\\money_market_ruonia_20261027\\RuoniaSVXML.xml",
+        "bytes": 1397085,
+        "sha256": "08f8755b8496477d56f0298c2531d4e83a9e7fc067dc8b3bbd5cdc00436bff9c"
+      }
+    },
+    "status": "DOWNLOADED_VALIDATED",
+    "rate_rows": 4137,
+    "rate_period": [
+      "2010-01-11",
+      "2026-10-23"
+    ],
+    "index_rows": 6133,
+    "index_period": [
+      "2010-01-11",
+      "2026-10-26"
+    ],
+    "monthly_rows": 200,
+    "monthly_period": [
+      "2010-02",
+      "2026-09"
+    ],
+    "checks": {
+      "unique_dates": true,
+      "positive_finite_rates_and_index": true,
+      "index_no_calendar_gaps": true,
+      "official_page_spot_2026_10_26": true
+    },
+    "monthly_convention": "Calendar-month money-market return = official index(first day next month)/index(first day current month)-1; official dated index accumulates preceding-day interest. Only complete endpoint pairs; no forward fill. This is an RF benchmark, not assumed earnings of fund cash.",
+    "files": {
+      "RuoniaSVXML.xml": {
+        "bytes": 1397085,
+        "sha256": "08f8755b8496477d56f0298c2531d4e83a9e7fc067dc8b3bbd5cdc00436bff9c"
+      },
+      "RuoniaXML.xml": {
+        "bytes": 446785,
+        "sha256": "acc4def49c02fa5e4ee733dcef8306177440d03cf811656a55ed47f76bca9855"
+      },
+      "ruonia_daily.csv": {
+        "bytes": 115664,
+        "sha256": "1dd5c890c6d0f6e70939f4efc7a78af58ac733935766a0feef3aa8144a33b273"
+      },
+      "ruonia_index_daily.csv": {
+        "bytes": 177876,
+        "sha256": "38d062ebe3db66d60d96519257926dd1e8d2528f48b61059e93c36e6c454aceb"
+      },
+      "ruonia_monthly_rf.csv": {
+        "bytes": 12249,
+        "sha256": "1b44e41c01c0430460b6f15f565decece78f666faa0b30acfc3f80054be92eaf"
+      }
+    }
+  },
+  "pending": [
+    "Resolve monthly endpoint/session convention for IMOEX,RVI,RUONIA against legacy values; USD/RUB last-fixing convention verified on5months",
+    "Reconcile Flow source monthly timestamp with economic month and legacy scaling; old displayed values differ by factor1000 from raw-RUB-to-billions and appear at previous month labels",
+    "Verify fund-key linkage and common period for outcomes, holdings and new news",
+    "Show revised full equations and monthly-control coverage before coefficient calculation"
+  ],
+  "fits_run": false,
+  "prior_results_and_protected_inputs_modified": false,
+  "updated_controls_evidence": {
+    "report": "./local/Library/CloudStorage/analyst@example.org/My Drive/4. Disserartion research/calculations/code/dissertation_pipeline/reports/original_h12_updated_controls_evidence_20261030.json",
+    "proven_to": "2025-11-30",
+    "source_notebook_cell": 13,
+    "raw_file_still_to_locate": true
+  },
+  "latest_connectivity": "SSH_REACHABLE_VERIFIED_20261030",
+  "external_raw_package": "./market_data/raw_external_2026-09-30",
+  "controls_source_proof": "./local/Library/CloudStorage/analyst@example.org/My Drive/4. Disserartion research/calculations/code/dissertation_pipeline/reports/original_h12_controls_sources_verified_20261030.json",
+  "monthly_convention_check": "./local/Library/CloudStorage/analyst@example.org/My Drive/4. Disserartion research/calculations/code/dissertation_pipeline/reports/original_h12_control_monthly_convention_check_20261030.json",
+  "additional_available_control_sources": {
+    "RVI": "./market_data/raw_external_2026-09-30/moex/indices/RVI_daily_history_2012-01-01_2026-08-31.csv"
+  },
+  "data_found_correction": "Earlier search was too narrowly scoped to the PC registered resources. Existing separate raw package on Mac contains the requested updated macro series."
+}

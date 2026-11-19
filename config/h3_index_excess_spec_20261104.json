@@ -1,0 +1,203 @@
+{
+  "spec_id": "H3_INDEX_RELATIVE_PERFORMANCE_20261104_V1",
+  "status": "FROZEN_BEFORE_NEW_COEFFICIENTS_BENCHMARK_INPUT_VALIDATION_PENDING",
+  "frozen_at_moscow": "2026-11-04T21:47:51+03:00",
+  "owner": "research methodology reviewer",
+  "authority": "Direct user request relayed by control on 2026-11-04: test H3 using fund return minus an index, with equity/mixed funds relative to the Moscow Exchange equity index and bond funds relative to a bond index; retain four groups and provide a table.",
+  "new_index_excess_coefficients_inspected_by_author": false,
+  "prior_results_known": "Earlier alpha and relaxed-news H3 results are known. This is an explicitly requested post-baseline alternative outcome, frozen before its own estimates, not the original ex ante alpha design or an outcome chosen after inspecting this new grid.",
+  "method_review": {
+    "verdict": "BOUNDED_DESIGN_APPROVED_SUBJECT_TO_BENCHMARK_SOURCE_VALIDATION",
+    "meaning": "A legitimate descriptive test of future index-relative performance. It is not factor alpha, comprehensive risk adjustment, proof of skill or a causal effect.",
+    "open_methodological_findings": [],
+    "data_readiness": "The data-service reviewer must verify and pin the exact IMOEX and RGBITR sources, monthly endpoints and eligible coverage before the first coefficient run. This file does not certify uninspected benchmark data.",
+    "reviewer_executed_regressions_or_tests": false
+  },
+  "parent_contracts": {
+    "relaxed_news_spec": {
+      "path": "config/h3_relaxed_news_spec_20261104.json",
+      "sha256": "36a64070c5dfcba749d7baa1f15b639f9801a39fcac12142e372a94a2554699f"
+    },
+    "original_alpha_spec": {
+      "path": "config/h3_alpha_spec_20261104.json",
+      "sha256": "565a726fd3858b94b2bfb3dbf43442d8cab4812c79749fd2ea24db806c44e811"
+    },
+    "precedence": "Inherit only the frozen origin/universe, identity, unit-return quality, quantity, news-score, zero/NA and inference rules identified here. This file overrides all alpha/factor eligibility, alpha-history requirements, outcome definition, past_alpha control and the prior 48-cell grid. Never inherit a parent alpha-defined or alpha-eligible mask."
+  },
+  "storage_and_preservation": {
+    "data_authority": [
+      "DATA_RESOURCES.md",
+      "config/data_resources.json"
+    ],
+    "host": "research-host",
+    "protected_resource_root": "./databaseresources",
+    "read_only_catalog": "./local/research-data-service/research.duckdb",
+    "new_output_root_PC": "./analysis_outputs/h3_index_excess_20261104",
+    "new_output_root_local": "outputs/h3_index_excess_20261104",
+    "rules": "Write new derived artifacts only. H1/H2, every old H3 version, source manifests, protected resources, live Gemma inputs/results and mapping selections stay unchanged. Bulk panels and used samples remain on PC. No new LLM, extra return branch, grid search, watcher or automation. RESEARCH_NOTES is maintained by control, not this reviewer."
+  },
+  "fixed_inputs": {
+    "source_panel": {
+      "id": "0a4d9c7365f0faa1",
+      "manifest_path": "./analysis_outputs/h3_relaxed_news_20261104/panels/0a4d9c7365f0faa1/manifest.json",
+      "manifest_sha256": "2fb48b5ae9be0063e330181df925cb8afabbec2b604cbd3c878d6979b7e0fa92",
+      "scores_path": "./analysis_outputs/h3_relaxed_news_20261104/panels/0a4d9c7365f0faa1/relaxed_fund_period_scores.parquet",
+      "scores_sha256": "b91618a88d33e3ed0a705ac5e30c7bd34542a4266a8097b99791c7d09a8b2f12"
+    },
+    "fund_returns": {
+      "basis": "UNIT_VALUE_KNOWN_ADJUSTMENTS",
+      "path": "./analysis_outputs/h3_alpha_20261104/outputs/run_d0440fad412ee5e9/monthly_returns_adapter.parquet",
+      "sha256": "f079a4a6a7e24ce9561aee94d53809ccfe2d872b4ef2b78419243f4a18cf8c8e",
+      "parent_run_manifest_sha256": "d61349f8275762eee3c224a8118d69eec81fb08107d48a6fc00f63b324a09628",
+      "eligibility": "Use the frozen diagnostic_eligible, dated identity, finite return and observed endpoint/action-comparability information. This is unit-value growth with known adjustments, not total NAV growth and not payout-complete verified total return. Retain known distribution/split adjustments and unresolved-event exclusions; do not reclassify unknown payouts as absent.",
+      "no_alpha_gate": "Do not require a factor join, factors_verified, risk-free coverage, historical beta, n_past, n_recent, alpha, past_alpha, factor rank or any saved alpha inclusion flag. A valid fund-month remains usable when an unrelated factor or alpha is unavailable."
+    },
+    "benchmark_sources": "Data-service-owned, separately sealed input manifest before coefficients, with series IDs, raw source paths, hashes, units, return conventions, actual endpoint dates and eligibility. Reusing verified RGBITR monthly values is allowed; their eligibility must be series-specific, not gated by unrelated equity/RUONIA fields. No silent IMOEX-to-MCFTR or RGBITR-to-RGBI substitution."
+  },
+  "notation": {
+    "f": "Fund with the inherited verified dated identifier.",
+    "t": "Selected genuine holdings interval, ending at actual origin date d_t; t is not assumed to be a calendar month.",
+    "d_t": "Actual closing report date of the selected holdings interval.",
+    "m_t": "Calendar month containing d_t.",
+    "g_f_t": "Inherited report-dated focus: equity, bond or mixed, fixed at origin for this observation.",
+    "b_f_t": "Benchmark selected from g_f_t: IMOEX for equity/mixed and RGBITR for bond.",
+    "r_f_m": "Frozen eligible monthly RUB fund-unit return, in decimal units, for calendar month m.",
+    "I_b_m": "Verified official level of benchmark b at the last eligible trading close of calendar month m, with the actual date retained.",
+    "r_b_m": "Simple monthly benchmark return I_b_m/I_b_(m-1)-1, using adjacent complete monthly endpoints and the index's own return convention.",
+    "ER_f_m_b": "Fund-minus-index monthly return r_f_m-r_b_m; the benchmark is b_f_t for this origin.",
+    "Y_f_t_h": "Mean monthly index-relative performance over the h full calendar months after m_t.",
+    "S_current": "Unchanged NTS_Q_current_relaxed from sealed panel 0a4d9c7365f0faa1.",
+    "S_lagnews": "Unchanged NTS_Q_lagnews_relaxed: CURRENT measured quantity changes aligned with PREVIOUS-interval news, not lagged trades or a lagged value of S_current.",
+    "m_star": "Latest eligible complete past calendar month satisfying the date rules below for this fund and its origin-selected benchmark.",
+    "P_f_t": "Past index-relative return ER_f_m_star_b, the only control; its actual month and age are retained.",
+    "a_f": "Fund fixed effect.",
+    "theta_current_theta_lagnews": "Conditional associations of future index-relative performance with the current and lagnews scores.",
+    "gamma": "Coefficient on P_f_t.",
+    "N_G": "Number of fitted fund-origin observations and distinct fund clusters after singleton removal.",
+    "K_full": "Identified model rank including fund fixed effects, for the CR1 correction and residual degrees of freedom."
+  },
+  "benchmark_assignment": {
+    "equity": {
+      "series_id": "IMOEX",
+      "label": "MOEX Russia Index, price return"
+    },
+    "mixed": {
+      "series_id": "IMOEX",
+      "label": "MOEX Russia Index, price return; common equity yardstick, not a balanced-portfolio benchmark"
+    },
+    "bond": {
+      "series_id": "RGBITR",
+      "label": "Russian government-bond total-return index, including the index's accrued-income/coupon convention"
+    },
+    "pooled": "Union of inherited eligible equity, bond and mixed fund-origins, each with its own origin-type benchmark. There is no single pooled benchmark series. Unknown/other focus does not default to IMOEX and has an explicit exclusion reason.",
+    "focus_timing": "Use the existing dated classification at d_t, not the fund's latest observed focus. Keep b_f_t fixed for all future months and the one past control of that origin, even if a later report changes focus.",
+    "definition_limits": "IMOEX excludes stock dividends; RGBITR is a government-bond total-return series. The broad fund series is not certified payout-complete TR. These asymmetric return conventions are explicit features of this requested comparison, not evidence of like-for-like total-return performance. No alternative benchmark is selected after results."
+  },
+  "origin_and_score_rules": {
+    "origins": "Reuse the complete selected-origin set in the sealed panel before outcome/history restrictions, with inherited universe_eligible and identity_origin_verified. One selected latest genuine closing report per fund/calendar month; no fallback to an earlier same-month report after a failure.",
+    "universe": "Retain dated fund focus, identified index/passive exclusions, mandate/currency/identity rules and provisional-status flags. Do not require survival or introduce a new minimum holdings history, domestic-share threshold or security count.",
+    "scores": "Reuse values, eligibility and reasons unchanged. Independent current and lagnews usable sets; no 50% coverage gate, no two-company gate, no paired-set gate. Confirmed observed-subportfolio zeros remain zero; technical missingness, empty usable sets and missing predecessor windows remain NA. No new score reconstruction or restoration beyond the sealed panel.",
+    "scope": "NTS describes alignment in the observed corporate subportfolio. Its zero group mixes supported inactivity/absence, balanced signals and offsetting alignment; it does not prove no news or trades throughout the fund. Raw Net, B_Q and inherited quantity/outlier exclusions are unchanged."
+  },
+  "outcome": {
+    "column": "mean_monthly_index_excess_return",
+    "formula": "Y_f_t_h = (1/h) * sum_{j=1..h} [r_f_(m_t+j) - r_(b_f_t)_(m_t+j)]",
+    "primary_horizon_months": 1,
+    "additional_horizons_months": [
+      2,
+      3
+    ],
+    "aggregation": "Arithmetic mean of monthly return differences, not a compounded fund/index wealth ratio, not cumulative h-month excess return, not a risk-free excess return and not alpha.",
+    "calendar": "Use exactly m_t+1 through m_t+h. Exclude the partial remainder of the origin month. All h fund returns and all h assigned-benchmark returns must be finite and individually eligible; missing any month yields NA for that horizon, not a shorter average, zero or interpolation.",
+    "fund_future_anchor": "Retain the actual-origin safeguard: the first future fund return's observed start_valuation_date must exist and be >= d_t. Preserve actual start/end valuation dates, return_period_end and the ignored origin-month tail. Never replace d_t with a nominal month-end to force eligibility.",
+    "benchmark_endpoints": "Use the assigned index's adjacent calendar-month official closing levels, with their actual last-trading-day dates and series-specific calendar verification. Do not borrow levels across an absent month or turn a missing/stale endpoint into zero return. Benchmark and fund returns must refer to the same calendar months; retain any differences in actual valuation dates.",
+    "return_quality": "Inherit frozen fund-month quality/action/identity gates, including genuine adjacent endpoints and the existing endpoint-age convention. No new return trimming/winsorisation, range search, data imputation or payout assumptions. Fund return must be finite and >=-1; verified positive index levels imply finite index return >-1."
+  },
+  "past_return_control": {
+    "column": "past_index_excess_return",
+    "formula": "P_f_t = r_f_m_star - r_(b_f_t)_m_star",
+    "selection": "m_star is the latest eligible matched fund/assigned-index month whose CALENDAR month-end is <= d_t and whose fund return_period_end, fund start/end valuation dates and both benchmark endpoint dates are all <= d_t. Require finite eligible returns. This is a date-based maximum, never a return-value-based choice.",
+    "boundary_examples": "If d_t is before the calendar month-end, the control month cannot be m_t, even when the last trading day has already occurred. If d_t equals calendar month-end, m_t may be used when all endpoint/date checks pass. Thus an origin on 2026-05-29 cannot use May as its past control; an origin on 2026-05-31 may use May if eligible.",
+    "gap_policy": "If the latest calendar month is missing, take the most recent earlier eligible complete matched month, without synthesizing intervening returns. Record m_star, control_age_months and actual source dates; call this latest available past monthly performance, not an invariably one-month lag. No new age cutoff or long-history requirement. If no eligible past pair exists, P_f_t is NA and the row is excluded with that reason.",
+    "publication_vintage": "Use known publication timestamps when available and require them not to exceed d_t for the control. Where publication vintage is unknown, retain the existing unknown-vintage limitation; endpoint dating alone does not establish real-time public availability. Do not invent dates or claim a tradable real-time strategy.",
+    "no_alpha_history": "Exactly one valid past monthly control is sufficient. No 36-of-60, 9-of-12, beta conditioning, past_alpha, accumulated historical return or minimum NTS history is required."
+  },
+  "model_grid": {
+    "groups": [
+      "pooled",
+      "equity",
+      "bond",
+      "mixed"
+    ],
+    "horizons_months": [
+      1,
+      2,
+      3
+    ],
+    "return_branches": [
+      "UNIT_VALUE_KNOWN_ADJUSTMENTS_INDEX_RELATIVE"
+    ],
+    "variants": [
+      {
+        "id": "CURRENT_ONLY_OWN_AVAILABLE",
+        "formula": "Y_f_t_h = a_f + theta_current*S_current + gamma*P_f_t + error",
+        "sample": "Inherited eligible origin, known current score including supported zero, known outcome and past control. Do not require lagnews eligibility or a preceding news interval."
+      },
+      {
+        "id": "CURRENT_PLUS_LAGNEWS",
+        "formula": "Y_f_t_h = a_f + theta_current*S_current + theta_lagnews*S_lagnews + gamma*P_f_t + error",
+        "sample": "Same gates plus independently known lagnews score, including supported zero. Unknown lagnews is not filled with zero."
+      }
+    ],
+    "total_cells": 24,
+    "primary_display": "h=1, all four groups and both variants; h=2 and h=3 are explicitly additional horizon tables, not candidates for choosing the most significant headline.",
+    "no_extensions": "No provider-TR4 branch, alpha-history sensitivities, alternate indices, blended mixed-fund benchmark, new controls, cuts, control subsets, nonoverlapping phases, extra common-sample fits, LLM refresh or benchmark search in this task."
+  },
+  "estimation_and_inference": {
+    "estimator": "Unweighted fund-FE OLS; P_f_t is the only control. No fund-size/security-count weights, time effects, time clusters or company clusters.",
+    "covariance": "One-way fund CR1 with G/(G-1)*(N-1)/(N-K_full); save the full covariance and correction. Main p-values and 95% intervals use ordinary two-sided Student t(G-1), not native residual df. Native output may be retained separately with correct labels.",
+    "guards": "Remove singleton funds transparently. Require N>=30, G>=2, positive residual df and identified finite target columns. Absorbed required NTS targets or collinear nonabsorbed regressors yield NOT_ESTIMABLE, with no silent target/control drop. A control exactly absorbed by fund FE may be omitted algebraically with its status disclosed, as in the inherited estimator.",
+    "small_clusters": "G<30 is flagged fragile and significance stars are suppressed. Do not relax guards to obtain estimates.",
+    "tests_current_only": [
+      "theta_current=0"
+    ],
+    "tests_distributed": [
+      "theta_current=0",
+      "theta_lagnews=0",
+      "theta_current+theta_lagnews=0, using full covariance",
+      "joint theta_current=theta_lagnews=0"
+    ],
+    "joint_guard": "Joint Wald F(2,G-1) requires G>=3 and a finite, identified, rank-two positive-definite target covariance. Otherwise NA with the exact reason, never eigenvalue clipping, p=1 or a negative statistic.",
+    "undefined_tests": "Nonfinite/nonpositive target variance gives an undefined SE/test with an explicit reason, not zero uncertainty or an invented p-value. Non-estimable models are not called insignificant.",
+    "multiple_testing_adjustments": false,
+    "Holm": false,
+    "limits": "Fund clustering accommodates serial dependence including overlapping horizons, but does not cover common shocks across different funds. Ordinary p-values across 24 cells are not family-wise error controlled. These limitations are reported, not repaired by an unrequested model change.",
+    "effect_scale": "Y is a decimal average monthly return difference. 10000*theta is basis points per +1 score; 20000*theta is the -1 to +1 contrast. An observed within-sample IQR contrast can also be reported with its IQR. The coefficient sum is a joint shift in two alignment scores, not a cumulative causal response."
+  },
+  "interpretation": {
+    "question": "Does more news-aligned rebalancing predict higher subsequent fund-unit performance relative to the assigned market index, conditional on fund effects and latest available past index-relative performance?",
+    "positive_result": "A positive current coefficient supports predictive index-relative performance under this alternative outcome, not the original factor-alpha claim or managerial skill by itself. A positive lagnews coefficient concerns alignment with earlier news.",
+    "nonpositive_result": "Non-rejection is not proof of zero economic effect. A negative coefficient does not by itself identify price chasing, liquidity provision or limited information-processing skill.",
+    "benchmark_risk": "Subtracting the index implicitly uses a unit benchmark exposure and does not estimate beta. IMOEX is a deliberately simple but imperfect comparison for mixed funds with bonds/cash. RGBITR may differ from bond-fund portfolios in duration, credit risk and composition. No risk-neutral or mandate-neutral comparison is claimed.",
+    "comparisons_with_old_H3": "The outcome and availability restrictions change, so a coefficient difference from alpha H3 is not attributable solely to a larger sample. Show overlap and inclusion reasons without fitting extra comparisons. Retain the previous alpha results and explicitly label this as a requested supplementary outcome."
+  },
+  "required_outputs": [
+    "Spec SHA and sealed, series-specific source/code manifest before new coefficients. Independent benchmark-source approval must precede fitting; unresolved benchmark scope is a blocker, not permission to substitute another index.",
+    "Full origin outcome/control ledger with fund focus, benchmark ID, future month members and returns, P_f_t month/age/date evidence, current/lagnews status, zero reasons and every exclusion. Large ledgers remain on PC.",
+    "Group/horizon/variant flow: inherited origin universe -> assigned benchmark -> complete future fund/index months -> past control -> current score -> both scores where required -> singleton removal -> inference. No alpha/history gate in this flow.",
+    "All 24 labels, exact used-sample hashes, native output under index-relative labels, coefficients/SE/t/p/CI, full covariance, current/lag/sum/joint tests, N/G/date ranges, within R2 and honest NOT_ESTIMABLE/undefined reasons.",
+    "h1 readable table with four group columns, benchmark labels, current-only and distributed panels, current/lagnews/control coefficients with SE/p, N/G, fund FE and within R2. Add h2/h3 in the same layout, preserving null cells. No minimum-p headline.",
+    "Current-only versus distributed sample overlap and comparison with old relaxed-alpha sample, using stored IDs only; no extra fits. Report changes in eligibility without attributing them solely to one mechanism.",
+    "Separate independent data/numerical QA plus bounded interpretation review. Do not label executor checks alone independent QA."
+  ],
+  "QA_acceptance": [
+    "The sealed NTS values, zero/NA statuses, origin dates, universe/focus, raw quantity and outlier policy are unchanged. No score is recomputed from newer news.",
+    "Equity and mixed use IMOEX; bond uses RGBITR; pooled is assigned by dated origin type. No current/latest-focus backfill, silent RGBI/MCFTR substitution or unrelated-factor eligibility gate.",
+    "Each Y equals the arithmetic mean of exactly h observed fund-minus-assigned-index monthly returns in m_t+1..m_t+h. Both sides have the same month keys; missing a month gives NA.",
+    "Actual future fund anchor is not earlier than origin. All past-control month ends and source endpoint dates are <= origin; the selected month is the latest eligible past pair. Save stale-control ages instead of synthesizing missing months.",
+    "An origin with valid one-month control/future returns but fewer than 36 historical months can qualify. It is not excluded for missing alpha, beta, RF, past_alpha or unrelated factors.",
+    "Current-only preserves known-current/unknown-lag observations; distributed requires both. Complete horizons are not forced to a common h1/h2/h3 sample.",
+    "All 24 cells and both signs are retained, including NA; N/G/rank/singleton/joint guards and t(G-1) covariance arithmetic match the frozen specification.",
+    "All preserved source/old-result hashes remain unchanged. Fund series is consistently labelled known-adjustment unit-value performance, not total NAV growth or verified total-return alpha."
+  ]
+}

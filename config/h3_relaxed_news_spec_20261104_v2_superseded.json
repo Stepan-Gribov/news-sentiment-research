@@ -1,0 +1,208 @@
+{
+  "spec_id": "H3_RELAXED_NEWS_INDEPENDENT_ZERO_20261104_V2",
+  "status": "FROZEN_BEFORE_NEW_COEFFICIENTS",
+  "frozen_at_moscow": "2026-11-04T20:47:58+03:00",
+  "pre_coefficient_amendment": {
+    "superseded_path": "config/h3_relaxed_news_spec_20261104_v1_superseded.json",
+    "superseded_sha256": "cdea36562a830f7a8a2e3b622760915a55a7d705ac51da9c1a958a831b652e85",
+    "superseded_frozen_at_moscow": "2026-11-04T20:45:02+03:00",
+    "reason": "Control clarified the user-authorized relaxation before the new coefficient run: zero and nonzero NTS describe the same observed corporate subportfolio. V1 inadvertently imposed complete in-scope knowledge only for zeros. Remove that asymmetry, preserving unknown rows as NA/excluded with coverage flags.",
+    "new_coefficients_inspected": false,
+    "operative_contract": "Nonempty usable E_j and zero observed denominator imply OBSERVED_SUBPORTFOLIO_ZERO even when excluded unknown rows exist. Empty/all-NA E_j remains NA. Whole-fund absence is a separate evidence claim, not an eligibility gate."
+  },
+  "owner": "research methodology reviewer",
+  "authority": "User instruction relayed by control on2026-11-04: relax the news restriction and assign zero when news or movements are confirmed absent. Unknown data must not be converted to zero.",
+  "new_relaxed_news_coefficients_inspected_by_author": false,
+  "prior_results_known": "The original diagnostic v3 and provider TR4 results were reviewed before this follow-up was requested. This is a transparently post-baseline specification extension, frozen before its own coefficients, not an ex ante original hypothesis test.",
+  "output_root": "./analysis_outputs/h3_relaxed_news_20261104",
+  "parent_spec": {
+    "path": "config/h3_alpha_spec_20261104.json",
+    "sha256": "565a726fd3858b94b2bfb3dbf43442d8cab4812c79749fd2ea24db806c44e811",
+    "inheritance": "All quantity/price/action, universe/origin, return, factor, alpha and inference rules remain unchanged unless explicitly overridden below. This new file has priority only for news-score eligibility/zero treatment and the48-cell model grid."
+  },
+  "changes_only": [
+    "Remove the50% news-trade-coverage gate; continue to report coverage and missingness.",
+    "Remove the two-contributing-company gate. One company is sufficient for a positive-denominator ratio; zero contributing companies can qualify only through an explicitly confirmed zero case.",
+    "Construct current and previous-news scores independently, not on a paired common E set.",
+    "Assign explicit zeros to confirmed no-candidate/no-relevant-news, no measurable movement and observed zero-signal-denominator cases under the evidence rules below.",
+    "Estimate current-only on its own eligible sample, without requiring a previous-news score. Estimate current-plus-lagnews where both independently constructed scores are known, including confirmed zero lagnews."
+  ],
+  "notation": {
+    "f": "Fund.",
+    "i": "Union-held corporate security, respecting inherited non-news exclusions.",
+    "t": "Selected actual holdings interval ending at d1 and beginning at d0.",
+    "j": "News window: current=(d0,d1], lagnews=(d_minus1,d0].",
+    "B_Q": "Unchanged RUB-valued estimated quantity change in CURRENT interval t: continuing/exit=(Q1_adjusted-Q0)*P0; confirmed entry=Q1*P1. Missing Q/P, unconfirmed endpoint absence or unresolved identity/action stays unknown.",
+    "Net_j": "Existing frozen eligible company sentiment (positive count-negative count)/relevant classified count in exact window j; a separate news-absence status may imply zero contribution but is not an LLM-neutral classification.",
+    "E_j": "Independent nonempty-or-empty set of usable current-interval security contributions with measurable B_Q and valid identity/non-news eligibility: known sentiment/confirmed absence in a valid window j, or verified zero B_Q establishing a zero product without imputing unknown sentiment. Missing window/predecessor and outside-news-universe cases remain ineligible.",
+    "A_j": "sum over E_j of B_Q*Net_j.",
+    "D_j": "sum over E_j of abs(B_Q)*abs(Net_j).",
+    "epsilon_j": "1e-12*max(1,sum over E_j of abs(B_Q)); unchanged numerical-zero convention.",
+    "NTS_j": "Relaxed score: A_j/D_j for D_j>epsilon_j; otherwise explicit0 only under a justified zero status; otherwise NA."
+  },
+  "source_contract": {
+    "sealed_quantity_contributions": "./analysis_outputs/h3_alpha_20261104/panels/nts_ee5a8bf9b450137a/quantity_news_contributions.parquet",
+    "selected_origins": "./analysis_outputs/h3_alpha_20261104/panels/nts_ee5a8bf9b450137a/selected_origins.parquet",
+    "current_company_windows": "./analysis_outputs/h1_net_fund_fe_20261030/net_sentiment_company_period.parquet",
+    "lag_company_windows": "./analysis_outputs/h1_sentiment_lag_20261103/data/lag_company_windows.parquet",
+    "lag_map": "./analysis_outputs/h1_sentiment_lag_20261103/data/row_lag_map.parquet",
+    "frozen_events_if_exact_window_missing": "./analysis_outputs/title_name_regressions_20261026_w2_v2/event_representatives.parquet",
+    "fields_available_in_existing_news_builders": [
+      "state",
+      "n_candidates",
+      "n_attempted",
+      "n_valid",
+      "n_relevant",
+      "n_positive",
+      "n_negative",
+      "n_neutral",
+      "n_errors_or_unattempted",
+      "n_undated_company_candidates",
+      "strict_complete",
+      "eligible_primary",
+      "net_sentiment"
+    ],
+    "news_universe_proof": "Use the frozen selected company/mapping registry and its source coverage, not mere presence/absence in the successful-label table. Preserve the title-name/no-GAZ mapping selection. Outside that universe is OUTSIDE_NEWS_UNIVERSE, never confirmed no news.",
+    "missing_window_rule": "A missing joined row is unknown. If necessary, reconstruct only missing exact company windows from already frozen events and the unchanged real-report calendar; save provenance. No news download, live-Gemma refresh, new LLM call or alternative mapping selection.",
+    "hash_policy": "Pin all reused inputs to their existing sealed manifests, record hashes and exact window/member IDs before regressions. No source overwrites."
+  },
+  "news_status_rules": [
+    {
+      "source": "complete_relevant_news",
+      "condition": "n_candidates>0; n_valid=n_candidates; n_relevant>0; no errors/unattempted or unresolved undated candidates; finite existing Net_j.",
+      "action": "Use the existing Net_j unchanged; Net_j=0 is valid observed neutral/balanced sentiment."
+    },
+    {
+      "source": "no_title_candidates",
+      "condition": "An explicit exact-window record or verified frozen-event reconstruction has n_candidates=0; company is inside the frozen news universe; source/window coverage is known; no unresolved undated company candidates.",
+      "action": "Zero news contribution with ZERO_NO_CANDIDATES_IN_FROZEN_CORPUS. This means no candidates under this corpus/mapping, not no news anywhere. strict_complete may be false solely because the old builder required n_candidates>0."
+    },
+    {
+      "source": "no_relevant_news",
+      "condition": "n_candidates>0; n_valid=n_candidates; n_relevant=0; all candidates were validly classified irrelevant; no errors/unattempted or unresolved undated candidates.",
+      "action": "Zero news contribution with ZERO_ALL_CANDIDATES_IRRELEVANT; do not label these articles neutral."
+    },
+    {
+      "source": "partial_or_error_coverage",
+      "condition": "Incomplete classification, failed/unattempted calls, ambiguous dates or missing mapping.",
+      "action": "Unknown news contribution (NA); do not use the observed-only sentiment or absence of successful labels to assign0."
+    },
+    {
+      "source": "no_previous_interval",
+      "condition": "No verified preceding actual report interval or unresolved chain.",
+      "action": "lagnews=NA, not0. This does not invalidate a known current score."
+    },
+    {
+      "source": "missing_join_or_outside_universe",
+      "condition": "No explicit status/window record, unknown company mapping, outside frozen news universe or unavailable coverage.",
+      "action": "NA with precise reason, never synthetic no-news status."
+    }
+  ],
+  "score_construction": {
+    "independence": "Do not reuse NTS_common_E or the old eligible_for_score column as an aggregate gate: those encode both news windows. Recover unchanged pre-news quantity/action/identity eligibility and apply the above rules separately for current and lagnews.",
+    "inherited_selection": "Retain inherited non-news exclusions, including previously documented P99/quantity/action exclusions; no new percentile or trimming. A position absent solely because the prior pipeline required observed news may be restored from the already saved union-held positions once its news status is explicitly established. Save restoration reasons; being outside the inherited target is not itself evidence of absent news. Do not reinstate known non-news exclusions.",
+    "positive_denominator": "For D_j>epsilon_j use A_j/D_j in[-1,1]. Partial observed coverage is allowed without a numerical coverage threshold; unknown contributions are excluded, not set0, and must remain visible in missing/coverage counts. Label partial-subportfolio scores accordingly.",
+    "zero_denominator": "For D_j<=epsilon_j and at least one usable E_j contribution, set score=0 with OBSERVED_SUBPORTFOLIO_ZERO. Excluded unknown security rows do not veto this observed-subportfolio zero; retain their NA values, reasons and counts/coverage. There is no hidden completeness threshold. Empty/all-NA E_j remains NA, never0. Outside-news-universe positions cannot alone establish observed support.",
+    "zero_no_movement": "Finite measured B_Q=0 establishes that contribution's zero product without setting unknown sentiment to0, provided the window and non-news eligibility exist. If all usable E_j movements are zero, attach reason NO_MEASURED_MOVEMENT_IN_OBSERVED_SUBSET. Other excluded unknown movements do not block the score; they do block any unsupported whole-fund no-movement claim. Retain exact-versus-numerically-zero evidence.",
+    "zero_no_news": "If the usable E_j positions have accepted explicit absence statuses and measurable B_Q, attach reason CONFIRMED_NEWS_ABSENCE_IN_OBSERVED_SUBSET. Unknown rows remain excluded and flagged without vetoing that score0. Missing Q/P is not repaired by absence of news; outside-universe firms are not called no-news firms.",
+    "zero_observed_signal": "If D_j<=epsilon_j on nonempty usable E_j because observed Net_j values are0, including balanced positive/negative news, attach reason ZERO_OBSERVED_SIGNAL_DENOMINATOR. Unknown rows outside E_j do not block this observed-subportfolio zero.",
+    "whole_fund_absence_flags": "Optional whole_fund_no_news_verified/whole_fund_no_movement_verified may be true only with affirmative complete scope evidence; otherwise false/unknown. Neither flag is required for NTS eligibility. The default label always refers to the observed subportfolio.",
+    "offsetting_alignment": "If D_j>epsilon_j but A_j=0 through offsetting products, score0 has status OBSERVED_OFFSETTING_ALIGNMENT, distinct from all absence/neutrality cases.",
+    "nonapplicable_empty_scope": "If no eligible corporate/news-universe exposure can be established, use NA_NO_APPLICABLE_SCOPE, not an invented no-trade or no-news0.",
+    "zero_status_priority": "For nonempty E_j and zero denominator, always use OBSERVED_SUBPORTFOLIO_ZERO plus separate reason flags: no measured movement, confirmed news absence and/or zero observed signal. For positive denominator with cancelling numerator use OBSERVED_OFFSETTING_ALIGNMENT. Do not collapse any of these into LLM neutrality or a whole-fund absence claim.",
+    "lag_interpretation": "lagnews remains CURRENT quantity changes aligned with PREVIOUS-interval news; not previous trading and not a lag of the relaxed current score.",
+    "columns": [
+      "NTS_Q_current_relaxed",
+      "NTS_Q_lagnews_relaxed",
+      "current_status",
+      "lagnews_status",
+      "current_numerator",
+      "current_denominator",
+      "lagnews_numerator",
+      "lagnews_denominator",
+      "company_count_current",
+      "company_count_lagnews",
+      "coverage_current",
+      "coverage_lagnews",
+      "known_zero_flags",
+      "unknown_contribution_counts",
+      "outside_news_universe_counts",
+      "restored_news_only_position_counts"
+    ]
+  },
+  "outcomes_unchanged": {
+    "diagnostic": {
+      "run": "outputs/h3_alpha_20261104/run_d0440fad412ee5e9",
+      "manifest_sha256": "d61349f8275762eee3c224a8118d69eec81fb08107d48a6fc00f63b324a09628",
+      "basis": "UNIT_VALUE_KNOWN_ADJUSTMENTS; factor-adjusted unit-value growth, not verified TR"
+    },
+    "provider_TR4": {
+      "run": "outputs/h3_alpha_20261104/provider_TR4_b00ab703609fb58f",
+      "manifest_sha256": "af25eb9dc57288ef54d2b0839477f0ced6b9539708bd3a88a8cbd2257b8e98c3",
+      "snapshot_sha256": "5cd9a9ccf60f9e4eafd7b41bddfc140cd7a2e91377b3e45e87dc6ee0028a6983",
+      "basis": "Only228 approved printed provider-convention monthly returns,4 funds,2022-01..2026-09; no NAV promotion"
+    },
+    "alpha": "Reuse PRIMARY60/36 alpha with last12>=9, original factors/RF, conditioning, actual-origin and future-anchor gates, complete future months, h1/2/3 and past_alpha control. No shorter-history, credit or alternative-return branch is added.",
+    "origin_set": "Reuse the prior selected genuine latest-closing report origins and dated fund-universe eligibility before news-score gates; do not select earlier same-month origins to fill failures."
+  },
+  "model_grid": {
+    "groups": [
+      "pooled",
+      "equity",
+      "bond",
+      "mixed"
+    ],
+    "horizons": [
+      1,
+      2,
+      3
+    ],
+    "branches": [
+      "UNIT_VALUE_KNOWN_ADJUSTMENTS",
+      "TR_PROVIDER_ACCRUED_INCOME_CONVENTION"
+    ],
+    "variants": [
+      {
+        "id": "CURRENT_ONLY_OWN_AVAILABLE",
+        "formula": "Alpha_h=theta_current*NTS_Q_current_relaxed+gamma*past_alpha+fund_FE+error",
+        "sample": "Own eligible current-score sample; do not require lagnews or a predecessor-news score."
+      },
+      {
+        "id": "CURRENT_PLUS_LAGNEWS",
+        "formula": "Alpha_h=theta_current*NTS_Q_current_relaxed+theta_lagnews*NTS_Q_lagnews_relaxed+gamma*past_alpha+fund_FE+error",
+        "sample": "Both independent scores observed or explicitly confirmed zero; unknown lag/current remains excluded."
+      }
+    ],
+    "models_per_branch": 24,
+    "total_labels": 48,
+    "estimator": "Unweighted fund-FE OLS; only past_alpha control; no time FE; one-way fund CR1; t(G-1) and95%CI; retain native residual-df output separately.",
+    "minimum_inference": "N>=30 after singleton removal, G>=2, identified finite regressors and positive residual df. G<30 is fragile/no stars. Two-target joint Wald requires G>=3 and identified positive-definite rank2 target covariance; otherwise NA.",
+    "tests": "Current-only: theta_current=0. Distributed: current, lagnews, full-covariance coefficient sum and joint zero test. Sum is not a two-period cumulative treatment effect.",
+    "no_additional_grid": "No new control search, cuts, shorter history, nonoverlapping phases, credit factor, extra common-sample regressions or p-based choice in this bounded step.",
+    "sample_comparison": "Current-only and distributed use different available samples by design. Report overlap and exclusions; do not attribute coefficient differences solely to adding lagnews. Compare old/new scores and inclusion decisions on shared origins without additional regression fits.",
+    "report_all": "All48 labels, including NA and both signs; ordinary unadjusted p-values, no minimum-p headline and no new multiplicity rule."
+  },
+  "interpretation": {
+    "new_estimand": "Association of future factor-adjusted performance with OBSERVED CORPORATE-SUBPORTFOLIO news alignment augmented by documented observed-subset inactivity/absence at0. Unknown excluded positions do not gate either zero or nonzero scores. The zero group mixes observed absence, no movement, balanced/neutral signals and offsetting alignment; it is not an LLM-neutral group or evidence of no news/trades throughout the fund.",
+    "limits": "This changes both score meaning and eligible sample. A difference from the earlier model cannot be attributed solely to better measurement. Partial coverage, V/P proxies, flows, unobserved intrainterval trades and generated-score/outcome uncertainty remain. Four TR funds of one manager remain a nonrepresentative, few-cluster subset.",
+    "hypothesis": "H3 remains future fund performance. No positive effect is guaranteed and a significant negative association does not identify a behavioral mechanism."
+  },
+  "required_outputs": [
+    "Frozen spec/input manifest and implementation hash before coefficients; no coefficient-informed changes.",
+    "Separate position/window status ledger including zero evidence, unknown/outside-scope cases and restored news-only exclusions; large tables stay onPC.",
+    "Fund-period scores with independent numerator/denominator, contributing companies, zero-type counts, coverage and unknown shares.",
+    "Old-to-new inclusion flow per branch/group/horizon/variant, plus primary alpha-only to known-current to known-both to inference flow.",
+    "All48 model labels, exact used-sample hashes, coefficients/full covariance/tests/native output, and explicit unestimable reasons.",
+    "Read-only implementation/interpretation review and separate numerical QA after the frozen run."
+  ],
+  "QA_acceptance": [
+    "Known finite current remains eligible when lag is unknown; current-only never depends on lag.",
+    "True observed zero, confirmed absence and no movement are distinguishable from technical missingness.",
+    "All-NA/empty E_j, outside-universe companies, missing predecessor intervals and failed LLM/mapping/price rows do not become synthetic zero rows. Their presence outside nonempty E_j does not veto a legitimate observed-subportfolio zero.",
+    "Synthetic contract case: one eligible measured zero-contribution position plus one unknown excluded position produces OBSERVED_SUBPORTFOLIO_ZERO with unknown-count1, not NA. An all-unknown case produces NA. This checks both eligibility symmetry and preservation of unknowns.",
+    "Single-company positive-denominator scores are allowed; no50% or two-company threshold survives accidentally.",
+    "No paired-current-lag E restriction remains; existing non-news physical/identity/exclusion gates remain.",
+    "Outcomes, alpha gates and source versions are identical to the corresponding prior branch on shared origins."
+  ],
+  "preservation": "New derived version only. Do not edit old H3/H1/H2 data, regressions, specs, protected bulk resources, live Gemma or RESEARCH_NOTES. Unexpected missing source-status evidence stays NA and is reported; do not broaden rules after seeing coefficients."
+}

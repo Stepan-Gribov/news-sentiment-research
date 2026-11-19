@@ -1,0 +1,80 @@
+{
+  "status": "FIXED_BEFORE_NEW_COEFFICIENTS",
+  "research_date": "2026-11-03",
+  "purpose": "Transparent exploratory all-subsets control search for equity-fund H1; all attempted models retained, no multiple-testing adjustment by explicit user instruction.",
+  "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+  "expected_rows": 60903,
+  "expected_funds": 91,
+  "expected_companies": 136,
+  "expected_row_hash": "8f4d874c824d52bb9de713781b18c4b3cb5035604b6cf4bd249e48482c7c6040",
+  "outcome": "quantity_change_pct",
+  "targets": [
+    "net_sentiment",
+    "net_sentiment_lag1"
+  ],
+  "controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator",
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "variants": [
+    "CURRENT_ONLY",
+    "CURRENT_PLUS_LAG1"
+  ],
+  "control_masks": "All integers 0..65535, bit j includes controls[j]; same ordered rows for every model.",
+  "model_count": 131072,
+  "selection_and_data": "Existing P99 continuing-positive upper trim, confirmed entries +100%, exits -100%, existing equity focus and historical eligibility >=60 rows AND >=24 intervals fixed before lag-completeness. No new row filters, cuts, transformations, weighting or support thresholds.",
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "time_FE": false,
+  "cluster_time": false,
+  "covariance_options": {
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true,
+    "group_debias": true,
+    "PSD_repair": false
+  },
+  "df_resid": "N - number_of_funds - number_of_retained_slopes",
+  "inference": "Native-equivalent two-sided t with df_resid; joint current/lag chi2(2), sum uses two-sided t; undefined covariance retained, no correction on p-values.",
+  "shortlist_rules_per_variant": [
+    "NO_CONTROLS",
+    "ALL_CONTROLS",
+    "MIN_P_CURRENT_ANY_SIGN",
+    "MIN_P_CURRENT_POSITIVE",
+    "MAX_P_CURRENT",
+    "MIN_P_LAG_ANY_SIGN_IF_INCLUDED",
+    "MIN_P_LAG_POSITIVE_IF_INCLUDED",
+    "MIN_P_SUM_ANY_SIGN_IF_INCLUDED",
+    "MIN_P_SUM_POSITIVE_IF_INCLUDED",
+    "MIN_P_JOINT_IF_INCLUDED"
+  ],
+  "native_refits": "Every deduplicated shortlist model is refit in PanelOLS with unchanged fund FE and fund/company CGM; full native TXT/HTML and all coefficients saved.",
+  "benchmark": "1024 fits per variant before full grid; if projected total exceeds 10 min, stop for root decision.",
+  "source_changes": false,
+  "computation_host": "research-host",
+  "output_root": "./analysis_outputs/h1_equity_control_search_20261103",
+  "limitations": [
+    "Post-hoc specification search; ordinary p-values do not establish confirmatory hypothesis support after search.",
+    "Contemporaneous controls; estimated quantities not comprehensive corporate-action-adjusted transactions.",
+    "All models share complete-case lag sample, not broader original no-lag sample."
+  ]
+}

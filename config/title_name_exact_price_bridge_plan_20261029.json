@@ -1,0 +1,140 @@
+{
+  "analysis_id": "title-name-exact-price-bridge-20261029",
+  "status": "FIXED_BEFORE_NEW_BRIDGE_OUTCOMES",
+  "created_at_utc": "2026-10-29T08:36:03.890503+00:00",
+  "purpose": "Complete the substantive price-revaluation diagnostic on existing actual disclosure windows, including feasibility of the original full-portfolio AT. Not a search for a favorable p-value.",
+  "prior_results_known": true,
+  "classification": "POSTHOC_EXPLORATORY_MECHANISM_CHECK",
+  "execution_host": "research-host",
+  "sole_estimator": "code assistant",
+  "output_root": "./analysis_outputs/title_name_exact_price_bridge_20261029",
+  "inputs": {
+    "base": "./analysis_outputs/title_name_regressions_20261026_w2_v2",
+    "exact_panel": "./analysis_outputs/title_name_hypothesis_research_20261029/exact_actual_window_panel.parquet",
+    "catalog": "./local/research-data-service/research.duckdb",
+    "user_assumptions": "config/title_name_assumptions_20261027.json"
+  },
+  "fixed_rules": [
+    "Do not collect new data, rerun LLM, change protected inputs or overwrite previous results. Bulk and model fits stay on PC.",
+    "Use sealed exact-window S, labels, controls and maturity/identity screens without residualizing or standardizing S again on the priced subset.",
+    "Price pairs reuse the previous observed positive RUB CLOSE, seven-day backward-only, board, bond historical face-value/currency rules. No favorable quote selection or zero missing return.",
+    "Rebuild complete opening/closing universes only for the same eligible actual intervals used for M4; full-portfolio AT requires all opening exposure priced or documented accepted cash and reconciled weights, no covered-subportfolio renormalization.",
+    "Full-AT models use union of opening and closing positions; actual closing-month FE and log interval days. Relative log models use continuing strictly positive reported values and accepted quote pairs, FE fund x security and fund-specific interval.",
+    "All relative outcomes must use the same retained rows, X and FE; check log-value-growth beta = adjusted-log-growth beta + log-price-growth beta numerically.",
+    "Continue to label log price-adjusted value growth as an implied position-growth proxy, not observed quantities, original AT or fund alpha.",
+    "Keep current four controls; log interval days included, allowed absorbed/collinear controls recorded. No extra asset/year/outlier selection.",
+    "One bounded run of the fixed models; genuine implementation errors may be repaired with failed source snapshots. No outcome-driven specification additions."
+  ],
+  "models": [
+    {
+      "id": "E1_AT_PRICE_EXACT_FULL",
+      "outcome": "AT_PRICE",
+      "sample": "All valid exact-window target rows in complete-price full portfolios; union positions",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "family": "full_portfolio_AT"
+    },
+    {
+      "id": "E1B_DW_AT_MATCHED",
+      "outcome": "DW",
+      "sample": "Identical final rows to E1",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "family": "full_portfolio_AT"
+    },
+    {
+      "id": "E2_LOG_VALUE_GROWTH_EXACT_MATCHED",
+      "outcome": "log_value_growth",
+      "sample": "Same valid continuing positive positions with observed price pairs as E3",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "family": "relative_position_growth"
+    },
+    {
+      "id": "E3_PRICE_ADJUSTED_VALUE_GROWTH_EXACT_MATCHED",
+      "outcome": "price_adjusted_value_growth",
+      "sample": "Identical final rows to E2; log(V1/V0)-log(P1/P0)",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "family": "relative_position_growth"
+    },
+    {
+      "id": "E4_LOG_PRICE_GROWTH_DIAGNOSTIC",
+      "outcome": "log_price_growth",
+      "sample": "Identical rows/X/FE to E2/E3; diagnostic decomposition only",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "family": "price_component_diagnostic"
+    }
+  ],
+  "covariance_grid": {
+    "cluster_dimensions": [
+      [
+        "fund_id",
+        "company_id"
+      ],
+      [
+        "fund_id",
+        "company_id",
+        "month"
+      ]
+    ],
+    "FE_DoF": [
+      "full_FE_rank",
+      "nested_FE_adjusted"
+    ],
+    "cluster_multiplier": "component-specific CGM G_J/(G_J-1), common sample (N-1)/(N-k-A)",
+    "nested_rule": "Verify nesting in any selected dimension; exact remaining FE rank, constant A=1 if all FE nested. No double subtraction.",
+    "reference_df": "minimum marginal cluster count minus one",
+    "PSD": "No clipping; unavailable variances/inference null with reasons"
+  },
+  "tests": {
+    "substantive_models": [
+      "S_positive two-sided",
+      "S_negative two-sided",
+      "H1 directional IUT unchanged",
+      "H2 absolute union-null unchanged"
+    ],
+    "price_diagnostic": [
+      "S_positive two-sided",
+      "S_negative two-sided"
+    ],
+    "fixed_test_slots": 72,
+    "multiplicity": [
+      "Holm4 within substantive cell",
+      "Holm32 within each substantive model-pair family",
+      "Holm8 price diagnostic",
+      "Holm72 whole bridge sensitivity"
+    ],
+    "unavailable": "Keep all fixed slots; null raw inference, p=1 only adjustment bookkeeping"
+  },
+  "deliverables": [
+    "summary.json",
+    "coefficients.csv",
+    "tests.csv",
+    "sample_flow.csv",
+    "price_coverage.csv",
+    "checkpoint.json",
+    "PC Parquet panels and immutable code/plan snapshots"
+  ],
+  "completion_checks": [
+    "Inputs and plan hashed",
+    "No future/stale accepted quotes",
+    "Full-AT denominator coverage and exact matched rows",
+    "Same samples and S for relative outcome decomposition",
+    "Report all fixed cells and unavailable branches",
+    "SE CI p H1 H2 Holm arithmetic",
+    "Independent code/data QA and method interpretation"
+  ],
+  "interpretation": "No claim of hypothesis confirmation merely from a selected p; original full AT and alpha requirements remain distinct. This finite bridge adds a substantive missing price check, not more arbitrary clustering."
+}

@@ -1,0 +1,23 @@
+{
+  "id": "FIRST_SEALED_USEFUL_SUBSET_V1_20261104",
+  "fund_release": "v1_existing_cache",
+  "fund_returns_sha256": "f484bbce07a2d6a3be565ad30706aa6d5cab7c681ed1ee81a225c0e90f3c1aed",
+  "fund_crosswalk_sha256": "ebdd11fd60db195d9d2fd4c916e82687b7628259ce0c778acf336c18475b0b79",
+  "factors_sha256": "2f97ec9046f87eb19785840f4262f1542d9593c9de802cb7ad3b60f96c51a249",
+  "action_snapshot": "20261103T215753",
+  "known_cash_events": "public_cash_events_20261103T215753.parquet",
+  "known_cash_event_policy": "Known payout amounts lacking a verified ex-date cannot be mechanically added on payment or record dates. In this first release, exclude the affected fund series from the diagnostic branch until the events are resolved; preserve all raw observations and output explicit reasons. This does not assert no payouts for the remaining funds.",
+  "known_fund_splits": [
+    {
+      "fund_id": "214",
+      "event_date": "2026-08-14",
+      "new_units_per_old_unit": 100,
+      "source_url": "https://www.wimsavings.ru/ru/pif/chart/",
+      "source_already_backadjusted": true,
+      "apply_additional_split_adjustment": false,
+      "numeric_review": "reports/h3_fund214_action_review_20261104.json",
+      "policy": "The known split is already incorporated in source scaling; do not apply it again. Retain the original 26 disagreements with the official chart and unknown payout completeness."
+    }
+  ],
+  "basis": "Frozen H3 specification permits a separate UNIT_VALUE_KNOWN_ADJUSTMENTS diagnostic, excluding known unresolved events. This snapshot is not a claim that distributions or action histories are complete."
+}

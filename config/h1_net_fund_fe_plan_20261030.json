@@ -1,0 +1,93 @@
+{
+  "spec_id": "USER_H1_NET_FUND_FE_20261030_V1",
+  "status": "FROZEN_BEFORE_NEW_COEFFICIENTS",
+  "created_utc": "2026-10-30T16:08:29.437988+00:00",
+  "authorizing_request": "User explicitly requests raw net sentiment per actual reporting interval, changes in fund assets, fund fixed effects, end-date/whole-period controls, complete implementation and a new table in the news database.",
+  "output_root": "./analysis_outputs/h1_net_fund_fe_20261030",
+  "portfolio_source": "./analysis_outputs/portfolio_units_20261030/portfolio_units.parquet",
+  "interval_source": "./analysis_outputs/title_name_regressions_20261026_w2_v2/all_true_intervals.parquet",
+  "primary_outcome": "100*(quantity_est/previous_quantity_est-1), previous_quantity_est>0, finite nonnegative valid quantities. Complete-report known exits are -100 percent. Zero-base entries have undefined relative outcome, never infinity.",
+  "sentiment": "NetSentiment=(N_positive-N_negative)/(N_positive+N_neutral+N_negative), equal relevant deduplicated event representative weights. No residualization, no positive-negative components.",
+  "news_window": "Moscow publication date > previous actual report date d0 and <= current actual report date d1; monthly and earlier irregular intervals follow actual consecutive reports without EOM restriction.",
+  "sentiment_completeness": "Primary all expected dated canonical representatives classified validly; at least one relevant item. No news, all irrelevant and any incomplete classification remain missing with distinct states. True balanced/neutral relevant news can have net=0. Missing dates separately audited. Partial95 sensitivity may be stored, not primary regressor.",
+  "universe": "All available linked corporate portfolio instruments with nonambiguous issuer identity, actual previous/current position observations or certified complete-report absence. Use existing target_security_candidate and preserve source linkage exclusions. All available fund types; explicitly passive flags retained. Do not require full portfolio if own position endpoints observed. Do not expand holdings rows by number of articles.",
+  "primary_models": {
+    "NET_ONLY": [
+      "const",
+      "net_sentiment"
+    ],
+    "NET_CONTROLS": [
+      "const",
+      "net_sentiment",
+      "opening_weight",
+      "closing_log_NAV",
+      "closing_HHI",
+      "log_news_count_interval",
+      "log_interval_days",
+      "bond_indicator"
+    ]
+  },
+  "main_model": "NET_CONTROLS",
+  "control_definitions": {
+    "opening_weight": "Previous-report own-position share in gross assets, controls starting position.",
+    "closing_log_NAV": "Natural log of disclosed positive NAV at interval end.",
+    "closing_HHI": "All-asset HHI at actual interval end, documented/unallocated buckets included and flagged.",
+    "log_news_count_interval": "log(1+n_relevant) over the same complete exact window.",
+    "log_interval_days": "Natural log of positive calendar-day interval duration.",
+    "bond_indicator": "1=bond, 0=equity or other admitted corporate security; source class preserved."
+  },
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "not_in_main": [
+    "security effects",
+    "issuer effects",
+    "calendar or fund-interval effects",
+    "positive-negative sentiment split",
+    "residual S"
+  ],
+  "estimator": "Unweighted native linearmodels PanelOLS entity_effects=True, no time/other effects. If actual duplicate-date compatibility fails use native AbsorbingLS with only categorical fund absorbed and document, no artificial time FE.",
+  "covariance": "Two-way clustered fund/company, debiased native package settings explicitly recorded; native summary unchanged. Report separate conservative cluster-t inference df=min(number_funds,number_companies)-1, H1 positive one-sided and two-sided CI/p.",
+  "hypothesis": "H1 in this linear net model: beta_net>0; a single common slope imposes symmetric positive/negative response, not separate asymmetry test.",
+  "missing_outliers": "Complete-case on fixed declared columns; no winsorization/trimming or imputation chosen from coefficients. Deterministically remove structurally collinear terms with reason, never net signal silently. Record extreme values and singletons.",
+  "additional_fixed_outcomes": [
+    "absolute delta_quantity_est in pieces with same controls/fund FE",
+    "delta_share_pp with same controls/fund FE, allowing known zero-base entries where shares defined"
+  ],
+  "data_to_inspect": [
+    "all_candidate_panel.parquet",
+    "regression_panel.parquet",
+    "regression_panel.csv.gz",
+    "regression_rows_preview.csv",
+    "variable_dictionary.json",
+    "source_manifest.json",
+    "sample_flow.json",
+    "native TXT/HTML summaries",
+    "coefficient CSV/JSON",
+    "executable scripts and version hashes"
+  ],
+  "database_publication": {
+    "path": "./news_search/news.sqlite3",
+    "table": "research_net_sentiment_company_period_20261030",
+    "mode": "New versioned additive table plus metadata and indexes; no modifications to articles, FTS, protected databaseresources or live Gemma results. New table publication authorized explicitly by user.",
+    "unique_key": [
+      "company_id",
+      "period_start",
+      "period_end",
+      "period_kind"
+    ]
+  },
+  "execution": "Numeric work and full panel stay on research-host via SSH, scheduled single jobs with PID/checkpoint; small outputs copied to Mac. No new LLM classification.",
+  "QA": [
+    "matching exact windows and aggregation formula",
+    "unique fund-security-period rows and no article expansion",
+    "no-news vs true zero and classification states",
+    "quantity conversion and zero-base exits",
+    "fund-only fixed effects and collinearity",
+    "within estimator vs independent small LSDV",
+    "native summary numbers vs saved coefficients",
+    "two-way clustered SE reproducibility",
+    "SQLite table vs Parquet and existing source preservation",
+    "saved sample and source manifests"
+  ]
+}

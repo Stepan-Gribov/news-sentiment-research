@@ -1,0 +1,101 @@
+{
+  "spec_id": "H1_ZERO_ENTRIES_100_UPPER_P99_V1",
+  "status": "FIXED_BEFORE_NEW_COEFFICIENTS",
+  "authorizing_request": "Assign conditional +100 percent to zero-to-positive positions, explicitly trim extreme values and reestimate H1.",
+  "output_root": "./analysis_outputs/h1_entries_trim_20261102",
+  "all_candidate_panel": "./analysis_outputs/h1_net_fund_fe_20261030/regression/all_candidate_panel.parquet",
+  "old_primary_sample": "./analysis_outputs/h1_macro_no_time_20261031/samples/NET_MACRO_COMMON.parquet",
+  "macro_controls_source": "./analysis_outputs/h1_macro_no_time_20261031/macro_controls_by_interval.parquet",
+  "classification_source": "./analysis_outputs/h1_macro_no_time_20261031/fund_interval_classification.parquet",
+  "base_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_net_fund_fe_20261030.py",
+  "macro_runner_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_macro_no_time_20261031.py",
+  "news_company_source": "./analysis_outputs/h1_macro_no_time_20261031/inputs/approved_news_company_scope.parquet",
+  "expected_source_sha256": {
+    "all_candidate_panel": "174e5a467ae3f8407aa8270f43a4be0d8a996b96364399e760cbfe6dd4884526",
+    "old_primary_sample": "79d54cb284a476f0cec1bdf7b222a2c1f3f9aea09817a455693c270aa44b4e1a",
+    "macro_controls_source": "6087c3f244a5ac7ac451f6e8150dbfc55c33bb32062154ee522e6cf007b931d2",
+    "classification_source": "e2959c0a25c40985ffd6fcd99d533e3119d488e0522eaf8368530193dab15231",
+    "base_helper": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e",
+    "macro_runner_helper": "5bf42c98b0078e817df3fb4018c457250ae58dbebfe9dbff2eb675408680510a",
+    "news_company_source": "dd96627da741749e6b7bcd9fbbf181271154e88ba29d4c3218a0d9e305b63181"
+  },
+  "expected_old_primary_rows": 213612,
+  "verify_old_reference": true,
+  "baseline_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator"
+  ],
+  "macro_controls": [
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "index_unknown_policy": "retain_flagged",
+  "exclude_identified_index_funds": true,
+  "entry_value_percent": 100,
+  "entry_rule": "Finite Q0=0 and Q1>0, with explicit observed opening position or certified full-report opening absence. Other identity, target, sentiment and control eligibility remains unchanged.",
+  "unknown_absence_remains_missing": true,
+  "zero_to_zero": "Excluded; not a positive entry and no defined relative-growth outcome.",
+  "positive_base_outcome": "100*(Q1/Q0-1), finite Q0>0 and Q1>=0",
+  "exits": "Keep Q0>0,Q1=0 as -100 percent.",
+  "upper_quantile": 0.99,
+  "quantile_interpolation": "linear",
+  "cutoff_population": "Eligible old main macro-complete, nonindex, continuing positions with Q0>0 and Q1>0, before adding conditional entries.",
+  "trim_rule": "Exclude continuing-position raw percentage growth strictly greater than the common fixed P99. Keep ties, all certified conditional entries and all valid exits.",
+  "threshold_recomputed_per_model_or_group": false,
+  "lower_tail_trim": false,
+  "winsorization": false,
+  "entry_flag_as_control": false,
+  "original_outcome_and_quantities_preserved": true,
+  "primary_model": "AUGMENTED_P99",
+  "primary_comparator": "OLD_BASE_AFTER_P99",
+  "planned_models": [
+    "REFERENCE_OLD",
+    "OLD_BASE_AFTER_P99",
+    "AUGMENTED_UNTRIMMED",
+    "AUGMENTED_P99",
+    "MONTHLY_AUGMENTED_P99",
+    "FOCUS_EQUITY_P99",
+    "FOCUS_BOND_P99",
+    "FOCUS_MIXED_P99"
+  ],
+  "fund_focus_groups": [
+    "equity",
+    "bond",
+    "mixed"
+  ],
+  "holm_focus_groups": [
+    "equity",
+    "bond",
+    "mixed"
+  ],
+  "monthly_rule": "Calendar month difference=1 AND 20-40 actual days inclusive; the common full-sample cutoff is unchanged.",
+  "minimum_model_rows": 30,
+  "fund_FE": true,
+  "time_FE": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "cluster_time": false,
+  "covariance_options": {
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true,
+    "group_debias": true
+  },
+  "interpretation": "Exploratory user-requested recoding and sensitivity after earlier results. Conditional entry codes combine entry events with continuing-position percentage growth, not literal percentage returns from zero. No significance guarantee or threshold selection by p-values.",
+  "no_new_LLM": true,
+  "protected_inputs_and_old_outputs_unchanged": true
+}

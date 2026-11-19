@@ -1,0 +1,150 @@
+{
+  "spec_id": "POST_RESULT_SHARED_SIGN_DIAGNOSTIC_V1",
+  "status": "FIXED_BEFORE_NINE_POST_RESULT_DIAGNOSTIC_COEFFICIENTS",
+  "authorizing_request_date": "2026-11-03",
+  "output_root": "./analysis_outputs/h23_hypotheses_20261103/h3_trade_sign_diagnostic",
+  "baseline_summary": "./analysis_outputs/h23_hypotheses_20261103/h3_mechanism/summary.json",
+  "baseline_coefficients": "./analysis_outputs/h23_hypotheses_20261103/h3_mechanism/coefficients.csv",
+  "h3_helper": "./analysis_outputs/h23_hypotheses_20261103/h3_mechanism/code/run_h3_dar_qprice_20261103.py",
+  "h2_helper": "./analysis_outputs/h23_hypotheses_20261103/h2/code/run_h2_sentiment_lag_20261103.py",
+  "base_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_net_fund_fe_20261030.py",
+  "expected_source_sha256": {
+    "baseline_summary": "6fb5bbfe573ffc7f174a18ca49881ab4d4a606fbc774787995b0c29d0ee9a084",
+    "baseline_coefficients": "e578cc82c4eff1dc512fc4fc141ece13e8021a8ea088d5cf21f850f974ff5102",
+    "h3_helper": "142342df6573bd07e3ce74184124c2ca5569868c6fe9df2f9753358eff7959a5",
+    "h2_helper": "d8ef464e2c87ca870aa10a8d22d97bbfa1e82f59f6f69f35974327682f35e7cc",
+    "base_helper": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e"
+  },
+  "samples_frozen": {
+    "Q99_D99__M1__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M1__FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 58238,
+      "row_hash": "6d407f974904c1eadbaceaf074fbbac3717369d056f20651f255f987a0c2d3fb",
+      "horizon": 1,
+      "sha256": "bf0de92a05ad67c95e69b462f4fc2ee179beaaea51d947cf606c851ba317d44e"
+    },
+    "Q99_D99__M1__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M1__FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 37797,
+      "row_hash": "64fc859077f9d81f55a0ee78ef17d3b312db53a7ee81143357674c4dc44b15ee",
+      "horizon": 1,
+      "sha256": "ef0447ef3be1f152ce5a2131b964a3880a0b09867595d160944f8995cf9bbc61"
+    },
+    "Q99_D99__M1__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M1__FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "rows": 54710,
+      "row_hash": "9d2f0f918da03af7698d12510efac93ff29bb65d739e3ef51ca9540e39bfa467",
+      "horizon": 1,
+      "sha256": "8a16a51c5fdd4836bcd45666cd954eb8039c0c4a5fc0cb66f88c4921fa80be9f"
+    },
+    "Q99_D99__M2__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M2__FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 58031,
+      "row_hash": "9d4c6fde88108652a1d6d937ce72195126e6f640f5350d8b20f93c76d77705f6",
+      "horizon": 2,
+      "sha256": "60cff5e8550aaa17954ba85f0f8bebde9c83999b5d6ab064f73fa43d1a554741"
+    },
+    "Q99_D99__M2__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M2__FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 36639,
+      "row_hash": "092103a7f55a11d55cc4a9d506b3d884f54c4cb2497237345017190393ee37f6",
+      "horizon": 2,
+      "sha256": "8f6a83517560c2e557ac705c43589403a11caacabf407e038e119a8f5811ec13"
+    },
+    "Q99_D99__M2__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M2__FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "rows": 53948,
+      "row_hash": "a8546c75dda14b5ffaeb39065fb0d646caa2ada047f033cd8df43a4f40e0814d",
+      "horizon": 2,
+      "sha256": "d8c078264a4dabb99d618ac9e7bf715289bc8e4170352bc9ea2318378e3f49c6"
+    },
+    "Q99_D99__M3__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M3__FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 57085,
+      "row_hash": "850c7cb3670a14d3e9b8f54940d0a8d309514b3eb993c29397592fe0c6849a58",
+      "horizon": 3,
+      "sha256": "072d4a7b61cb4f73990a96115fddc9b3be538ed84ba2d358387ead9d918ab0b0"
+    },
+    "Q99_D99__M3__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M3__FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "rows": 35876,
+      "row_hash": "496b3b2ab36caf86719bb5ca528b535a764ca18a721de82c74a694b8a93a173e",
+      "horizon": 3,
+      "sha256": "75c4f14de81d0278e9650a247efac8c18b6bb020a8741fa8f8a2f49b066014d2"
+    },
+    "Q99_D99__M3__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1": {
+      "parquet": "./analysis_outputs\\h23_hypotheses_20261103\\h3_mechanism\\samples\\Q99_D99__M3__FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "rows": 53019,
+      "row_hash": "486fa8ffdb29bc528265f9db32fc14f75b38f9eba9584b6521ff4a70688ad040",
+      "horizon": 3,
+      "sha256": "c6c745ca2255903a926fa6a67caa304bb476e31c16ad9e2b24444cb10c158739"
+    }
+  },
+  "dependent": "dar_q_cash_price_pp",
+  "current_target": "align_current",
+  "lag_target": "align_lag1",
+  "required_design": [
+    "align_current",
+    "align_lag1",
+    "trade_sign"
+  ],
+  "baseline_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator"
+  ],
+  "macro_controls": [
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "fund_FE": true,
+  "time_FE": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "cluster_time": false,
+  "multiple_testing_adjustments": false,
+  "sample_policy": "Exactly the nine existing Q99_D99/core60/24/h1,h2,h3 distributed samples; same ordered row IDs, Y, original X, controls, outlier cuts, FE and covariance. Original baseline cache retained without refit.",
+  "reason": "Y=100*s*excess_return and X=s*Net share s. A negative mean cash-excess clean-price return combined with positive mean Net can yield a negative coefficient even without a covariance between news and returns. This diagnostic adds only s to remove the linear mean-direction component; algebraic issue was recorded before main DAR coefficients were viewed.",
+  "trade_sign_policy": "s must be +/-1. Required s regressor checked before ordinary controls; if exactly fund-absorbed report already_absorbed_equivalent, if collinear with sentiment targets NOT_ESTIMABLE. Never silently remove s or a target.",
+  "reporting": "All nine paired results regardless of sign/significance; raw baseline and controlled beta/SE/CI/p, s coefficient, joint and sum full covariance. Delta beta descriptive only, no independent-cross-model significance test.",
+  "interpretation": "POST-RESULT MECHANICAL DIAGNOSTIC, not a new primary model or a search for positive effects. Does not correct time-varying carry, coupons, corporate actions, risk or missing fund alpha.",
+  "source_original_outputs_unchanged": true,
+  "independent_qa_all_new_models": true,
+  "planned_models": [
+    "Q99_D99__M1__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M1__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M1__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M2__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M2__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M2__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M3__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M3__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN",
+    "Q99_D99__M3__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1__WITH_TRADE_SIGN"
+  ],
+  "baseline_models": [
+    "Q99_D99__M1__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M1__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M1__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M2__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M2__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M2__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M3__FOCUS_EQUITY_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M3__FOCUS_BOND_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1",
+    "Q99_D99__M3__FOCUS_MIXED_ROWS_60_INTERVALS_24__CURRENT_PLUS_LAG1"
+  ],
+  "frozen_utc": "2026-11-02T22:49:59.539899+00:00",
+  "runner_sha256": "f28ee5d4952c1b7094897ce47ca2bb0505f95e18b120ba795badc19f5d598dab"
+}

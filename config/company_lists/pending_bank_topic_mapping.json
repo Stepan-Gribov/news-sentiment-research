@@ -1,0 +1,11 @@
+{
+  "version": "20261006_bank_topics_01",
+  "host": "research-host",
+  "task_name": "CompanyBankTopics_20261006_01",
+  "run_root": "./news_data/company_mapping_runs/run_20261006_bank_topics_01",
+  "policy": "bank-topics-20261006-v1",
+  "previous_active_version": "20261005_01",
+  "activation": "Remote active config switched only after complete map, cleanup, compaction and preservation checks. Sync local active_company_mapping.json from new_active_config.json after completion.",
+  "progress": "progress.json",
+  "completion_marker": "SUCCESS"
+}

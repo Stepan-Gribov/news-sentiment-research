@@ -1,0 +1,41 @@
+{
+  "status": "RESEARCH_CERTIFIED_IMMUTABLE_SNAPSHOT",
+  "authority": "Completed documentary verification, accepted by control without inspecting new TR coefficients; reports/h3_arsagera_tr_review_20261104_v2_control_handoff.json",
+  "authority_review": "./analysis_outputs/h3_alpha_20261104/code/h3_arsagera_tr_review_20261104_v2_control_handoff.json",
+  "snapshot": "./analysis_outputs/h3_alpha_20261104/research_tr_evidence_arsagera/cached_monthly_documentary_snapshot_20261104_v2.json",
+  "snapshot_sha256": "5cd9a9ccf60f9e4eafd7b41bddfc140cd7a2e91377b3e45e87dc6ee0028a6983",
+  "funds": {
+    "403": {
+      "api_code": "fa",
+      "registration_number": "0363-75409054",
+      "first_month": "2022-01",
+      "last_month": "2026-09",
+      "rows": 57
+    },
+    "404": {
+      "api_code": "f4si",
+      "registration_number": "0364-75409132",
+      "first_month": "2022-01",
+      "last_month": "2026-09",
+      "rows": 57
+    },
+    "481": {
+      "api_code": "f64",
+      "registration_number": "0439-75408664",
+      "first_month": "2022-01",
+      "last_month": "2026-09",
+      "rows": 57
+    },
+    "3435": {
+      "api_code": "fo",
+      "registration_number": "2721",
+      "first_month": "2022-01",
+      "last_month": "2026-09",
+      "rows": 57
+    }
+  },
+  "printed_percent_decimals": 2,
+  "convention": "Published monthly accrued unit income and split-normalized provider return; monthly chaining, not independently verified payment-date reinvestment",
+  "spec_and_NTS_unchanged": true,
+  "inference": "Fund CR1, t(G-1), all frozen cells, max4 same-manager clusters, fragile/no stars; preserve every undefined and nonestimable status"
+}

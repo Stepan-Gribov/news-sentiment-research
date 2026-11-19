@@ -1,0 +1,26 @@
+{
+  "id": "SEALED_ACTION_AWARE_V3_20261104",
+  "fund_release": "v3_action_aware",
+  "fund_returns_sha256": "9913c147f145acb078b7bd4dc38a5146eef99e4187e64c4c950f02f07c911bb7",
+  "fund_crosswalk_sha256": "b30fd7bc3b1835fb561fffb7321af259ebd855744449a880a91c0d1cfae8bab8",
+  "fund_release_seal_sha256": "374daf0b6df2a794f5a1d08795405c922d4af6cdfdbb8fa1a47d1e6bfbc8e6a4",
+  "factors_sha256": "2f97ec9046f87eb19785840f4262f1542d9593c9de802cb7ad3b60f96c51a249",
+  "action_snapshot": "20261103T221443",
+  "known_cash_events": "public_cash_events_20261103T221443.parquet",
+  "known_cash_exclusion_scope": "source_flagged_record_payment_months",
+  "known_cash_event_policy": "Independently reconstruct the union of announced record/payment calendar months, require parity with sealed known_distribution_date_unresolved flags, and exclude these months. Do not impute an ex-date or payout return. The remaining uncertainty does not qualify the source as verified total return.",
+  "known_fund_splits": [
+    {
+      "fund_id": "214",
+      "event_date": "2026-08-14",
+      "new_units_per_old_unit": 100,
+      "source_url": "https://www.wimsavings.ru/ru/pif/chart/",
+      "source_already_backadjusted": true,
+      "apply_additional_split_adjustment": false,
+      "numeric_review": "reports/h3_fund214_action_review_20261104.json"
+    }
+  ],
+  "compare_with_run": "./analysis_outputs/h3_alpha_20261104/outputs/run_bf23bf409aff708f",
+  "NTS_and_spec_unchanged": true,
+  "basis": "UNIT_VALUE_KNOWN_ADJUSTMENTS only unless explicit complete total-return verification flags become true; no extension of diagnostic sensitivities beyond the frozen specification."
+}

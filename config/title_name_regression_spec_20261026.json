@@ -1,0 +1,539 @@
+{
+  "spec_id": "article1-title-name-H1-H3-20261026-v1",
+  "freeze_date_moscow": "2026-10-26",
+  "owner": "research assistant / R1",
+  "status": "FROZEN_RULES_WITH_INPUT_GATES",
+  "ready_for_implementation": false,
+  "status_meaning": "Rules below are fixed before viewing regression coefficients. News construction and panel preparation can proceed. Publication-baseline AT and H3 must pass the explicit input gates; a missing gate must not trigger an unlabelled estimator substitution.",
+  "regressions_estimated_or_inspected_by_spec_author": false,
+  "evidence_level": "First empirical package is preliminary; human validation of this Gemma title/name sample is not established.",
+  "authority": {
+    "accepted_hypotheses": "H1 directional rebalancing; H2 unequal absolute positive/negative responses without a prescribed ordering; H3 positive prediction of future fund alpha by news-aligned rebalancing. Security returns are supplementary.",
+    "article_path": "./local/Library/CloudStorage/analyst@example.org/My Drive/3. Аспирантура/Статья 1/Revisions/2026-09-12 LLM sentiment methodology and notation/Article 1 - LLM sentiment methodology and notation - 2026-09-12.docx",
+    "article_sha256": "aa88440dd44902bbc5f01b1b9c88aa6e05ebfb3783f6b5d87d23c0c5d1190570",
+    "article_local_mtime": "2026-10-08",
+    "article_read_projection": "Text with insertions included and deletions excluded, sections 3.1-3.3; not a claim that every tracked change was accepted by the author.",
+    "article_cloud_revision_check": "Drive connector HTTP transport failed on 2026-10-26; local synchronized version was read.",
+    "current_override": "26 October delegated task explicitly selects completed Gemma title/name/no-GAZ input. This overrides the article's old Qwen classifier and broad contextual candidate pool for this empirical package only.",
+    "technical_assumptions": "Thresholds, calendar-EOM baseline, duplicate rules, factor window and controls availability rules below are R1 pre-estimation operational choices, not previously approved empirical findings. They are not selected using p-values.",
+    "change_control": "Keep v1 immutable after code assistant begins estimation. Record any correction in a new numbered specification, the reason, and whether any coefficient had already been seen. No changes to the article or RESEARCH_NOTES.md are made by R1."
+  },
+  "resources": {
+    "host": "research-host",
+    "catalog": "./local/research-data-service/research.duckdb",
+    "catalog_access": "read_only=True; meta.sources checked 2026-10-26",
+    "manifest": "./databaseresources/manifest.json",
+    "immutable_root": "./databaseresources",
+    "article_storage": "./databaseresources/news/articles.parquet",
+    "title_mapping": "./databaseresources/mapping/title-name-20261008-no-gaz/article_company_map_title_name.parquet",
+    "title_registry": "./databaseresources/mapping/title-name-20261008-no-gaz/company_registry.parquet",
+    "holdings_root": "./databaseresources/funds/mac-20261008",
+    "quote_root": "./databaseresources/market/moex_quotes_2008_2026",
+    "llm_run": "./news_data/llm_runs/gemma_title_name_no_gaz_20261008_01",
+    "llm_database": "./news_data/llm_runs/gemma_title_name_no_gaz_20261008_01/results.sqlite3",
+    "output_root": "./analysis_outputs/title_name_regressions_20261026",
+    "local_summary_root": "outputs/title_name_regressions_20261026",
+    "write_policy": "Only new derived outputs outside immutable_root. Read SQLite in mode=ro with query_only and a consistent transaction. Do not refresh/import the old LLM snapshot, rerun classification, mutate services, or edit shared research notes.",
+    "prohibited_news_inputs": [
+      "mapping.article_company_active",
+      "mapping.article_company_compact",
+      "September Qwen classifications",
+      "llm.sentiment_results_snapshot_20261008"
+    ]
+  },
+  "observed_input_audit": {
+    "checked_on": "2026-10-26",
+    "mapping_pairs": 341799,
+    "mapping_articles": 308470,
+    "mapping_companies": 610,
+    "mapping_pairs_missing_date": 663,
+    "excluded_company_id": "c_90995d77be411a67f2ef2b72",
+    "excluded_company_name": "ГАЗ",
+    "input_sha256": "6acfdfebbc536e33111c9344b94cbc4653ece7decd14184a9f36580dd60b2dc1",
+    "prompt_version": "target-financial-sentiment-ru-v1-chat",
+    "prompt_sha256": "8bc333a1c2437aa3d9bf2ac1536a06730adbf45878d94b887c94a786d514c3e2",
+    "model_file": "gemma-4-E4B_q4_0-it.gguf",
+    "completion_marker": "COMPLETE_WITH_ERRORS",
+    "progress_completed_at_utc": "2026-10-16T05:27:25.278795+00:00",
+    "sqlite_rows": 341799,
+    "sqlite_distinct_pair_ids": 341799,
+    "valid_rows": 333213,
+    "invalid_rows": 8586,
+    "empty_archived_text": 7056,
+    "other_invalid": 1530,
+    "valid_irrelevant": 31259,
+    "valid_relevant_positive": 157269,
+    "valid_relevant_neutral": 62703,
+    "valid_relevant_negative": 81982,
+    "counts_scope": "All archived dates, before research-period, event-duplicate, date, security-link, or holdings selection; these are not regression sample sizes.",
+    "holdings_report_count": 43678,
+    "holdings_dates": [
+      "2008-09-30",
+      "2026-05-29"
+    ],
+    "reports_exact_calendar_eom": 28805,
+    "reports_one_to_three_days_before_eom": 14873,
+    "fund_return_table_dates": [
+      "2024-12-31",
+      "2025-11-30"
+    ],
+    "fund_return_table_rows": 4974,
+    "fund_return_table_funds": 507,
+    "fund_return_warning": "market.fund_returns is a short historical append with unit values and precomputed excess_return. It cannot by itself supply 36 prior monthly observations or establish current alpha."
+  },
+  "notation": {
+    "a": "archived article identifier",
+    "c": "canonical target-company identifier",
+    "i": "security identifier (verified ISIN or uniquely resolved registration code)",
+    "f": "fund identifier, cross-checked against fund registration number",
+    "m": "calendar reporting month in Europe/Moscow",
+    "d0_d1": "actual opening and closing holdings dates; never interpolated",
+    "N": "number of deduplicated relevant news observations",
+    "Tone": "mean signed label among relevant observations",
+    "S": "company-month residual Tone divided by its pooled residual standard deviation",
+    "A": "total gross asset value in RUB, consistent across report endpoints",
+    "w": "position market value divided by A, in fractions, not percentages",
+    "R_i": "security total return in RUB over (d0,d1]",
+    "R_BH": "whole-opening-portfolio buy-and-hold return under the declared payout and cash convention",
+    "AT": "closing weight minus the passive counterfactual weight",
+    "NTS": "signed news alignment of observed AT among positions with defined nonzero S",
+    "Alpha_h": "average monthly subsequent factor-adjusted fund return over h months, using betas estimated only from the past"
+  },
+  "time_and_scope": {
+    "timezone": "Europe/Moscow with historical DST rules",
+    "naive_archive_timestamp_policy": "For the first package, interpret stored naive news timestamps as UTC and convert to Europe/Moscow, consistent with the ingestion code's utc=True/tz_convert(None) convention. Preserve the original value and flag this assumption until the SQLite-to-Parquet provenance is confirmed. Do not add a fixed three-hour offset for all historical dates.",
+    "source_confirmed_date_only": "Use the documented source-local calendar date directly; do not invent an intraday timestamp. The day is included under the same end-of-day holdings convention.",
+    "inferred_dates": "Exclude dates explicitly marked inferred/ObjectId/URL-only in any available provenance from the main baseline; report them separately. A missing provenance field is unknown, not proof of a verified date; the first package must disclose unknown-provenance counts.",
+    "missing_dates": "Exclude from timed aggregation; keep missing-date counts separately. Never fill dates from row order or retrieval time.",
+    "signal_history_start": "2012-05-01",
+    "baseline_closing_month_start": "2018-01",
+    "baseline_closing_month_end_cap": "2026-05",
+    "baseline_interval": "Only consecutive actual disclosures at two consecutive calendar month ends: d0=last_day(m-1), d1=last_day(m). Both must be genuine report dates. Use the latest eligible month not exceeding the cap; never move 29 May to 31 May.",
+    "baseline_reason": "This restriction makes the accepted company-month S and the actual holdings news window identical. Many disclosures are 1-3 days before EOM; their exclusion is reported rather than silently extending their information window.",
+    "news_window": "local_date(published_at)>d0 AND local_date(published_at)<=d1; treat the report date as an end-of-day valuation convention",
+    "supplementary_intervals": "Prepare all consecutive exact intervals and their actual news-window counts for audit. A separate non-EOM monthly analysis must recompute Tone/S for each unique company/date-window, with closing-month FE; do not attach calendar-month S to a shorter window or pool these coefficients as the baseline. Quarterly intervals require their own aggregation and are not part of this first package.",
+    "future_window": "Starts strictly after d1; horizon h=1,2,3 complete calendar months. No partial final horizon or overlapping news/return window.",
+    "date_sensitivity": [
+      "Exclude articles whose local date falls on either holdings endpoint",
+      "Recompute signals using unconverted stored calendar dates to quantify the UTC-convention sensitivity; label this as a diagnostic"
+    ],
+    "fund_scope": "All PIF legal types may enter H1/H2 if exact reports are complete and active-management status is verified. Exclude explicitly index/passive mandates. Unknown status can enter only the labelled provisional universe; exchange-traded legal form alone does not establish passive management.",
+    "security_scope": "Corporate equities and corporate bonds of eligible Russian companies with verified issuer and security links. Do not infer Russian issuer residence solely from the ISIN prefix. Foreign assets, government debt, funds-of-funds and all other opening assets still contribute to R_BH and coverage when present.",
+    "survival": "Use historical funds and securities, including liquidated funds, complete exits and delistings. No current-is_traded or surviving-fund filter."
+  },
+  "news_selection": {
+    "join_keys": [
+      "article_id",
+      "company_id"
+    ],
+    "required_scope": {
+      "match_signal": "name",
+      "match_scope": "title"
+    },
+    "allowed_sources": [
+      "interfax",
+      "rbc",
+      "prime",
+      "kommersant"
+    ],
+    "join_validation": "Verify exact pair-key set equality between title mapping, frozen LLM input and results; verify model/prompt/input manifests. Reject unknown pair IDs, contradictory duplicates or a non-title mapping. Count input and error statuses before exclusions.",
+    "pair_states": [
+      "relevant_positive",
+      "relevant_neutral",
+      "relevant_negative",
+      "irrelevant",
+      "input_error",
+      "classification_error",
+      "unprocessed"
+    ],
+    "validity": "valid=1 AND schema-consistent relevance/sentiment. relevant requires positive/neutral/negative; irrelevant requires null sentiment. valid=0 overrides any residual label. Absent results are unprocessed.",
+    "event_duplicates": {
+      "normalization": "For duplicate detection only: Unicode NFKC, lowercase, yo-to-ye, whitespace collapse, word tokenization; preserve numbers. Use the complete archived text, not truncated model input. Keep source text unchanged.",
+      "baseline_algorithm": "Within each company, sort by publication timestamp then article_id. Form deterministic representative-based clusters with a maximum 72-hour distance from the earliest representative. Join a later item if normalized full-text hashes match OR if both texts have at least 50 tokens, normalized-title token Jaccard is >=0.8 and full-text word-5-shingle Jaccard is >=0.9 against the representative. If several clusters qualify, choose highest text Jaccard then earliest representative then article_id. Do not use transitive chaining.",
+      "representative": "Earliest record regardless of sentiment or validity; use its date, source and classification. An invalid earliest record remains an invalid event; do not substitute a later successful article into the past.",
+      "short_texts": "Under 50 tokens, collapse only exact normalized full-text duplicates within 72 hours.",
+      "interpretation": "Conservative repeat-report screen, not a validated semantic event classifier. Materially updated stories remain distinct. Multi-company stories may contribute once to each company.",
+      "sensitivity": "Re-estimate with only unique article-company keys and no cross-article event collapsing; compare on a common holdings sample as well as native samples.",
+      "audit": "Save cluster_id, representative article_id, members, similarity, dates, source, and conflicting labels. No price or fund outcome enters clustering."
+    },
+    "company_month_states": [
+      "observed_relevant",
+      "all_classified_irrelevant",
+      "no_title_candidate",
+      "classification_incomplete",
+      "missing_date_unallocated"
+    ],
+    "classification_completeness_baseline": 1.0,
+    "completeness_definition": "A company-month is usable only when every dated canonical event candidate in that month has a valid relevant or irrelevant result. If any is error/unprocessed, Tone/S are missing with classification_incomplete. Missing-date pairs are separately unallocated; their absence must not be counted as evidence of zero news.",
+    "counts": "Npos,Nneutral,Nneg count usable relevant representatives. N=Npos+Nneutral+Nneg. Ncandidate,Nirrelevant,Nerror,Nunprocessed and missing-date counts are separate.",
+    "tone_formula": "Tone=(Npos-Nneg)/N if N>0 and classification completeness passes; otherwise missing",
+    "source_shares": "For each source, relevant representative count/N; shares sum to one. Interfax is the omitted baseline source.",
+    "no_news_rule": "Never equate no relevant news, all irrelevant, incomplete classification or no title candidate with observed neutral sentiment. The baseline omits undefined Tone; an optional full panel needs separate state indicators and cannot fill unknown/error states with zero.",
+    "completeness_sensitivity": "Use valid representatives when valid/(all dated representatives)>=0.95, retain error share as a control, and label signal as partial-coverage; no reclassification run."
+  },
+  "issuer_security_link": {
+    "source_tables": [
+      "refs.company_securities",
+      "refs.securities",
+      "refs.security_name_mapping",
+      "refs.moex_mapping"
+    ],
+    "rule": "Require a unique security registration code-to-ISIN link and a unique canonical legal issuer per ISIN/date. Match direct verified ISIN first, then uniquely verified registration code. Names only generate a review queue; no new fuzzy match in the regression join.",
+    "conflicts": "If one ISIN maps to multiple unrelated companies or an identifier conversion has no dated corporate-action link, exclude the affected security-interval from target regressions and keep its asset value in portfolio coverage. Never pick the first row, concatenate labels, or duplicate a holding across companies.",
+    "aliases": "Merge documented aliases of the same legal issuer, preserving validity dates when known. A common brand or parent-subsidiary relation alone does not merge issuers.",
+    "history_gate": "Check instrument listing/issue/maturity dates and any available alias validity. Missing historical validity is flagged; unresolved changes of legal entity are excluded.",
+    "multiple_securities": "The issuer's S is shared by its distinct securities; each fund-security-interval occurs once. Never expand holdings rows by the number of articles."
+  },
+  "holdings_and_weights": {
+    "tables": [
+      "funds.reports",
+      "funds.holdings",
+      "funds.category_totals",
+      "funds.liabilities"
+    ],
+    "report_key": [
+      "fund_id",
+      "report_date"
+    ],
+    "duplicate_reports": "Collapse identical complete statements. If values differ, use only an explicitly identified later correction; absent correction provenance, exclude that fund-date. Do not choose highest AUM or latest filename arbitrarily.",
+    "report_quality": "Require two complete non-interpolated statements. Sum economically distinct asset leaves, never both a category total and its children. Reconcile total assets and obligations to disclosed NAV.",
+    "units": "amount_thousand_rub and total_assets_thousand_rub multiply by 1000; net_asset_value_rub is already RUB; share_pct divide by 100.",
+    "weight": "w=position_value_rub/(1000*total_assets_thousand_rub). Use disclosed share_pct only as a consistency check, not a mixed denominator.",
+    "reconciliation_tolerance_fraction": 0.001,
+    "rounding_gap_max_fraction": 0.0001,
+    "rounding_rule": "An unallocated discrepancy <=0.0001 of A, proven to be arithmetic rounding, may be distributed pro rata over identified leaves. Larger unidentified residuals remain an unpriced asset bucket. Report the discrepancy and adjustment.",
+    "panel_universe": "Union of positions at d0 and d1, after aggregating duplicate lots of the same instrument within each statement. A confirmed absence in a complete statement is zero; an unknown/partial statement is missing. Do not create positions never held at either endpoint.",
+    "entry_exit": "Entry w0=0; exit w1=0. Entry does not require an own-security return for the zero opening numerator, but other regression controls may still be missing. Retain both entry/exit flags.",
+    "corporate_actions": "Apply verified conversion ratios and security-successor links. Scheduled maturities, redemptions, conversions, mergers, write-offs and split-related apparent exits must not be classified as discretionary trades; exclude affected target intervals unless the counterfactual is explicitly reconciled. Their proceeds remain in the whole-portfolio valuation.",
+    "negative_assets": "Baseline requires nonnegative asset weights. Derivative notionals/short exposure and unpriced derivatives cannot be valued as ordinary positive holdings; exclude an interval unless a validated separate valuation covers it."
+  },
+  "returns_and_AT": {
+    "baseline_formula": "R_BH=sum_j(w0_j*R_total_j); w_BH_i=w0_i*(1+R_total_i)/(1+R_BH); AT_i=w1_i-w_BH_i",
+    "R_BH_scope": "Every opening asset, including assets with no news and excluded target issuers. The denominator is not a news-covered subportfolio and is not the realised fund return.",
+    "payout_convention": "Security total-return wealth indices with reinvested payouts; RUB conversion uses contemporaneous verified FX. Consequently AT is an allocation deviation from this reinvestment counterfactual, not observed share-quantity trading. Flag payout intervals and report a sensitivity excluding target dividend/coupon intervals.",
+    "equities": "Verified total-return series, or adjusted price plus verified dividends, splits and other distributions. Missing dividend records do not mean no dividend. Raw CLOSE is a price return only.",
+    "bonds": "Dirty value includes nominal amount and accrued interest, and total return includes actual coupon/amortisation/redemption cash flows. YIELDCLOSE is not a realised holding-period return; quoted percentages are not RUB prices.",
+    "cash_policy": "RUB cash earns the official CBR RUONIA Index return over the exact interval, under a stated money-market opportunity-return convention. Define close-of-date index I_close(d)=official Index(d+1 calendar day), because the official dated index accumulates preceding-day interest. Use I_close(d1)/I_close(d0)-1. Do not treat this convention as the account's observed yield. Foreign cash requires verified FX and currency-specific cash yield; otherwise unpriced.",
+    "baseline_direct_plus_cash_coverage_min": 0.95,
+    "baseline_class_proxy_share_max": 0.05,
+    "required_priced_opening_share": 1.0,
+    "coverage_definition": "Opening asset value with direct valid instrument returns plus separately identified RUB cash convention, divided by total opening assets. Class-proxied share and unpriced residual are reported separately. A high coverage ratio alone never licenses assigning zero to the remainder.",
+    "allowed_class_proxies": {
+      "verified_RUB_domestic_equity": "MCFTR total-return index",
+      "verified_RUB_OFZ": "RGBITR total-return index",
+      "verified_RUB_deposit_without_contract_rate": "RUONIA Index"
+    },
+    "proxy_restrictions": "Only for the non-target remainder with known asset class/currency and combined weight <=0.05. No generic proxy for corporate debt of unknown credit risk, foreign equity, unlisted equity, real estate, fund units, receivables or unidentified assets. A target opening position needs its own valid return even if the residual could be class-proxied.",
+    "unpriced_policy": "Any economically nonzero unpriced opening residual makes baseline R_BH and AT missing. Do not renormalise covered holdings to sum to one; do not plug realised fund return into R_BH.",
+    "quote_alignment": "Use the last valid close at or before each actual endpoint, at most 3 MOEX trading days old; never look forward. Require a documented price/total-return source and board. Use one board for both endpoints: provider-designated main board if both endpoints exist, otherwise the board with the highest trading value in the previous calendar month, ties by BOARDID. Board fallback is flagged.",
+    "suspensions": "Do not carry stale prices across a long closure or suspension as fresh returns. March 2022 and other intervals failing the same age rule are missing, with exclusion counts.",
+    "coverage_sensitivities": [
+      "direct_plus_cash>=1.0, no class proxies",
+      "direct_plus_cash>=0.90, class proxies<=0.10, still zero unpriced remainder"
+    ],
+    "numerical_checks": [
+      "All returns finite and >=-1",
+      "1+R_BH>0",
+      "w0,w1 in [0,1] up to declared rounding",
+      "abs(AT)<=1 up to rounding",
+      "Zero-trade synthetic reinvested portfolio produces AT=0",
+      "Entries and exits have correct signs in synthetic examples"
+    ],
+    "exploratory_measures": {
+      "DW": "w1-w0; available from exact reports, explicitly valuation-contaminated; never label it active rebalancing or a completed H1 test.",
+      "AT_PRICE": "Same AT formula but with split-adjusted price returns for every security, known RUB cash fixed at par as an explicit price-only convention, and all opening positions covered. Require verified absence of splits/identifier changes or their adjustments. Baseline price-only variant allows no class proxies or unidentified residuals. It omits dividend/coupon return and must be labelled exploratory price-adjusted weight change, not total-return AT."
+    },
+    "economic_units": "AT is stored in fractions. A coefficient and its confidence interval are multiplied by 10000 to report basis points of portfolio weight per residual SD."
+  },
+  "signal_model": {
+    "unit": [
+      "company_id",
+      "calendar_month"
+    ],
+    "construction_sample": "All usable title-sample company-months in the research period up to the last baseline month; construct once before joining to funds. No fund-count weights or forward outcomes.",
+    "formula": "Tone_cm=company_FE+month_FE+phi*Tone_c,m-1+bN*log(1+N_cm)+delta*source_shares_cm+gamma*C_c,m-1+e_cm",
+    "lag_tone": "Exact previous calendar month. Main S requires defined current and lagged Tone. No forward/back filling and no zero-filled no-news lag. Report loss from this rule.",
+    "candidate_lag_company_controls": [
+      "lag_company_price_return",
+      "lag_company_log_volatility",
+      "lag_log_company_market_cap"
+    ],
+    "company_control_security": "Use one uniquely linked ordinary/preferred listed equity per company, selected by greatest RUB trading value in the previous month, ties by ISIN. Compute return/volatility from that same security. Do not substitute a corporate-bond yield or extrapolate historical company market cap from current shares outstanding.",
+    "availability_rule": "Before fitting any signal or holdings regression, retain a candidate company-control column if it is observed for >=90% of otherwise eligible company-months. Freeze and report the selected list and coverage. Complete-case rows on the retained columns; columns below 90% are omitted with a recorded reason, not replaced by zero. Always also produce S_no_company_controls with the other terms unchanged.",
+    "minimum_company_usable_months": 6,
+    "minimum_companies_per_month": 10,
+    "minimum_rule": "Iteratively remove groups below these predeclared minima, then absorb company/month FE and remove any remaining singleton groups. No further count thresholds selected from coefficients.",
+    "fit": "Unweighted OLS with absorbed two-way FE; report included columns, numerical rank, collinear exclusions and connected components. Zero-variance/collinear nuisance columns may be removed deterministically in listed order; never remove S terms from the outcome model to obtain a coefficient.",
+    "standardisation": "sigma_e=sample SD of e (ddof=1) over the unique final company-month signal-construction sample, not over fund-expanded rows. S=e/sigma_e; require sigma_e>0.",
+    "components": {
+      "Splus": "max(S,0)",
+      "Sminus": "max(-S,0)"
+    },
+    "interpretation": "Full-sample residualisation is a retrospective descriptive transformation and uses future months in nuisance estimation. It is not an exogenous shock or a real-time trading rule. Future-return outcomes never enter it. Predictive trading-skill claims additionally require the past-only sensitivity below.",
+    "past_only_sensitivity": "For each m, fit nuisance slopes and company intercepts on months strictly before m using the same column set and at least 24 prior calendar months and 6 usable observations per company. Estimate the current common month intercept as the equal-weight mean of current residuals after past predictions (>=10 companies); divide by prior training residual SD only. New/insufficient-history companies are missing. Recompute NTS, then H3; no future fund return enters this transformation."
+  },
+  "controls": {
+    "timing_H12": "All lagged controls are known by d0. The exact previous calendar month is used; w0,NAV0,HHI0 refer to opening holdings. Do not use current-month security return/flow as a baseline control.",
+    "definitions": {
+      "opening_weight": "w0_i",
+      "lag_security_total_return": "Total return over the calendar month immediately before (d0,d1]",
+      "lag_security_log_volatility": "log(sample SD of daily total returns in the previous month); at least 15 valid daily returns and SD>0",
+      "lag_security_log_illiquidity": "log(1+1000000*mean(abs(daily_total_return)/daily_trading_value_RUB)); use days with positive value and require >=15 such days",
+      "lag_log_security_size": "log(previous-month-end RUB market capitalisation of the equity class, or outstanding RUB dirty market value of the bond issue); historical quantities required",
+      "lag_log_news_count": "log(1+N_c,m-1), only where classification state is observed; valid all-irrelevant/no-title-candidate states have count 0 with their states retained",
+      "opening_log_NAV": "log(disclosed net_asset_value_rub at d0), require NAV>0",
+      "lag_net_flow": "(NAV_d0-NAV_prev*(1+fund_total_return_prev_to_d0)+cash_distributions_to_unitholders)/NAV_prev; require actual endpoint NAV, distribution-adjusted unit return and verified aggregate cash distributions (zero only for a verified non-distributing fund/interval). Exclude fund mergers/share conversions",
+      "opening_HHI": "sum of squared opening gross-asset weights across distinct securities and currency cash buckets; include other documented residual buckets, flagged; do not compute only over news-covered positions",
+      "current_log_NAV": "log(NAV at d1)",
+      "current_net_flow": "Same flow formula over (d0,d1], admissible only as an H3 control measured by d1",
+      "current_HHI": "HHI at d1 by the same all-asset rule",
+      "past_alpha": "Training-window intercept from the fund factor model, estimated by d1",
+      "lag_company_price_return": "Previous-month split-adjusted price return of the company-control security; explicitly a price-return control, not AT total return",
+      "lag_company_log_volatility": "log(SD of that security's daily split-adjusted price returns), >=15 observations and positive SD",
+      "lag_log_company_market_cap": "log(sum of historical market capitalisation across verified equity classes at previous month end); otherwise missing"
+    },
+    "baseline_H12": [
+      "opening_weight",
+      "lag_security_total_return",
+      "lag_security_log_volatility",
+      "lag_security_log_illiquidity",
+      "lag_log_security_size",
+      "lag_log_news_count",
+      "opening_log_NAV",
+      "lag_net_flow",
+      "opening_HHI"
+    ],
+    "reduced_preliminary_H12": [
+      "opening_weight",
+      "lag_log_news_count",
+      "opening_log_NAV",
+      "opening_HHI"
+    ],
+    "baseline_H3": [
+      "current_log_NAV",
+      "current_net_flow",
+      "current_HHI",
+      "past_alpha"
+    ],
+    "missing_policy": "Baseline is complete-case on its fixed control list. If a whole required field is unavailable, report its gate and run the explicitly reduced exploratory column; do not silently alter the baseline list. No mean imputation, missing-as-zero or future interpolation.",
+    "outliers": "No baseline winsorisation of AT, S, NTS, alpha or controls. Validate impossible units/values against source and log exclusions. Report 1st/99th percentile winsorisation of continuous controls only as a labelled sensitivity, cutpoints computed on unique natural-unit rows before fund/security expansion.",
+    "macro": "Calendar-month FE absorb common macro levels such as the key rate, CPI, exchange rates, oil prices and market returns. Do not include their levels simultaneously with full month FE. Macro-interaction or no-month-FE models are outside this first frozen baseline."
+  },
+  "H12": {
+    "row_key": [
+      "fund_id",
+      "security_id",
+      "d0",
+      "d1"
+    ],
+    "formula": "AT_fim=beta_plus*Splus_cm+beta_minus*Sminus_cm+fund_security_FE+reporting_month_FE+controls+error_fim",
+    "estimator": "Unweighted OLS, absorbed two-way FE, iteratively remove singleton FE groups, require within variation and full rank for both Splus and Sminus",
+    "primary_covariance": "Two-way cluster-robust by fund_id and company_id (Cameron-Gelbach-Miller inclusion-exclusion). Distinct securities of one company share the company cluster.",
+    "H1": "Expected beta_plus>0 and beta_minus<0. Report each coefficient, two-sided 95% CI and directional one-sided p; joint directional intersection-union p=max(p_plus_positive,p_minus_negative).",
+    "H2": "Report D=abs(beta_plus)-abs(beta_minus). Always report Wald p_sum for beta_plus+beta_minus=0 and p_diff for beta_plus-beta_minus=0. A general conservative test of equal absolute effects has p_abs=max(p_sum,p_diff), because its null is the union of those two linear restrictions. With expected opposite signs, p_sum is the familiar linear asymmetry test; do not use that restriction alone when signs are unexpected.",
+    "specifications": [
+      "H12_BASELINE: total-return AT, main S, full controls",
+      "H12_REDUCED: total-return AT, main S, reduced controls, explicitly preliminary",
+      "EXPLORATORY_DW: unadjusted weight change, main S, reduced controls",
+      "EXPLORATORY_AT_PRICE: price-only AT if fully price-covered, main S, reduced controls"
+    ],
+    "asset_class": "Pooled primary estimate with separate equity and corporate-bond coefficients reported as fixed sensitivities. Do not claim the same information mechanism across debt and equity without showing them.",
+    "effect_scale": "beta*10000 and CI*10000 bps per one residual SD. No conversion by 100 and no multiplication of S by 100."
+  },
+  "NTS": {
+    "eligible_set": "Union-held target securities with baseline AT, defined S and S!=0. S is issuer-specific and repeated only across distinct instruments, not across news articles.",
+    "formula": "NTS=sum_i(AT_i*S_c(i))/sum_i(abs(AT_i)*abs(S_c(i)))",
+    "zero_denominator": "Missing, with reason zero_signal_or_zero_rebalancing; never set to 0. Numeric denominator<=1e-12 is treated as zero and its count reported.",
+    "minimum_target_companies": 2,
+    "baseline_active_trade_coverage_min": 0.5,
+    "coverage_formula": "sum(abs(AT)) over NTS-eligible securities / sum(abs(AT)) over all corporate equities and corporate bonds with baseline AT in the same fund-interval; require denominator>0",
+    "scope": "NTS measures alignment within the observed title-covered corporate universe, not how all assets follow all news. Report covered opening and closing asset shares, trade-coverage share, numbers of securities and companies, N, and gross absolute AT.",
+    "eligibility": "Require whole-portfolio return gate, >=2 distinct eligible companies and active-trade coverage>=0.5. Record zero/one-company cases and low-coverage cases without treating them as neutral.",
+    "sensitivities": [
+      ">=1 company and trade coverage>=0, positive denominator only",
+      ">=3 companies and trade coverage>=0.75",
+      "Unnormalised sum(AT*S)",
+      "sum(abs(AT)*1(AT*S>0))/sum(abs(AT)) on the same eligible set"
+    ]
+  },
+  "fund_alpha": {
+    "status": "DATA_GATED; current registered short fund-return table is insufficient",
+    "eligible_funds": "Active equity, mixed and bond mandates with verified unit values and distributions; opening holdings have >=90% in verified RUB-denominated domestic traded equity/debt and RUB cash. Other mandates require a separately frozen risk model and are outside baseline H3.",
+    "return_source": "Distribution- and split-adjusted fund NAV per unit (not total NAV growth); net of fund-level expenses embedded in the unit value, before investor-specific subscription/redemption charges. Require a dated fund_id-to-unit-price-series crosswalk.",
+    "frequency": "Monthly simple total returns, exact calendar month ends. Last available unit valuation at or before month end allowed only if <=3 relevant trading days old; keep actual valuation dates and do not infer a missing monthly value from an interpolated holdings table.",
+    "risk_free": "Official CBR RUONIA close-of-date Index ratio I_close(end)/I_close(start)-1, using I_close(d)=official Index(d+1 calendar day) consistently with the cash policy. Do not divide an annual RUONIA rate by 12 or hard-code ACT/365 across leap years.",
+    "factor_model": "fund_return_m-rf_m=a_f,t+bE_f,t*(MCFTR_return_m-rf_m)+bB_f,t*(RGBITR_return_m-rf_m)+u_fm",
+    "factor_rationale": "A parsimonious, predeclared RUB equity-and-bond benchmark for the mixed PIF universe. It controls two broad systematic exposures; it is not a claim that all relevant risk is captured. Credit/style omissions are checked through benchmark sensitivities before a skill interpretation.",
+    "training_window_months": 60,
+    "minimum_complete_past_months": 36,
+    "minimum_complete_last_12_months": 9,
+    "training_window": "Calendar months t-59,...,t, all ending at or before d1; fit OLS with intercept, only complete fund/factor/RF observations. No post-d1 observation, centered window or future backfill. Require full rank and condition number of standardised nonconstant factor design<=10000.",
+    "future_alpha_formula": "For k=1,...,h: abnormal_fk=fund_return_t+k-rf_t+k-bE_f,t*(MCFTR_return_t+k-rf_t+k)-bB_f,t*(RGBITR_return_t+k-rf_t+k). Alpha_h=mean_k(abnormal_fk).",
+    "intercept_rule": "Do not subtract the training intercept from future abnormal returns: it is past alpha, a separate H3 control. Subtracting it would instead measure a change relative to past skill. Betas remain fixed across the h-month future window.",
+    "horizons": [
+      1,
+      2,
+      3
+    ],
+    "completeness": "Require every future monthly return and factor observation for the selected h. No zero fill, annualisation, or h-month time-series regression with only h observations.",
+    "interpretation": "Alpha_h is realised subsequent monthly factor-adjusted performance under a pre-estimated risk model; it is neither a simple market excess return nor a precisely estimated permanent manager-skill parameter.",
+    "sensitivities": [
+      "36-month training window, minimum24 and last12>=9",
+      "MCFTRR instead of MCFTR for resident-net dividend convention, same history requirements",
+      "Add a verified corporate-bond total-return-minus-RGBITR credit factor, same training requirements"
+    ],
+    "missing_factor_or_history": "Return H3_NOT_ESTIMATED with exact missing inputs and coverage; do not substitute market.fund_returns.excess_return or DAR and call it alpha."
+  },
+  "H3": {
+    "row_key": [
+      "fund_id",
+      "closing_month",
+      "horizon_months"
+    ],
+    "formula": "Alpha_h=theta_h*NTS+fund_FE+closing_month_FE+baseline_H3_controls+error",
+    "estimator": "Separate unweighted absorbed-FE OLS for h=1,2,3, with the same NTS definition and complete-case controls",
+    "primary_covariance": "Two-way cluster by fund_id and forecast-origin calendar quarter (not individual article/security). Fund clusters cover serial dependence and overlapping horizons within funds; quarter clusters add contemporaneous dependence across funds.",
+    "overlap_sensitivity": "Re-estimate on non-overlapping forecast origins separately for each h phase ((12*year+month-1) mod h), report every phase. Also report covariance clustered by fund and origin month. Quarter clustering is an approximation to common serial shocks, so sensitivity matters.",
+    "test": "theta_h>0; report two-sided 95% CIs, one-sided p, and Holm-adjusted directional p across the three horizons. All three estimates must be shown, not only the best horizon.",
+    "effect_scale": "theta_h*10000 is bps of average monthly alpha per +1 unit NTS. Also show 2*theta_h*10000 for NTS -1 to +1 and an observed IQR change with the IQR reported.",
+    "claim_limit": "Positive association supports the informed-trading interpretation conditionally on measurement, risk adjustment and controls. It does not establish a causal news effect or a tradable strategy using publicly released holdings. Report publication lags as unknown unless measured."
+  },
+  "supplementary_DAR": {
+    "status": "Only after target-security future total returns and suitable benchmarks are available",
+    "formula": "DAR_i,h=sign(AT_i)*(R_i,d1_to_h-R_b(i),d1_to_h)",
+    "benchmarks": "RUB equities: MCFTR as market baseline, industry total-return index sensitivity. Bonds: a verified total-return index matched to duration and credit category at d1; if no suitable index/rating history exists, bond DAR is missing rather than silently benchmarked to equities.",
+    "model": "DAR on aligned indicator 1(AT*S>0), abs(AT), abs(S), lag security controls and fund-security/closing-month FE; exclude AT=0 or S=0; cluster by fund/company. Report h=1,2,3 as supplementary only.",
+    "interpretation": "A sold security underperforming yields an avoided relative loss; do not describe it as a short-sale profit or substitute this result for H3 fund alpha."
+  },
+  "inference_and_diagnostics": {
+    "cluster_small_sample": "For each one-way component use G/(G-1)*(N-1)/(N-K_full), with K_full the identified design rank including absorbed FE. Two-way covariance is V_A+V_B-V_intersection. Report G_A,G_B and intersection count; use t/F reference with df=min(G_A,G_B)-1.",
+    "few_clusters": "If either primary cluster dimension has <30 clusters, show estimates and uncertainty as fragile and suppress significance-star summaries; do not alter clusters to obtain significance. With <2 clusters or unidentifiable target terms, no inferential test.",
+    "indefinite_covariance": "Report failure if a tested contrast has nonpositive estimated variance; no silent eigenvalue clipping. A PSD-adjusted or one-way result may be displayed only as a labelled sensitivity.",
+    "generated_signal": "Primary SEs condition on fitted S and fixed LLM labels. For H1/H2 additionally compare raw Tone and S_no_company_controls; for H3 compare the past-only S. First-package inference does not resolve sentiment misclassification or generated-regressor uncertainty; do not infer validation accuracy from regression significance.",
+    "required_diagnostics": [
+      "Complete stepwise sample-flow with mutually exclusive primary exclusion reasons and additional flags",
+      "Input/output hash manifest and frozen selected nuisance-control list before coefficient output",
+      "News states and error shares by company, source and year",
+      "Date provenance/timezone and event-duplicate counts",
+      "Issuer-ISIN ambiguities and excluded asset values",
+      "Return coverage, proxy weights, unpriced residuals, endpoint staleness and corporate actions",
+      "Counts of true entries, exits, continuing positions, fund-security singletons and FE components",
+      "N, funds, companies, securities, months and all cluster counts per regression",
+      "Descriptives and within variation for AT/S/NTS/alpha, missingness and rank",
+      "H1 directional tests; H2 sum, difference and absolute-equality p; all three H3 horizons or explicit gates",
+      "No AT duplication across news articles; no use of interpolated holdings or historical analysis tables as current estimates"
+    ],
+    "predeclared_sensitivities": [
+      "Lagged S from m-1 predicting current AT, using the same exact-interval logic",
+      "Lead S from m+1 placebo on matched sample; descriptive endogeneity diagnostic only",
+      "Main S versus raw Tone and S_no_company_controls",
+      "News event-deduplication and completeness alternatives",
+      "Return coverage alternatives and excluding payout/corporate-action intervals",
+      "Separate equity/bond estimates",
+      "Pre-2022-02 and post-2022-02 estimates, transition February 2022 shown separately",
+      "Exclude fund intervals with abs(current_net_flow)>0.20 as a sensitivity, not a baseline contemporaneous control",
+      "H1/H2 three-way fund/company/month cluster sensitivity when identifiable"
+    ],
+    "no_search": "Execute and report the fixed variants, including null and unexpected signs. Do not search thresholds, lag lengths, company sets, factor windows or model variants for significant coefficients."
+  },
+  "gates": [
+    {
+      "id": "G01_PAIR_FREEZE",
+      "status": "COUNTS_CONFIRMED_JOIN_AUDIT_REQUIRED",
+      "test": "Mapping/input/results pair-key equality, source hashes, scope and excluded GAZ ID verified; completed_with_errors is allowed with explicit states.",
+      "blocks": "Any joined news result if key validation fails"
+    },
+    {
+      "id": "G02_DATES",
+      "status": "UTC_INGESTION_CONVENTION_PARTLY_TRACED",
+      "test": "Confirm source-to-archive timezone/provenance or retain declared UTC assumption and boundary sensitivity with provisional status; missing/inferred dates handled as specified.",
+      "blocks": "Final publication timing claims, not preliminary declared-convention aggregation"
+    },
+    {
+      "id": "G03_IDENTITIES",
+      "status": "REQUIRES_ROW_LEVEL_AUDIT",
+      "test": "Unique dated company-security and fund-unit crosswalks; report conflicts without many-to-many holding expansion.",
+      "blocks": "Affected target rows; H3 fund series if no fund link"
+    },
+    {
+      "id": "G04_HOLDINGS",
+      "status": "SCHEMA_CONFIRMED_RECONCILIATION_REQUIRED",
+      "test": "Two exact complete statements, common gross denominator, nonoverlapping asset leaves, actual dates, active fund status.",
+      "blocks": "Affected fund intervals; unknown active status only in explicitly provisional universe"
+    },
+    {
+      "id": "G05_TOTAL_RETURNS",
+      "status": "NOT_ESTABLISHED_RAW_QUOTES_ONLY",
+      "test": "Instrument total returns, payouts/corporate actions, FX and RUONIA; >=95% direct/cash and all residual fully priced under <=5% allowed proxies.",
+      "blocks": "Baseline AT, baseline H1/H2, baseline NTS and H3 using that NTS; DW and gated price-only exploratory columns remain allowed"
+    },
+    {
+      "id": "G06_FULL_CONTROLS",
+      "status": "NOT_ESTABLISHED",
+      "test": "Historical security size, lagged total-return liquidity/volatility, flows and complete fixed control list.",
+      "blocks": "Full-controls baseline; reduced predefined preliminary specification may run"
+    },
+    {
+      "id": "G07_SIGNAL",
+      "status": "READY_TO_BUILD_WITH_FROZEN_RULES",
+      "test": "Deduplicated complete labels, lagged Tone, deterministic control availability and nondegenerate absorbed signal model.",
+      "blocks": "S models if signal rank/variance fails; raw-Tone descriptive analysis remains allowed"
+    },
+    {
+      "id": "G08_ALPHA",
+      "status": "BLOCKED_BY_REGISTERED_HISTORY_LENGTH_AND_UNVERIFIED_FACTORS",
+      "test": "At least36 usable past months within60, >=9 in last12, genuine distribution-adjusted fund unit returns and verified MCFTR/RGBITR/RUONIA series.",
+      "blocks": "H3 alpha; market.fund_returns currently covers only Dec2024-Nov2025"
+    },
+    {
+      "id": "G09_VALIDATION",
+      "status": "UNRESOLVED_NONBLOCKING_FOR_PRELIMINARY_ESTIMATION",
+      "test": "Independent human labels sampled from this Gemma title/name corpus and held-out relevance/polarity metrics; old Qwen 300-pair comparison is not this validation.",
+      "blocks": "Final measurement-quality/skill claims, not the first preliminary calculation package"
+    }
+  ],
+  "implementation_order": [
+    "Freeze source manifest and read-only LLM result selection; perform key/state/date checks.",
+    "Construct event representatives and company-month Tone/counts/states; freeze nuisance-control availability list before fitting S.",
+    "Reconcile reports, keys, true endpoint holdings and whole-portfolio coverage; build a single union row per fund-security-interval.",
+    "Construct baseline AT only where G05 passes; always retain DW and exclusion/coverage diagnostics; construct AT_PRICE only under its explicit full-coverage rules.",
+    "Fit the frozen company-month signal and join once to interval rows; code assistant alone estimates the allowed H1/H2 variants.",
+    "Compute NTS and its coverage from valid baseline AT; test alpha prerequisites independently. If G08 fails, produce a precise H3 gate table rather than a substituted outcome.",
+    "Estimate allowed H3 and supplementary DAR only after their gates pass; export all coefficients, covariance metadata, sample-flow and diagnostics for independent review."
+  ],
+  "expected_outputs": [
+    "run_manifest.json",
+    "gate_status.json",
+    "sample_flow.csv",
+    "news_state_audit.csv",
+    "event_cluster_audit.parquet",
+    "issuer_security_conflicts.csv",
+    "company_month_signal.parquet",
+    "fund_security_panel.parquet",
+    "portfolio_return_coverage.csv",
+    "fund_month_NTS.parquet",
+    "alpha_history_coverage.csv",
+    "regression_results.csv",
+    "regression_tables.md",
+    "diagnostics.json"
+  ],
+  "primary_references_checked": [
+    {
+      "claim": "Multiway cluster-robust covariance",
+      "citation": "Cameron, Gelbach and Miller (2011), Journal of Business & Economic Statistics 29(2), 238-249",
+      "url": "https://www.tandfonline.com/doi/abs/10.1198/jbes.2010.07136"
+    },
+    {
+      "claim": "MCFTR gross and MCFTRR resident-net total-return indices",
+      "url": "https://www.moex.com/ru/index/totalreturn/MCFTR?real=1"
+    },
+    {
+      "claim": "Government-bond total-return index and duration information",
+      "url": "https://www.moex.com/a5865"
+    },
+    {
+      "claim": "RUONIA Index compounding and actual calendar-year day count",
+      "url": "https://www.cbr.ru/content/document/file/128244/ruonia_avg_userguide.pdf"
+    }
+  ]
+}

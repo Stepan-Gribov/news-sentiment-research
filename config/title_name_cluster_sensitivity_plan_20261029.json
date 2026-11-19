@@ -1,0 +1,54 @@
+{
+  "id": "title-name-covariance-sensitivity-20261029-v1",
+  "status": "FIXED_BEFORE_NEW_COVARIANCE_RESULTS",
+  "prior_point_estimates_and_p_values_known": true,
+  "purpose": "Assess defensible inference sensitivity without changing the outcome, regressors, sample, point estimates or hypotheses",
+  "models": [
+    "M0_DW_REFERENCE",
+    "M4_DW_EXACT_ACTUAL_WINDOWS"
+  ],
+  "substantive_covariances": [
+    [
+      "fund_id",
+      "company_id"
+    ],
+    [
+      "fund_id",
+      "company_id",
+      "month"
+    ],
+    [
+      "fund_id",
+      "company_id",
+      "quarter"
+    ]
+  ],
+  "incomplete_dependence_diagnostics": [
+    [
+      "fund_id"
+    ],
+    [
+      "company_id"
+    ]
+  ],
+  "small_sample_conventions": [
+    "full_absorbed_FE_rank_as_in_original_package",
+    "exclude_FE_nested_within_any_cluster_dimension_from_small_sample_DoF; retain exact rank of remaining FE or one intercept when all FE nested"
+  ],
+  "covariance": "CGM inclusion-exclusion over all cluster intersections, each G/(G-1), times (N-1)/(N-K_slopes-K_FE_correction). Keep covariance unclipped; nonpositive target variance makes inference unavailable.",
+  "degrees_of_freedom": "min(number of groups across chosen dimensions)-1 for t and F reference",
+  "nesting_validation": "Every fixed-effect group must belong to exactly one cluster group before declaring it nested",
+  "primary_dependence_structure": "Fund and issuer; fund shocks and reuse of issuer news across funds both matter. Single-dimension outputs are diagnostics, not a basis to choose the smallest p.",
+  "unchanged_tests": [
+    "two-sided positive slope",
+    "two-sided negative-magnitude slope",
+    "H1 directional intersection-union",
+    "H2 absolute-effect equality union-null"
+  ],
+  "multiplicity": "Show all raw p; Holm across the four existing tests per covariance/model, plus global sensitivity over all locked covariance/model/test slots. Missing inference stays null; conservative p=1 only for adjustment bookkeeping.",
+  "references": [
+    "https://scorreia.com/software/reghdfe/faq.html",
+    "https://scorreia.com/help/reghdfe.html"
+  ],
+  "claim_limit": "Post-hoc inference sensitivity on DW. A favorable covariance does not establish active total-return AT, causal effects, alpha, or robustness across all covariance conventions."
+}

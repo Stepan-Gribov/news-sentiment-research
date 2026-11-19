@@ -1,0 +1,15 @@
+{
+  "ready_for_handoff": true,
+  "scope": "EXPLORATORY_CURRENT_STATIC_ONLY",
+  "w2_version": "v20261026T133458Z",
+  "handoff": {
+    "path": "./analysis_outputs/title_name_regressions_20261026_w2_v1/config/w2_handoff.json",
+    "sha256": "447211a6213c801ca45dcc27e425949f550d24326b2a1fd3830f7fdbc66c50fc"
+  },
+  "release": {
+    "path": "./analysis_outputs/title_name_security_crosswalk_20261026/v20261026T133458Z/release_manifest.json",
+    "sha256": "f61ca45cf639fa799ee266ef2b1150ae451913974761a7b43db5864263918316"
+  },
+  "crosswalk_review_status": "PENDING_R4",
+  "policy": "No historical validity or Russian residence inferred. Canonical labels, source holdings, and publication methodology are unchanged."
+}

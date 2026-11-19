@@ -1,0 +1,37 @@
+{
+  "status": "FIXED_BEFORE_FIT",
+  "model": "POOLED_REFERENCE_CURRENT_PLUS_LAG1_SIX",
+  "input_panel": "./analysis_outputs/h1_sentiment_lag_20261103/samples/REFERENCE_AUGMENTED_P99__COMMON.parquet",
+  "expected_rows": 194041,
+  "expected_funds": 591,
+  "expected_companies": 269,
+  "expected_row_hash": "5a2783f9cc8ed5aa700fb4fe962114146d8ba142bccef71c09cbb383b4388546",
+  "controls": [
+    "closing_HHI",
+    "bond_indicator",
+    "imoex_ret",
+    "RVI",
+    "dummy_mar2014",
+    "dummy_sep2018"
+  ],
+  "targets": [
+    "net_sentiment",
+    "net_sentiment_lag1"
+  ],
+  "outcome": "quantity_change_pct",
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "time_FE": false,
+  "cluster_time": false,
+  "minimum_history_filter": null,
+  "sample_policy": "Existing complete current/lag reference sample, existing nonindex/P99/confirmed entry+100 and exit-100 rules unchanged. All available fund focus categories. Group comparisons retain their earlier 60/24 eligibility and are not exhaustive partitions of this unrestricted reference.",
+  "covariance": "Native PanelOLS CGM, debiased=True, auto_df=False, count_effects=True, group_debias=True; ordinary two-sided p, no multiple-testing correction or PSD repair.",
+  "base_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_net_fund_fe_20261030.py",
+  "lag_helper": "./analysis_outputs/h1_sentiment_lag_20261103/code/run_h1_sentiment_lag_20261103.py",
+  "output_root": "./analysis_outputs/h1_six_pooled_20261103"
+}

@@ -1,0 +1,180 @@
+{
+  "status": "FIXED_BEFORE_NEW_COEFFICIENTS",
+  "date": "2026-11-03",
+  "sources": {
+    "equity": {
+      "path": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_EQUITY_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "sha256": "de1bdb3fb17d4f739b51598959739b5cdbb13d68845b429921f12bcc0b539ff8",
+      "row_hash": "8f4d874c824d52bb9de713781b18c4b3cb5035604b6cf4bd249e48482c7c6040",
+      "rows": 60903,
+      "funds": 91,
+      "companies": 136,
+      "representative_base_model": "FOCUS_EQUITY_ROWS_60_INTERVALS_24",
+      "requested_eligibility": "60 rows AND24 intervals fixed before lag completeness"
+    },
+    "bond": {
+      "path": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_BOND_ROWS_60_INTERVALS_24__COMMON.parquet",
+      "sha256": "f4af4aaf73b7877c4b78adaf12c1af6c10efab46dff6345adaf336843c4bf78c",
+      "row_hash": "e0b4719f875850849501362fabc8811c165f001b15ecf8abb22abb54eebd1bd2",
+      "rows": 39039,
+      "funds": 66,
+      "companies": 200,
+      "representative_base_model": "FOCUS_BOND_ROWS_60_INTERVALS_24",
+      "requested_eligibility": "60 rows AND24 intervals fixed before lag completeness"
+    },
+    "mixed": {
+      "path": "./analysis_outputs/h1_sentiment_lag_20261103/samples/FOCUS_MIXED_ROWS_30_INTERVALS_24__COMMON.parquet",
+      "sha256": "aac4eab1711f1b371a340153bfcfb0825ce5da4145d9ec487c44187c4a3e58de",
+      "row_hash": "850a46a8e9db8b41de204f389f6cb16227d8c8c1edb5ef3cc1ab05457f9eedcb",
+      "rows": 57131,
+      "funds": 65,
+      "companies": 198,
+      "representative_base_model": "FOCUS_MIXED_ROWS_30_INTERVALS_24",
+      "requested_eligibility": "60 rows AND24 intervals fixed before lag completeness"
+    }
+  },
+  "outcome": "quantity_change_pct",
+  "targets": [
+    "net_sentiment",
+    "net_sentiment_lag1"
+  ],
+  "controls_all16": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator",
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "control_sets": {
+    "ALL16": [
+      "opening_weight",
+      "closing_log_NAV",
+      "closing_HHI",
+      "log_news_count_interval",
+      "log_interval_days",
+      "bond_indicator",
+      "Imoex",
+      "imoex_ret",
+      "Ruonia",
+      "USD_RUB",
+      "RVI",
+      "Flow_billion_RUB",
+      "unique_funds",
+      "dummy_mar2014",
+      "dummy_feb2022",
+      "dummy_sep2018"
+    ],
+    "DROP_OPENING_WEIGHT": [
+      "closing_log_NAV",
+      "closing_HHI",
+      "log_news_count_interval",
+      "log_interval_days",
+      "bond_indicator",
+      "Imoex",
+      "imoex_ret",
+      "Ruonia",
+      "USD_RUB",
+      "RVI",
+      "Flow_billion_RUB",
+      "unique_funds",
+      "dummy_mar2014",
+      "dummy_feb2022",
+      "dummy_sep2018"
+    ],
+    "DROP_NEWS_COUNT": [
+      "opening_weight",
+      "closing_log_NAV",
+      "closing_HHI",
+      "log_interval_days",
+      "bond_indicator",
+      "Imoex",
+      "imoex_ret",
+      "Ruonia",
+      "USD_RUB",
+      "RVI",
+      "Flow_billion_RUB",
+      "unique_funds",
+      "dummy_mar2014",
+      "dummy_feb2022",
+      "dummy_sep2018"
+    ],
+    "DROP_BOTH": [
+      "closing_log_NAV",
+      "closing_HHI",
+      "log_interval_days",
+      "bond_indicator",
+      "Imoex",
+      "imoex_ret",
+      "Ruonia",
+      "USD_RUB",
+      "RVI",
+      "Flow_billion_RUB",
+      "unique_funds",
+      "dummy_mar2014",
+      "dummy_feb2022",
+      "dummy_sep2018"
+    ],
+    "EQUITY_SELECTED_SIX": [
+      "closing_HHI",
+      "bond_indicator",
+      "imoex_ret",
+      "RVI",
+      "dummy_mar2014",
+      "dummy_sep2018"
+    ]
+  },
+  "variants": [
+    "CURRENT_ONLY",
+    "CURRENT_PLUS_LAG1"
+  ],
+  "main_native_fits": 30,
+  "representation_checks": [
+    {
+      "focus": "equity",
+      "controls": "EQUITY_SELECTED_SIX",
+      "variant": "CURRENT_PLUS_LAG1"
+    },
+    {
+      "focus": "bond",
+      "controls": "DROP_BOTH",
+      "variant": "CURRENT_PLUS_LAG1"
+    },
+    {
+      "focus": "mixed",
+      "controls": "DROP_BOTH",
+      "variant": "CURRENT_PLUS_LAG1"
+    }
+  ],
+  "representation_check_rule": "Remove explicit const only, fund FE retained. Compare slope beta/SE/p/full target covariance/df_resid/R2within/residuals and total fitted+estimated_effects. Do not impose zero fund FE or force regression through origin. Native fitted_values alone exclude FE and their normalization can differ.",
+  "fixed_effects": [
+    "fund_id"
+  ],
+  "time_FE": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "cluster_time": false,
+  "covariance_options": {
+    "cov_type": "clustered",
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true,
+    "group_debias": true,
+    "PSD_repair": false
+  },
+  "data_policy": "Exactly existing common samples, no row/cut/support/weight changes. Same row set for all five control sets within focus. SIX is not equivalent to DROP_BOTH. No p-based dropping. No multiple-testing correction by user instruction.",
+  "output_root": "./analysis_outputs/h1_control_ablation_20261103",
+  "computation_host": "research-host"
+}

@@ -1,0 +1,108 @@
+{
+  "spec_id": "H1_RAW_NET_MACRO_NOINDEX_V1",
+  "status": "FROZEN_BEFORE_NEW_COEFFICIENTS",
+  "created_utc": "2026-11-02T07:55:23.288770+00:00",
+  "authorizing_request": "Rerun H1 with supplied macro controls, no time clusters; exclude index funds and compare equity/bond/mixed fund focus; disclose sentiment exceptions.",
+  "output_root": "./analysis_outputs/h1_macro_no_time_20261031",
+  "source_root": "./analysis_outputs/h1_macro_no_time_20261031/inputs/raw_external_2026-09-30",
+  "catalog_path": "./local/research-data-service/research.duckdb",
+  "input_panel": "./analysis_outputs/h1_net_fund_fe_20261030/regression/regression_panel.parquet",
+  "all_candidate_panel": "./analysis_outputs/h1_net_fund_fe_20261030/regression/all_candidate_panel.parquet",
+  "interval_source": "./analysis_outputs/title_name_regressions_20261026_w2_v2/all_true_intervals.parquet",
+  "positions_source": "./analysis_outputs/portfolio_units_20261030/portfolio_units.parquet",
+  "fund_reports_source": "./analysis_outputs\\h1_macro_no_time_20261031\\inputs\\fund_reports.parquet",
+  "news_company_source": "./analysis_outputs\\h1_macro_no_time_20261031\\inputs\\approved_news_company_scope.parquet",
+  "expected_source_sha256": {
+    "input_panel": "3b68d61fb85523af07967cfa4a56a4bb7bc2be9be542f7d305fec43a2bf3ef57",
+    "all_candidate_panel": "174e5a467ae3f8407aa8270f43a4be0d8a996b96364399e760cbfe6dd4884526",
+    "interval_source": "8eb84efe7e01699d46595e7c2c1f5ccadd6dfa3d42c14681d3e5a97d0c966709",
+    "positions_source": "4226356fb5177b978a3a28a045d61d66c334d60d70b168f85bc6830f80f57329",
+    "fund_reports_source": "ab492c43be24636d8ca75af6d0f25e6db5cef7580e49ba2f04206aa997ab2e92",
+    "news_company_source": "dd96627da741749e6b7bcd9fbbf181271154e88ba29d4c3218a0d9e305b63181",
+    "base_helper": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e",
+    "macro_helper": "b80d37956802d019e0c76ecb06220986af0c89bfa563da2baa42b0de89ba7dbd",
+    "universe_helper": "ec560a5edd4fdb9e463d17ec1b74ac4e0ea0d5cb90addf2894f532e554552779"
+  },
+  "frozen_code_sha256": {
+    "run_h1_net_fund_fe_20261030.py": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e",
+    "h1_macro_controls_20261031.py": "b80d37956802d019e0c76ecb06220986af0c89bfa563da2baa42b0de89ba7dbd",
+    "h1_fund_universe_20261031.py": "ec560a5edd4fdb9e463d17ec1b74ac4e0ea0d5cb90addf2894f532e554552779",
+    "run_h1_macro_no_time_20261031.py": "5bf42c98b0078e817df3fb4018c457250ae58dbebfe9dbff2eb675408680510a"
+  },
+  "expected_original_rows": 305163,
+  "verify_original_reference": true,
+  "baseline_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator"
+  ],
+  "macro_controls": [
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "macro_builder_options": {
+    "flow_mode": "latest_completed",
+    "flow_month_label": "previous_month",
+    "max_age_days": 7,
+    "validate_hashes": true
+  },
+  "universe_options": {
+    "index_unknown_policy": "retain_flagged",
+    "focus_threshold": 0.8,
+    "weight_tolerance": 0.001
+  },
+  "fund_focus_groups": [
+    "equity",
+    "bond",
+    "mixed",
+    "money_market",
+    "other"
+  ],
+  "holm_focus_groups": [
+    "equity",
+    "bond",
+    "mixed"
+  ],
+  "minimum_model_rows": 30,
+  "robust_sensitivity": true,
+  "security_subgroups": true,
+  "fund_FE": true,
+  "time_FE": false,
+  "cluster_time": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "primary_model": "NET_MACRO_COMMON",
+  "primary_comparator": "BASELINE_COMMON",
+  "primary_same_rows_required": true,
+  "index_policy": "EVER_INDEX: exclude the entire fund when any observed historical name/category/verified flag identifies indexing. Provisional source-classified/unknown remaining funds retained with explicit identification coverage; not claimed verified active.",
+  "focus_policy": "Exact opening report explicit category first. Complete and valid full opening gross-portfolio fallback threshold80%; mixed requires stocks and bonds each20% combined80%. Never classify fund focus from single target security.",
+  "sentiment_policy": "No matched dated title-name candidates, outside approved news scope, issuer unmapped, all irrelevant, classification errors/incomplete remain NA with separate reasons. Actual observed relevant balanced/neutral net0 retained. No fillingNAwith0.",
+  "macro_timing_policy": "Daily economic/effective date<=actual closing date, lag<=7d. Exact IMOEX end/start return. Flow latest fully completed economic month; source label shifted one month back, rawRUB/1e9. Revised descriptive controls, not claimed real-time vintage.",
+  "unique_funds_scope": "All true interval closing dates before index/news/sample filters",
+  "outlier_policy": "Keep original rows; no winsorization, trimming or selection by p-values. Quantify residual-SS contribution of saved quality flags.",
+  "subgroup_inference": "Core equity/bond/mixed p-values Holm-adjusted as one family. Secondary pooled net-by-focus interactions include group main effects when not absorbed and a joint equality Wald test.",
+  "no_new_LLM": true,
+  "protected_inputs_unchanged": true,
+  "strict_nonindex_secondary": true,
+  "strict_nonindex_statuses": [
+    "nonindex_verified"
+  ],
+  "focus_interaction_wald": true,
+  "pre_run_revision": {
+    "previous_plan_sha256": "5e7dd7575ecaf53a2b27b9f0cffa05e76962454fbdced0ce239c8c410a890621",
+    "reason": "Explicitly specify runner default names and helper hashes before any actual fits."
+  }
+}

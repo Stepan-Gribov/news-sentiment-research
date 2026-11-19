@@ -1,0 +1,18 @@
+{
+  "version": "bank-topics-20261006-v1",
+  "issuer_scope": "Bank explicitly classified in industry; name fallback only when industry absent. Non-bank subsidiaries excluded.",
+  "industry_allowlist": [
+    "банк"
+  ],
+  "product_allowlist": [
+    "кредит",
+    "вклад"
+  ],
+  "bypass_generic_keyword_filter": true,
+  "bypass_max_keyword_owners": true,
+  "search_scope": "title",
+  "word_forms": "Existing Russian Snowball stemmer and token surface compatibility",
+  "match_meaning": "Thematic candidate, not confirmed issuer relevance",
+  "name_matching": "Unchanged",
+  "other_keywords": "Existing rules unchanged"
+}

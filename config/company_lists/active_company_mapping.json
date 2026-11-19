@@ -1,0 +1,37 @@
+{
+  "version": "20261006_single_industry_01",
+  "host": "research-host",
+  "run_root": "./news_data/company_mapping_runs/run_20261006_single_industry_01",
+  "active_directory": "./news_data/company_mapping_runs/run_20261006_single_industry_01/cleaned_single_industry",
+  "completion_marker": "SUCCESS",
+  "company_registry": "company_registry_active.parquet",
+  "article_company_map": "article_company_map_clean.parquet",
+  "compact_mapping_directory": "./news_data/company_mapping_runs/run_20261006_single_industry_01/compact_single_industry",
+  "compact_article_company_map": "article_company_ids.parquet",
+  "compact_company_registry": "company_registry.parquet",
+  "compact_completion_audit": "article_company_ids.parquet.audit.json",
+  "compact_row_key": "article_id",
+  "compact_company_ids_delimiter": ",",
+  "company_alias_crosswalk": "company_alias_crosswalk.csv",
+  "blacklist": "company_mapping_blacklist_active.csv",
+  "counts": "company_match_counts_sorted_clean.csv",
+  "audit": "cleanup_audit.json",
+  "required_pair_key": [
+    "article_id",
+    "company_id"
+  ],
+  "future_mapping_required_stage": "scripts/50_clean_company_mapping.py",
+  "require_success_before_use": true,
+  "never_use_raw_counts_as_clean_counts": true,
+  "protected_companies": [
+    "Магнит",
+    "Полюс",
+    "Открытие Холдинг"
+  ],
+  "preserve_source_news_and_raw_mapping": true,
+  "bank_keyword_policy": "bank-topics-20261006-v1",
+  "bank_keyword_policy_search_scope": "title",
+  "previous_active_directory": "./news_data/company_mapping_runs/run_20261006_bank_topics_01/cleaned_bank_topics",
+  "single_industry_policy": "./news_data/company_mapping_runs/run_20261006_single_industry_01/company_database/single_industry_policy.json",
+  "industry_search_scope": "title"
+}

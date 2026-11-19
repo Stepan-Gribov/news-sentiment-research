@@ -1,0 +1,123 @@
+{
+  "spec_id": "H1_FINITE_SUPPORT_AND_MEASUREMENT_SENSITIVITY_V1",
+  "status": "FIXED_BEFORE_NEW_COEFFICIENTS",
+  "authorizing_request": "Investigate whether minimum observations per fund and data quality improve the H1 test; retain truthful complete reporting rather than guaranteeing significance.",
+  "output_root": "./analysis_outputs/h1_support_sensitivity_20261102",
+  "input_panel": "./analysis_outputs/h1_entries_trim_20261102/samples/AUGMENTED_P99.parquet",
+  "source_sha256": "8bd9cfd2eef8668036c8c6c95c9863d8edbc1923d2c4d627d5b1306d03cfd43c",
+  "expected_primary_rows": 221899,
+  "base_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_net_fund_fe_20261030.py",
+  "macro_runner_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_macro_no_time_20261031.py",
+  "expected_source_sha256": {
+    "input_panel": "8bd9cfd2eef8668036c8c6c95c9863d8edbc1923d2c4d627d5b1306d03cfd43c",
+    "base_helper": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e",
+    "macro_runner_helper": "5bf42c98b0078e817df3fb4018c457250ae58dbebfe9dbff2eb675408680510a"
+  },
+  "baseline_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator"
+  ],
+  "macro_controls": [
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "planned_models": [
+    "REFERENCE_AUGMENTED_P99",
+    "MIN_FUND_ROWS_30",
+    "MIN_FUND_ROWS_60",
+    "MIN_FUND_INTERVALS_12",
+    "MIN_FUND_INTERVALS_24",
+    "MIN_FUND_INTERVALS_36",
+    "NEWS_MIN_3",
+    "NEWS_MIN_5",
+    "BOUNDED_GROSS_CONTROLS"
+  ],
+  "fund_rows_thresholds": [
+    30,
+    60
+  ],
+  "fund_intervals_thresholds": [
+    12,
+    24,
+    36
+  ],
+  "news_minimum_thresholds": [
+    3,
+    5
+  ],
+  "bounded_control_columns": [
+    "opening_weight",
+    "closing_weight",
+    "closing_HHI"
+  ],
+  "bounded_control_lower": 0,
+  "bounded_control_upper": 1.001,
+  "bounded_control_interpretation": "A separately reported bounded-control subset, not a claim that every excluded row is an erroneous report. Exposure ratios and incompletely reconciled reports require separate interpretation.",
+  "support_count_rule": "Compute fund row count, distinct interval_id count and distinct closing-date count once on the full frozen source. Apply each independent restriction to that source; no iterative filtering.",
+  "support_scope": "Observed news-covered macro-complete intervals in the current estimation sample, not the complete lifetime or necessarily consecutive calendar months of a fund.",
+  "news_rule": "Keep rows with n_relevant >= 3 or >= 5 in two separate sensitivity models; other definitions remain unchanged.",
+  "no_combined_grid": true,
+  "outcome_unchanged": true,
+  "conditional_entries_unchanged": true,
+  "prior_cutoff_percent_unchanged": 322.7771642245575,
+  "fund_FE": true,
+  "time_FE": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "cluster_time": false,
+  "covariance_options": {
+    "debiased": true,
+    "auto_df": false,
+    "count_effects": true,
+    "group_debias": true
+  },
+  "verify_reference": true,
+  "reference_beta": 0.5946851064715204,
+  "reference_SE": 0.3821674238484671,
+  "reference_native_p": 0.11968924263465253,
+  "reference_positive_one_sided_cluster_t_p": 0.06029577572085231,
+  "multiple_testing": {
+    "method": "Holm step-down",
+    "family": [
+      "MIN_FUND_ROWS_30",
+      "MIN_FUND_ROWS_60",
+      "MIN_FUND_INTERVALS_12",
+      "MIN_FUND_INTERVALS_24",
+      "MIN_FUND_INTERVALS_36",
+      "NEWS_MIN_3",
+      "NEWS_MIN_5",
+      "BOUNDED_GROSS_CONTROLS"
+    ],
+    "adjust_native_two_sided": true,
+    "adjust_positive_one_sided_cluster_t": true,
+    "unestimable_tests_retain_family_slots": true,
+    "reference_is_preexisting_benchmark_not_new_family_member": true
+  },
+  "information_diagnostics": "FWL residualize raw net against the fixed controls after fund demeaning. Account for residual-net information by support bins, company and n_relevant bins. No outcome-based sample selection; no claim that many security rows are independent news observations.",
+  "independent_qa_models": [
+    "REFERENCE_AUGMENTED_P99",
+    "MIN_FUND_ROWS_30",
+    "MIN_FUND_INTERVALS_24"
+  ],
+  "minimum_model_rows": 30,
+  "export_sample_csv": false,
+  "report_all_planned_models": true,
+  "do_not_select_a_winning_model_by_p": true,
+  "stop_after_planned_models": true,
+  "interpretation": "Exploratory finite robustness analysis after earlier results. Report estimates, uncertainty, coverage changes and multiplicity for all models. No guarantee or manufactured statistical significance.",
+  "protected_inputs_old_results_and_live_LLM_unchanged": true
+}

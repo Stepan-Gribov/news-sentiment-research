@@ -1,0 +1,15 @@
+{
+  "version": "no-bare-otkritie-20261008-v1",
+  "scope": "name_alias_only",
+  "blocked_alias": "открытие",
+  "block_inflected_and_stem_equivalent_forms": true,
+  "keep_company": "Открытие Холдинг",
+  "keep_qualified_names": [
+    "Открытие Холдинг",
+    "ФК Открытие",
+    "Банк Открытие"
+  ],
+  "preserve_industry_and_product_patterns": true,
+  "preserve_other_company_patterns_and_counts": true,
+  "preserve_source_news_and_previous_mappings": true
+}

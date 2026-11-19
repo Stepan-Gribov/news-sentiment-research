@@ -1,0 +1,21 @@
+{
+  "version": "20261006_single_industry_01",
+  "host": "research-host",
+  "company_database_local": "config/company_lists/single_industry_20261006_01/company_registry_single_industry.parquet",
+  "industry_policy_local": "config/company_lists/single_industry_20261006_01/single_industry_policy.json",
+  "run_root": "./news_data/company_mapping_runs/run_20261006_single_industry_01",
+  "new_mapping_directory": "./news_data/company_mapping_runs/run_20261006_single_industry_01/cleaned_single_industry",
+  "new_compact_directory": "./news_data/company_mapping_runs/run_20261006_single_industry_01/compact_single_industry",
+  "scheduled_task": "CompanySingleIndustry_20261006_01",
+  "status_at_launch": "running",
+  "verified_status": "completed",
+  "verified_on": "2026-10-07",
+  "source_articles_processed": 6298979,
+  "clean_article_company_pairs": 21969917,
+  "unique_articles_with_matches": 2371504,
+  "companies_matched": 775,
+  "active": true,
+  "live_status_file": "progress.json",
+  "activate_only_after_success": true,
+  "preserve_old_data": true
+}

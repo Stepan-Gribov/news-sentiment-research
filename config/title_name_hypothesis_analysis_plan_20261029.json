@@ -1,0 +1,210 @@
+{
+  "analysis_id": "title-name-hypothesis-research-20261029-v1",
+  "status": "FROZEN_BEFORE_NEW_OUTCOME_COEFFICIENTS",
+  "client_date": "2026-10-29",
+  "created_at_utc": "2026-10-28 21:16:27 UTC",
+  "authority": "User-authorized 29 October finite exploration; 27 October assumptions override conflicting earlier input gates",
+  "prior_results_known": true,
+  "interpretation": "Post-hoc exploratory analysis motivated by completed 26 October DW. This is not an untouched confirmatory test or a p<0.05 search.",
+  "resources": {
+    "base_run": "./analysis_outputs/title_name_regressions_20261026_w2_v2",
+    "output_root": "./analysis_outputs/title_name_hypothesis_research_20261029",
+    "catalog": "./local/research-data-service/research.duckdb",
+    "assumptions": "config/title_name_assumptions_20261027.json"
+  },
+  "shared_rules": {
+    "corpus": "Frozen title/name/no-GAZ Gemma; reuse deduplicated representatives and existing S for monthly branches",
+    "security_scope": "Retain v2 unique static issuer, explicit Russian corporate equity/debt, identity/residence/mandate/report-quality and scheduled maturity screens",
+    "source_dates": "Actual dates only; do not move 29 May to calendar month end",
+    "monthly_panel": "Reuse v2 immutable fund_security_panel.parquet without rebuilding historical pipeline",
+    "controls": [
+      "opening_weight",
+      "lag_log_news_count",
+      "opening_log_NAV",
+      "opening_HHI"
+    ],
+    "inference": "Existing absorbed OLS, iterative singleton pruning, two-way fund/company CGM CR1 with full FE rank, t df=min clusters-1; no PSD clipping; invalid variances remain missing",
+    "null_cases": "No news/error/irrelevant not neutral; missing prices not zero; missing quantities not fabricated",
+    "reporting": "All selected models including NOT_ESTIMABLE, sample flow, N/funds/companies/securities/period/FE/clusters/beta/SE/95%CI/p/withinR2; generated-regressor/LLM uncertainty remains conditional"
+  },
+  "price_rules": {
+    "quote": "Observed positive CLOSE, no price interpolation or future quote",
+    "endpoint": "Last observed quote on or before actual endpoint, maximum 7 calendar days old",
+    "series": "Use the same ISIN/SECID/BOARDID series at both endpoints; prefer recorded primary board, then highest opening-date trading VALUE, deterministic identifiers as ties",
+    "currency": "RUB/RUR/SUR only, including nonmissing bond FACEUNIT; no foreign FX assumption",
+    "shares": "CLOSE per share; no invented split adjustment",
+    "bonds": "CLOSE/100 times positive historical FACEVALUE; do not invent missing face values; retain known scheduled maturity screen. This is clean-price revaluation, not total return",
+    "relative_proxy": "log(reported_value_close/reported_value_open)-log(price_close/price_open), continuing strictly positive positions only. Not directly observed quantity; comparability/accrual/split/coupon limitations explicit",
+    "full_portfolio": "All positive opening exposures >1e-12 must have supported price return or documented RUB cash/deposit assumption. Reconciliation tolerance 1e-8; unknown residual not zero; no covered-subportfolio renormalization",
+    "cash": "Identified RUB idle cash interest 0; identified RUB deposit with no disclosed income 0; explicit disclosed income not overridden; unidentified/noncash/FX exposures remain uncovered",
+    "coverage": "Show excluded rows and opening weight at every step; no threshold grid or outlier-driven exclusions"
+  },
+  "models": [
+    {
+      "id": "M0_DW_REFERENCE",
+      "family": "monthly_DW_reference",
+      "outcome": "DW",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "tests": [
+        "positive coefficient",
+        "negative coefficient",
+        "directional intersection-union",
+        "absolute asymmetry"
+      ],
+      "purpose": "One exact numerical reference replication, not rerun of source preparation"
+    },
+    {
+      "id": "M1_DW_EQUITY_INTERACTION",
+      "family": "asset_heterogeneity",
+      "outcome": "DW",
+      "signal": "S_positive, S_negative, equity*S_positive, equity*S_negative",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "tests": [
+        "joint zero equity interactions",
+        "each interaction",
+        "derived equity and bond directional slopes"
+      ],
+      "purpose": "Formal heterogeneity, not compare subset significance"
+    },
+    {
+      "id": "M2_DW_RELATIVE",
+      "family": "relative_allocation",
+      "outcome": "DW",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ],
+      "purpose": "Relative allocation within the same fund/date interval; fund-level expansion shocks absorbed"
+    },
+    {
+      "id": "M2B_DW_RELATIVE_PRICE_MATCHED",
+      "family": "relative_allocation",
+      "outcome": "DW",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "sample": "Exactly the continuing positive positions with accepted quote pairs used by M3",
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ],
+      "purpose": "Separate price adjustment from survivor/price-coverage selection"
+    },
+    {
+      "id": "M3_PRICE_ADJUSTED_VALUE_GROWTH",
+      "family": "relative_allocation",
+      "outcome": "price_adjusted_value_growth",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "interval_id"
+      ],
+      "sample": "Continuing positive positions with accepted quote pairs",
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ],
+      "purpose": "Implied-quantity/value-growth proxy, not full-portfolio AT or observed quantities"
+    },
+    {
+      "id": "M4_DW_EXACT_ACTUAL_WINDOWS",
+      "family": "exact_disclosure_windows",
+      "outcome": "DW",
+      "signal": "new exact-window S, built once on unique company/start/end windows",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "controls_additional": [
+        "log_interval_days"
+      ],
+      "sample": "Adjacent actual reconciled complete nonpassive reports; closing date 2018-01-01 through 2026-05-29; no calendar-EOM/consecutive-month requirement",
+      "news": "Current (start,end], lag (start-duration,start]; complete classification; company and closing-month FE, lag Tone, log1p relevant counts, 3 source shares and log duration; minima six usable unique windows/company, ten companies/closing month; residual / sample SD",
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ]
+    },
+    {
+      "id": "M5_PRICE_AT_FULL_PORTFOLIO",
+      "family": "full_portfolio_price_AT",
+      "outcome": "AT_PRICE",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "sample": "Monthly panel restricted to whole opening portfolios fully covered under documented user assumptions",
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ],
+      "conditional": "Report NOT_ESTIMABLE if full denominator coverage or rank insufficient"
+    },
+    {
+      "id": "M5B_DW_PRICE_AT_MATCHED",
+      "family": "full_portfolio_price_AT",
+      "outcome": "DW",
+      "signal": "existing S",
+      "FE": [
+        "fund_security_id",
+        "month"
+      ],
+      "sample": "Identical complete-price-AT rows",
+      "tests": [
+        "directional intersection-union",
+        "absolute asymmetry"
+      ]
+    },
+    {
+      "id": "QUANTITY_OBSERVED",
+      "family": "observed_quantity",
+      "conditional": "Only actual source quantity and unit fields independently confirmed; otherwise no regression, retain entry/exit descriptive counts",
+      "no_proxy_promotion": true
+    },
+    {
+      "id": "H3_ALPHA",
+      "family": "H3_alpha",
+      "horizons": [
+        1,
+        2,
+        3
+      ],
+      "conditional": "Actual fund unit-value/return history, exact fund-series identity, adequate 36 prior observations in 60-month window and already available appropriate factors. Preserve original alpha estimand; no short-history fit or simple return renamed alpha",
+      "fallback": "NOT_ESTIMABLE with exact observed source limit"
+    }
+  ],
+  "multiplicity": {
+    "method": "Holm",
+    "within_family": "For every fixed model, include the two target coefficient two-sided p-values, directional intersection-union p and absolute-asymmetry p as one declared family set; asset family includes two interactions, joint Wald, derived four subgroup coefficients. Report all raw and Holm p; unavailable tests count as p=1 in the predeclared family size",
+    "across_families": "Exploratory conclusions only; no selective claim that one significant family confirms original H1-H3"
+  },
+  "power": {
+    "model": "M0_DW_REFERENCE",
+    "method": "Approximate minimum detectable effect at 80% and 90% power using (t_0.975,cluster_df+z_power)*conditional cluster SE; no observed posthoc power",
+    "units": "basis points of weight per one-unit standardized S"
+  },
+  "prohibited": [
+    "No new raw downloads",
+    "No LLM rerun",
+    "No parameter/threshold/transformation grid",
+    "No mutation of protected data, live Gemma, frozen R1 or completed prior runs",
+    "No automatic confirmation from subgroup significance",
+    "No alpha substitution"
+  ],
+  "iterations": "One feasibility inventory, one source-price extraction, one bounded estimation pass; only genuine implementation errors justify repairs"
+}

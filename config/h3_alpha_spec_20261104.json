@@ -1,0 +1,338 @@
+{
+  "spec_id": "H3_ALPHA_NTS_Q_ACTUAL_INTERVALS_20261104_V1",
+  "status": "FROZEN_BEFORE_NEW_FUND_ALPHA_COEFFICIENTS",
+  "frozen_at_moscow": "2026-11-04T00:49:37+03:00",
+  "owner": "research assistant",
+  "executor": "code assistant only",
+  "new_fund_alpha_coefficients_inspected_by_author": false,
+  "prior_information": "Earlier H1/H2 exploratory results and the separate November 3 security-price DAR diagnostic are known. This is a prospective specification for the new fund-alpha calculation, not a registration made before all project research.",
+  "hypothesis": "News-aligned rebalancing predicts higher subsequent factor-adjusted fund performance. Fund alpha is the main outcome; security-level DAR is not a substitute.",
+  "change_control": "After execution begins, preserve this file and its SHA256. Corrections require a dated amendment stating whether new coefficients have been inspected. Do not select thresholds, history windows, factor variants or controls by p-value.",
+  "authority_sources": [
+    "config/h3_alpha_coordination_20261104.json",
+    "config/title_name_regression_spec_20261026.json",
+    "config/title_name_assumptions_20261027.json",
+    "config/h1_sentiment_lag_plan_20261103.json",
+    "reports/h23_h3_data_readiness_20261103.json"
+  ],
+  "preservation": {
+    "H2_unchanged": true,
+    "old_results_unchanged": true,
+    "protected_resources_unchanged": true,
+    "live_Gemma_unchanged": true,
+    "RESEARCH_NOTES_owner": "control only",
+    "host": "research-host",
+    "output_root": "./analysis_outputs/h3_alpha_20261104",
+    "local_output_root": "outputs/h3_alpha_20261104",
+    "bulk_data_and_estimation_on_PC_only": true
+  },
+  "input_contract": {
+    "quantity_panel": "./analysis_outputs/h1_entries_trim_20261102/samples/AUGMENTED_P99.parquet",
+    "quantity_panel_expected_sha256": "8bd9cfd2eef8668036c8c6c95c9863d8edbc1923d2c4d627d5b1306d03cfd43c",
+    "quantity_panel_expected_rows_before_H3_filters": 221899,
+    "portfolio_units": "./analysis_outputs/portfolio_units_20261030/portfolio_units.parquet",
+    "full_report_calendar": "./analysis_outputs/title_name_regressions_20261026_w2_v2/all_true_intervals.parquet",
+    "current_net": "./analysis_outputs/h1_net_fund_fe_20261030/net_sentiment_company_period.parquet",
+    "lag_map": "./analysis_outputs/h1_sentiment_lag_20261103/data/row_lag_map.parquet",
+    "lag_windows": "./analysis_outputs/h1_sentiment_lag_20261103/data/lag_company_windows.parquet",
+    "source_hash_policy": "Verify the relevant hashes in the frozen H1 lag plan and save a new manifest. Do not overwrite any source or refresh LLM labels.",
+    "fund_history_handoff": "reports/h3_fund_history_collection_20261104.json",
+    "factor_handoff": "reports/h3_factor_collection_20261104.json",
+    "historical_readiness": "The earlier maximum of three observed monthly returns describes one registered append file, not all newly discovered Investfunds histories. Recompute readiness from the newly verified source and dated crosswalk.",
+    "fund_history_required_fields": [
+      "fund_id",
+      "series_id",
+      "valuation_date",
+      "unit_value",
+      "currency",
+      "source_path",
+      "identity_valid_from",
+      "identity_valid_to",
+      "identity_evidence",
+      "distribution_status",
+      "split_status"
+    ],
+    "fund_returns_required_fields": [
+      "fund_id",
+      "month",
+      "fund_return",
+      "return_basis",
+      "start_valuation_date",
+      "end_valuation_date",
+      "identity_verified",
+      "distribution_verified",
+      "split_verified",
+      "source_id"
+    ],
+    "factors_required_fields": [
+      "month",
+      "risk_free",
+      "equity_return",
+      "bond_return",
+      "factors_verified",
+      "source_id"
+    ],
+    "optional_factors": [
+      "resident_net_equity_return",
+      "corporate_bond_return"
+    ]
+  },
+  "notation": {
+    "f": "fund identified by a verified registration-linked identifier",
+    "i": "distinct security held at at least one endpoint",
+    "c(i)": "company linked to security i under the existing checked mapping",
+    "r": "actual consecutive fund disclosure interval (d0,d1]",
+    "d_minus1": "the report date immediately before d0 in the full fund calendar",
+    "Q0_Q1": "nonnegative estimated security quantities at d0 and d1; derived from reported value divided by a quoted unit price, not observed executions",
+    "P0_P1": "positive RUB unit prices underlying Q0 and Q1, with quote dates no later than the corresponding report date",
+    "B_Q": "signed RUB value proxy for the change in estimated quantity, defined below",
+    "Net0": "company NetSentiment over (d0,d1]",
+    "NetL": "company NetSentiment over the exact previous interval (d_minus1,d0]",
+    "m": "calendar month containing d1",
+    "t_star": "latest calendar month whose calendar end is no later than d1",
+    "Rf": "monthly total return on one fund unit in RUB, not growth of total fund NAV",
+    "rf": "monthly return on the official RUONIA money-market benchmark",
+    "RE_RB_RC": "monthly equity, government-bond and optional corporate-bond index total returns",
+    "a_hat": "past-only factor-regression intercept, used as past_alpha",
+    "bE_bB_bC": "past-only estimated equity, government-bond and optional corporate-bond-spread exposures",
+    "Alpha_h": "mean monthly realised factor-adjusted return over the h future complete calendar months"
+  },
+  "universe": {
+    "groups": [
+      "pooled",
+      "equity",
+      "bond",
+      "mixed"
+    ],
+    "pooled_definition": "Union of eligible equity, bond and mixed fund-periods under the same return, NTS and risk-model rules. It is not every legal PIF category.",
+    "fund_focus": "Use the existing report-dated focus classification and retain provenance. A fund may change focus; do not project its latest focus backwards.",
+    "index_exclusion": "Retain the existing identified-index/passive exclusion. Unknown active status remains explicitly provisional, as in the current quantity design; do not claim all remaining funds are proven active.",
+    "currency_and_mandate": "Fund unit returns must be in RUB or converted using a verified contemporaneous FX source. Exclude explicitly foreign-equity, commodity, real-estate and other incompatible mandates. Unknown geography is flagged, not inferred from an ISIN prefix.",
+    "domestic_exposure_gate_change": "The old publication-baseline requirement of verified >=90% domestic RUB opening assets is not imposed on the practical Q-proxy branch. Report known domestic/foreign/unknown asset shares and distinguish the branch from the original fully verified AT design. A two-factor residual is not comprehensive risk-adjusted skill.",
+    "support": "No new 60-security-row/24-holdings-interval filter. Long fund-return-history requirements below govern alpha. Keep earlier H1 masks available for audit, not as a data-dependent new eligibility rule.",
+    "quantity_selection": "Inherit the already selected AUGMENTED_P99 target-security rows; no additional percentile search, winsorisation or alpha trimming. The inherited H1 upper-tail selection is disclosed as exploratory history, not an independently validated error filter.",
+    "coverage_universe": "Reconstruct all union-held corporate equity and corporate bond positions from the same complete endpoint reports for coverage denominators, including positions with no eligible news and those outside the inherited target sample. No security never held at either endpoint is invented.",
+    "survivorship": "Do not require the fund or security to survive to the collection date. Preserve liquidations, mergers and series discontinuity flags.",
+    "unique_origin": "One observation per fund and closing calendar month. If more than one genuine interval closes in a month, choose the latest closing report date before inspecting NTS or future returns. Do not fall back to an earlier same-month interval if the selected one fails a gate. Preserve discarded-origin IDs. Conflicting same-date reports require a documented correction, otherwise exclude."
+  },
+  "news": {
+    "formula": "Net=(Npositive-Nnegative)/(Npositive+Nneutral+Nnegative)",
+    "count_meaning": "Counts of the existing frozen eligible, deduplicated, relevant company-news observations in the exact reporting interval.",
+    "current_window": "(d0,d1]",
+    "lag_window": "(d_minus1,d0] from the complete fund report calendar, not a shift of surviving regression observations",
+    "lag_mapping": "Reuse the frozen lag map and window scores. Missing previous interval, no relevant news, incomplete classification or missing mapping remains NA. Observed balanced/neutral Net=0 is valid.",
+    "no_new_LLM": true,
+    "no_residual_S_substitution": true
+  },
+  "NTS_Q": {
+    "name": "News alignment of value-weighted estimated quantity changes",
+    "branch_id": "NTS_Q_VALUE_NET",
+    "B_Q_continuing_or_exit": "B_Q=(Q1-Q0)*P0 when Q0>0 and Q1>=0; P0 must be the compatible opening unit price. Equivalently opening reported RUB value times (Q1/Q0-1), but implement the direct quantity-price product to avoid ratio instability.",
+    "B_Q_confirmed_entry": "When Q0=0 is established by a complete opening disclosure and Q1>0, B_Q=Q1*P1, equal to the compatible closing RUB position value. This fixed entry convention does not require a pre-entry quote. It uses closing rather than opening valuation and is disclosed explicitly.",
+    "B_Q_zero": "Both confirmed endpoint quantities zero gives B_Q=0. Missing quantity, uncertain absence or unresolved unit/currency/identity conflict gives NA, never zero.",
+    "quantity_price_checks": "Use existing endpoint prices and statuses, with positive RUB prices no older than seven calendar days. Verify value=Q*P against the compatible source value. Bonds retain the known clean-price/NKD approximation. Apply a verified split/conversion ratio before comparing quantities; if a known unresolved corporate action or scheduled redemption explains the change, exclude the affected target interval with a reason. Unknown corporate-action completeness remains a limitation.",
+    "not_used": "Never sum raw share/bond counts across securities. Never use quantity_change_pct as the aggregation weight or treat the artificial +100 percent entry outcome as an observed quantity growth rate.",
+    "common_eligible_set_E": "Inherited target rows with valid B_Q and finite eligible Net0 and NetL on their exact windows. Keep observed zero Net in E; it contributes zero to the corresponding numerator and denominator.",
+    "current_formula": "NTS_Q_current=sum_E(B_Q*Net0)/sum_E(abs(B_Q)*abs(Net0))",
+    "lag_news_formula": "NTS_Q_lagnews=sum_E(B_Q*NetL)/sum_E(abs(B_Q)*abs(NetL))",
+    "lag_interpretation": "NTS_Q_lagnews aligns CURRENT interval quantity changes with PREVIOUS interval news. It is not lagged fund NTS and not previous-period trading.",
+    "range": [
+      -1,
+      1
+    ],
+    "numerical_zero": "For each score require denominator > 1e-12*max(1,sum_E(abs(B_Q))). Otherwise NA with zero_signal_or_zero_rebalancing. Do not map no trading or no news to a neutral score.",
+    "minimum_companies_per_score": 2,
+    "company_count": "Distinct companies with positive abs(B_Q)*abs(Net_j) for the respective j=current or lagnews score, not number of securities or articles.",
+    "coverage_formula": "For j=current,lagnews: news_trade_coverage_j=sum_E(abs(B_Q)*1(Net_j!=0))/sum_U(abs(B_Q)), where U is all same-interval union-held corporate equity/debt positions with measurable B_Q. Denominator must be positive.",
+    "minimum_news_trade_coverage_each_score": 0.5,
+    "coverage_qualification": "This is coverage of MEASURABLE corporate quantity changes, not all true fund trades. Separately report opening/closing asset-value coverage of measurable Q and of E, non-corporate asset shares, and unknown asset buckets; unavailable Q cannot be assumed unchanged.",
+    "additional_outputs": [
+      "current_numerator",
+      "current_denominator",
+      "lagnews_numerator",
+      "lagnews_denominator",
+      "gross_B_Q_all_measurable_corporate",
+      "gross_B_Q_E",
+      "company_count_current",
+      "company_count_lagnews",
+      "news_trade_coverage_current",
+      "news_trade_coverage_lagnews",
+      "opening_asset_coverage",
+      "closing_asset_coverage",
+      "entry_RUB_share",
+      "exit_RUB_share",
+      "bond_RUB_share",
+      "unknown_action_flags",
+      "net_purchase_balance"
+    ],
+    "net_purchase_balance": "sum_E(B_Q)/sum_E(abs(B_Q)), if denominator>0; a diagnostic for overall buying/selling, not an additional mandatory control.",
+    "interpretation": "Signed alignment within the measurable news-covered corporate subportfolio. V/P quantities, price conventions, fund flows and bond accrued-interest differences can affect it. It is not flow-adjusted discretionary trading, observed executions, turnover, or the original passive-weight-adjusted AT/NTS.",
+    "original_AT_branch": "Only if independently verified whole-portfolio passive-revaluation AT already exists for the same intervals, construct and report a separate NTS_AT_Net using AT instead of B_Q under the old whole-portfolio gates. Do not label a partial price/Q proxy as restored original AT; do not substitute the old residual S for current Net. If not available, report NOT_AVAILABLE rather than rebuild or silently substitute."
+  },
+  "fund_returns": {
+    "primary_branch": "TR_VERIFIED",
+    "return_formula": "Rf_m=W_f(EOM_m)/W_f(EOM_m-1)-1, where W is a split- and distribution-adjusted fund-unit wealth index, with verified distributions reinvested under the source convention.",
+    "raw_price_formula_when_no_payouts_verified": "Rf_m=U_f(EOM_m)/U_f(EOM_m-1)-1 only when split comparability and absence of fund-unit payouts over that month are documented.",
+    "total_NAV_growth_prohibited": true,
+    "monthly_endpoints": "Use a genuine unit valuation at or before calendar month end, at most three relevant trading days old. Retain actual dates, calendar age and source provenance. Require both adjacent monthly endpoint values; do not interpolate, forward-fill through missing months or trust undocumented precomputed returns.",
+    "identity": "A verified dated registration-linked fund_id/series crosswalk must cover both monthly endpoints and forecast origin. Renaming alone can retain identity if documented; unresolved mergers, unit classes, currency switches or series conflicts cannot be concatenated.",
+    "publication_vintage": "Historical as-of values and revised archives do not establish that the same figures were publicly available on d1. Record known publication dates. Report unknown disclosure lags and revisions; no real-time investability claim.",
+    "fees": "Unit-value returns include fund-level expenses embedded in valuation, but not investor-specific entry/exit charges unless the source explicitly incorporates them.",
+    "approximation_branch": "UNIT_VALUE_KNOWN_ADJUSTMENTS may be estimated separately if dated identity and observed positive unit levels are verified but payout completeness is not. Incorporate all known payouts/splits; exclude known unresolved events. Unknown payouts are not asserted absent. Label the outcome factor-adjusted unit-value growth, not verified total-return alpha; it does not satisfy primary H3 if TR_VERIFIED is unestimable.",
+    "selection_audit": "Show collected funds, dated-identity matches, funds with histories, eligible origins and final observations by group/year; compare retained versus excluded source-universe funds. Availability of a 2012-2026 archive does not imply every series spans those years."
+  },
+  "fund_alpha": {
+    "primary_factor_model": "Rf_s-rf_s=a_hat+bE*(RE_s-rf_s)+bB*(RB_s-rf_s)+u_s",
+    "equity_factor": "MCFTR gross total return",
+    "bond_factor": "RGBITR government-bond total return",
+    "risk_free": "CBR RUONIA accumulated index: I_close(d)=official Index(d+1 calendar day); rf_m=I_close(EOM_m)/I_close(EOM_m-1)-1. Use one consistent convention for historical and future returns; save exact endpoint dates. RUONIA is a benchmark, not assumed interest earned by idle fund cash.",
+    "window_months": 60,
+    "minimum_past_months": 36,
+    "minimum_last12_months": 9,
+    "training_end": "t_star=max{s: calendar_EOM(s)<=d1}. Fit on t_star-59,...,t_star using only complete verified fund-return/factor/RF rows. All actual source valuation dates must also be <=d1. For a report before calendar EOM, exclude that calendar month's complete return even when d1 is its final trading day.",
+    "training_design": "OLS with intercept, unconstrained exposures, full rank. Standardise nonconstant factor columns only for the condition-number check; require positive SD and condition number <=10000. Estimate betas on the original decimal-return scale.",
+    "future_months": "m+1,...,m+h, where m is the month containing the actual d1. These are complete calendar months, not the next h holdings disclosures. Any gap between d1 and EOM(m) is explicitly excluded from the measured future horizon. Require the first actual fund-unit endpoint used for the future window to be >=d1, so a stale monthly anchor cannot include pre-origin performance.",
+    "horizons_months": [
+      1,
+      2,
+      3
+    ],
+    "primary_horizon_for_summary": 1,
+    "future_formula": "abnormal_k=Rf_(m+k)-rf_(m+k)-bE*(RE_(m+k)-rf_(m+k))-bB*(RB_(m+k)-rf_(m+k)); Alpha_h=mean(abnormal_1,...,abnormal_h)",
+    "past_intercept_rule": "Do NOT subtract a_hat from future abnormal returns. Save a_hat as past_alpha and include it as the one predeclared H3 control. Subtracting a_hat would test performance relative to the fund's own past intercept instead of the H3 level of future factor-adjusted performance.",
+    "complete_future_window": "Every monthly return, factor and RF row must be observed and eligible; no partial-window average or zero-filled missing month. Freeze bE/bB across all months in the horizon. No h-observation future regression and no annualisation.",
+    "factors_not_substitutes": "IMOEX price return is not MCFTR. RGBI clean price is not RGBITR. NAV growth, archived excess_return and DAR_Qcash_price are not fund alpha.",
+    "interpretation": "Realised subsequent monthly factor-adjusted performance conditional on past-estimated exposures. Not a precisely measured permanent skill parameter; missing duration, credit, style, FX and illiquidity risks remain possible, especially for bond/mixed funds.",
+    "existing_helper_warning": "scripts/title_name_regressions_alpha.py::future_fund_alpha uses origin.month as its training endpoint. Adapt it in the new output code to honour t_star for actual non-EOM origins and the future anchor-date gate; do not silently reuse its calendar-EOM assumption."
+  },
+  "H3_regression": {
+    "row_key": [
+      "fund_id",
+      "interval_id",
+      "closing_month",
+      "horizon_months",
+      "return_basis"
+    ],
+    "primary_formula": "Alpha_h=theta_current*NTS_Q_current+theta_lagnews*NTS_Q_lagnews+gamma*past_alpha+fund_FE+error",
+    "comparison_formula": "Alpha_h=theta_current*NTS_Q_current+gamma*past_alpha+fund_FE+error, on exactly the same rows as the primary model",
+    "primary_variants": [
+      "CURRENT_PLUS_LAGNEWS",
+      "CURRENT_COMMON"
+    ],
+    "groups": [
+      "pooled",
+      "equity",
+      "bond",
+      "mixed"
+    ],
+    "estimator": "Separate unweighted fund-FE OLS for every group, h and return branch. No fund-size or number-of-securities weighting.",
+    "mandatory_controls": [
+      "past_alpha"
+    ],
+    "additional_controls": "None required. Do not mechanically aggregate issuer-level bond_indicator/opening_weight or inherit the post-search H1 SIX controls. Fund flows, concentration, macro and security controls do not block this reduced predeclared H3.",
+    "time_FE": false,
+    "primary_cluster": [
+      "fund_id"
+    ],
+    "time_clustering": false,
+    "company_clustering": false,
+    "cluster_reason": "The observation is a fund-period after aggregation. Fund clustering allows within-fund serial correlation, including overlapping future horizons. There is no unique company cluster for a fund-period; contemporaneous dependence across different funds is not covered by this covariance.",
+    "covariance": "One-way fund CR1 sandwich with G/(G-1)*(N-1)/(N-K_full), where G is the number of funds and K_full the identified rank including absorbed fund FE. Save full covariance and correction factors.",
+    "p_reference": "Ordinary two-sided t tests and 95% CIs with G-1 reference degrees of freedom. If native output uses residual df, export it separately and identify the difference; do not choose the smaller p-value.",
+    "target_tests": [
+      "theta_current=0, with positive direction expected",
+      "theta_lagnews=0",
+      "theta_current+theta_lagnews=0 using full covariance",
+      "joint theta_current=theta_lagnews=0 using full covariance"
+    ],
+    "directional_claim": "Primary H3 support requires a positive current-alignment association; a positive lagnews coefficient describes alignment with earlier news. The sum is a joint shift of the two bounded scores, not a causal long-run multiplier or proof of both components.",
+    "joint_test": "Use Wald F(2,G-1) only for a positive-definite identified 2x2 target covariance block. Preserve undefined/singular status instead of clipping eigenvalues or reporting p=1.",
+    "multiple_testing_adjustments": false,
+    "Holm": false,
+    "report_all": "Show all groups and horizons, both signs, all planned variants and every unestimable cell. P-values are unadjusted and do not control a family-wide false-positive rate. Do not headline the minimum p across cells.",
+    "small_sample": "Require finite identified target columns, positive residual df, at least 30 rows and >=2 funds for inference. With <30 funds, label uncertainty fragile and suppress significance stars. Remove singleton funds transparently; if either primary target is absorbed, mark the distributed model NOT_ESTIMABLE rather than dropping it silently.",
+    "effect_scale": "Alpha is a decimal average monthly return. 10000*theta is basis points per +1 score; 20000*theta is the -1 to +1 contrast. Report an observed IQR contrast with the IQR and the conditional interpretation. Do not label average monthly alpha as cumulative h-month performance.",
+    "conditional_uncertainty": "Main covariance conditions on the constructed NTS, estimated beta exposures and fixed LLM classifications. It does not fully propagate generated-outcome, classification or historical-mapping uncertainty."
+  },
+  "predeclared_sensitivities": [
+    {
+      "id": "HISTORY36_MIN24",
+      "rule": "Trailing36 complete calendar months ending at t_star, at least24 usable months and last12>=9; all other rules unchanged.",
+      "models": "CURRENT_PLUS_LAGNEWS for all four groups and three horizons; show both native and overlap-with-primary sample counts. Not a fallback silently relabelled as 60/36 primary."
+    },
+    {
+      "id": "BROAD_OBSERVED_NTS",
+      "rule": "At least one contributing company for each score and positive denominators; remove the 0.5 news-trade-coverage threshold. Keep identities, exact windows, raw quantity-value formulas and alpha-history requirements unchanged.",
+      "models": "CURRENT_PLUS_LAGNEWS for four groups/three horizons, separately labelled lower-coverage observed-subportfolio evidence."
+    },
+    {
+      "id": "NONOVERLAPPING_PHASES",
+      "rule": "For horizon h, split origins by (12*year+month-1) mod h and report every phase. Retain fund clustering and the fixed 60/36 primary measurement rules; do not retain only the best phase.",
+      "models": "CURRENT_PLUS_LAGNEWS, all groups; h=1 reuses the primary result. No new time clusters."
+    },
+    {
+      "id": "CORPORATE_BOND_SPREAD",
+      "rule": "If verified RUCBTRNS total returns are available, add RC-RB to the same past-only factor model; keep 60/36 and last12>=9 on complete three-factor rows. No splice with discontinued RUCBITR without separate documented methodology. This is a corporate-bond spread exposure, not a pure duration-matched credit factor.",
+      "models": "CURRENT_PLUS_LAGNEWS for pooled, bond and mixed groups, all horizons. On its eligible origins also show the two-factor result on the same rows, so benchmark and sample changes are distinguishable."
+    }
+  ],
+  "not_in_default_grid": [
+    "No control-subset search, new percentage cuts, alpha winsorisation or history-threshold search",
+    "No new long security-DAR sweep",
+    "No time-cluster or company-cluster variants",
+    "No automatic MCFTR-to-MCFTRR replacement; resident-net returns can be collected for a later explicitly labelled sensitivity",
+    "No extra return-basis by every sensitivity Cartesian product; default sensitivities use TR_VERIFIED only, while UNIT_VALUE_KNOWN_ADJUSTMENTS is a separate primary-formula diagnostic branch"
+  ],
+  "required_outputs": [
+    "Frozen specification SHA256 and code/input manifests before coefficient output",
+    "fund_series_crosswalk and monthly-return provenance; exact observed dates and adjustment status",
+    "fund_period_NTS_Q with row-level contributions, coverage denominators and exclusion reasons",
+    "past beta/intercept fits with t_star, exact training months, counts, rank and condition number",
+    "future monthly legs and Alpha_h with complete-window gates",
+    "Ordered used-sample IDs, sample hashes, fund/group/year selection flow and nonestimable reasons",
+    "Native model summaries, coefficients, complete covariance, SE, CIs, ordinary two-sided p, reference df and within/overall R2 with definitions",
+    "All fixed sensitivity cells and their sample overlap with primary",
+    "reports/h3_alpha_execution_20261104.json and small local tables; large panels remain on PC",
+    "Independent numerical and methodological QA before a publication interpretation"
+  ],
+  "QA_acceptance": [
+    "Unique fund/security/interval contributions; no news-row multiplication or double-counted lots",
+    "Current and lag Net match the frozen scores and exact source windows; NA never becomes neutral",
+    "NTS stays in [-1,1], positive denominators, scalar RUB rebasing invariance, no artificial-entry +100 weight; independent numerator/denominator reconstruction",
+    "Coverage denominator includes measurable no-news corporate positions; unavailable quantities are reported separately",
+    "Entries/exits require complete-report evidence; verify representative equity, bond, entry and exit value/quantity/price legs",
+    "No past beta input uses a calendar month ending after d1; explicitly test a May29 origin against May31 factors",
+    "Fund returns are unit-value based, with no total-NAV substitution or interpolated missing monthly endpoints",
+    "Full h-month future window, constant past-only beta, no subtraction of past intercept, future start anchor >=d1",
+    "Matched date/currency/total-return factors and internally consistent RUONIA endpoint convention",
+    "At least one independent numerical replication per group at h1 and h3 when estimable, including fund-FE coefficients and cluster covariance; otherwise record the missing group rather than skip it",
+    "Joint/sum tests use cross-covariance, CIs and t reference use the frozen fund-cluster df",
+    "All gates and planned cells reported; no post-coefficient sample or specification selection"
+  ],
+  "interpretation_limits": [
+    "A positive coefficient is conditional predictive evidence consistent with informed trading, not a causal effect of news or proof of manager skill.",
+    "A null with wide confidence intervals is inconclusive; a precise null restricts economically relevant effects only within the measured sample and model.",
+    "Negative coefficients do not alone prove irrationality: fund flows, contrarian liquidity provision, omitted risks and measurement can matter.",
+    "The 2022 trading disruption, valuation smoothing and stale pricing require disclosure; do not remove an episode because its coefficient is inconvenient.",
+    "Bond/mixed two-factor residuals may contain credit/duration/illiquidity exposure. If the corporate-bond sensitivity is unavailable or unstable, explicitly limit the skill interpretation.",
+    "Even successful Q-proxy alpha estimation does not restore the fully price-revaluation-adjusted original AT/NTS measurement."
+  ],
+  "official_sources_checked_20261104": [
+    {
+      "role": "RUONIA index accumulation and actual calendar-year convention",
+      "url": "https://www.cbr.ru/content/document/file/128244/ruonia_avg_userguide.pdf"
+    },
+    {
+      "role": "MOEX equity total-return index family",
+      "url": "https://www.moex.com/ru/index/totalreturn/MCFTR?real=1"
+    },
+    {
+      "role": "RGBITR total-income definition, accrued income and coupon payments",
+      "url": "https://www.moex.com/a5865"
+    },
+    {
+      "role": "Corporate-bond index RUCBTRNS; exact downloadable coverage still requires collector validation",
+      "url": "https://www.moex.com/ru/index/RUCBTRNS"
+    }
+  ]
+}

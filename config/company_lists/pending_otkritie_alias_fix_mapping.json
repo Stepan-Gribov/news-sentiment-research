@@ -1,0 +1,10 @@
+{
+  "version": "20261008_safe_otkritie_01",
+  "host": "research-host",
+  "run_root": "./news_data/company_mapping_runs/run_20261008_safe_otkritie_01",
+  "scheduled_task": "CompanySafeOtkritie_20261008_01",
+  "name_alias_policy": "no-bare-otkritie-20261008-v1",
+  "live_status_file": "progress.json",
+  "activate_only_after_success": true,
+  "preserve_old_data": true
+}

@@ -1,0 +1,13 @@
+{
+  "allow_exploratory_DW": true,
+  "scope": "EXPLORATORY_DW_ONLY",
+  "w2_version": "v20261026T133458Z",
+  "spec_sha256": "1983f70382045ae9819b8d1a528b952e00cb2b0cc606a4eab6b7de49a4b25397",
+  "review": {
+    "path": "./analysis_outputs/title_name_regressions_20261026_w2_v2/config/r4_review.json",
+    "sha256": "9eff5476906d58d52215b352c7a8f905eaa258f7c6d19a9cfa2af49c03fd1395"
+  },
+  "R4_I01_correction": "Only the independently confirmed code/report dates are excluded. Later rows of the same codes stay eligible under all other unchanged R1 gates.",
+  "metadata_semantics": "ISSUEDATE is start of trading; BUYBACKDATE is yield horizon; MATDATE is scheduled, not confirmed actual redemption.",
+  "baseline_AT_H1_H2_H3_approved": false
+}

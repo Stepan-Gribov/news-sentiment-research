@@ -1,0 +1,48 @@
+{
+  "amendment_id": "title-name-user-assumptions-20261027-v1",
+  "authority": "Direct user instructions in control agent, 2026-10-27 Europe/Moscow",
+  "supersedes_for_next_run": "Conflicting input gates in title_name_regression_spec_20261026.json; the frozen prior spec and completed runs remain unchanged",
+  "status": "USER_ACCEPTED_ASSUMPTIONS_NOT_YET_ESTIMATED",
+  "instrument_returns": {
+    "basis": "Observed price returns; full dividend/coupon/corporate-action reconstruction is not a prerequisite for the next simplified run",
+    "missing_payout_information": "Omit under explicit approximation; do not describe payouts as verified absent",
+    "available_event_evidence": "Retain existing flags and evidence; do not erase known identity conflicts or interpret planned maturity as actual payment",
+    "missing_quotes": "Not authorized to replace missing security prices or returns with zero",
+    "reporting": "Price-based revaluation adjustment under user assumptions; not verified total-return AT"
+  },
+  "cash_and_deposits": {
+    "identified_idle_cash_interest_return": 0.0,
+    "deposit_interest_when_not_disclosed": 0.0,
+    "disclosed_deposit_income": "Use available disclosed evidence; do not overwrite with assumed zero",
+    "unknown_non_cash_assets": "Not covered by the zero-interest assumption",
+    "foreign_cash": "Zero interest does not by itself imply zero RUB foreign-exchange revaluation",
+    "RUONIA": "Money-market reference for risk adjustment; do not automatically credit idle fund cash with RUONIA"
+  },
+  "controls": {
+    "additional_full_control_requirements": "Dropped at user's request; no blocker for historical size, security volatility/illiquidity or net flows",
+    "existing_reduced_controls": [
+      "opening_weight",
+      "lag_log_news_count",
+      "opening_log_NAV",
+      "opening_HHI"
+    ],
+    "interpretation": "Retain already implemented reduced controls; user rejected additional requirements from item 4"
+  },
+  "fund_history": {
+    "currently_registered_return_period": [
+      "2024-12",
+      "2025-11"
+    ],
+    "missing_for_existing_alpha_design": "Longer per-fund monthly unit-value/return history and exact fund-series links; minimum 36 prior usable months within 60, plus future 1-3 months",
+    "not_asserted": "Absence of older unit values throughout the PC; original disclosures have not been exhaustively audited for this purpose"
+  },
+  "money_market_download": {
+    "chosen_series": "CBR RUONIA rate and RUONIA accumulated index",
+    "host": "research-host",
+    "directory": "./analysis_outputs/money_market_ruonia_20261027",
+    "manifest": "download_manifest.json",
+    "source": "https://www.cbr.ru/DailyInfoWebServ/DailyInfo.asmx",
+    "role": "RF benchmark; other equity/bond factors are not supplied by this download"
+  },
+  "preservation": "Protected resources, live Gemma inputs/results and prior completed regressions unchanged"
+}

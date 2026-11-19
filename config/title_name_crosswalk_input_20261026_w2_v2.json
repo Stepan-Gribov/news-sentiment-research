@@ -1,0 +1,20 @@
+{
+  "ready_for_handoff": true,
+  "scope": "EXPLORATORY_CURRENT_STATIC_ONLY",
+  "w2_version": "v20261026T133458Z",
+  "spec_sha256": "1983f70382045ae9819b8d1a528b952e00cb2b0cc606a4eab6b7de49a4b25397",
+  "handoff": {
+    "path": "./analysis_outputs/title_name_regressions_20261026_w2_v2/config/w2_handoff.json",
+    "sha256": "447211a6213c801ca45dcc27e425949f550d24326b2a1fd3830f7fdbc66c50fc"
+  },
+  "release": {
+    "path": "./analysis_outputs/title_name_security_crosswalk_20261026/v20261026T133458Z/release_manifest.json",
+    "sha256": "f61ca45cf639fa799ee266ef2b1150ae451913974761a7b43db5864263918316"
+  },
+  "r4_review": {
+    "path": "./analysis_outputs/title_name_regressions_20261026_w2_v2/config/r4_review.json",
+    "sha256": "9eff5476906d58d52215b352c7a8f905eaa258f7c6d19a9cfa2af49c03fd1395"
+  },
+  "crosswalk_review_status": "COMPLETE_ACCEPTED_FOR_PROVISIONAL_DW_WITH_FINDINGS",
+  "policy": "R4-I01: exclude only confirmed conflicting code/report dates, not entire codes. No historical validity, actual redemption or Russian residence inferred from current metadata."
+}

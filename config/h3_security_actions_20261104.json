@@ -1,0 +1,36 @@
+{
+  "status": "KNOWN_EVENTS_ONLY_NOT_COMPLETE_HISTORY",
+  "checked_before_new_H3_coefficients": true,
+  "quantity_basis": "Closing V/P quantity converted to opening quoted-share units; events use first post-event trading quote regime, not a guessed report-date price adjustment.",
+  "events": [
+    {
+      "isin": "RU000A0JP5V6",
+      "event_date": "2024-07-11",
+      "post_quote_from": "2024-07-15",
+      "closing_to_opening_quantity_ratio": 5000.0,
+      "kind": "consolidation",
+      "source_url": "https://www.vtb.ru/ir/information/",
+      "date_source_url": "https://www.psbank.ru/bank/press/depositary/2024/07/12-13",
+      "trading_source_url": "https://www.moex.com/n70136"
+    },
+    {
+      "isin": "RU0007288411",
+      "event_date": "2024-04-04",
+      "post_quote_from": "2024-04-08",
+      "closing_to_opening_quantity_ratio": 0.01,
+      "kind": "split",
+      "source_url": "https://nornickel.com/news-and-media/press-releases-and-news/nornickel-announces-stock-split/",
+      "trading_source_url": "https://www.moex.com/n68799?nt=101"
+    },
+    {
+      "isin": "RU0009091573",
+      "event_date": null,
+      "post_quote_from": "2024-02-21",
+      "closing_to_opening_quantity_ratio": 0.01,
+      "kind": "split",
+      "source_url": "https://www.moex.com/n67684",
+      "note": "Verified trading-unit regime; legal conversion date not asserted."
+    }
+  ],
+  "limitation": "Only these known, verified quoted-unit changes are corrected. Other splits, conversions, mergers and bond amortisations may be unknown; the quantity proxy is not observed discretionary trading. Scheduled bond maturities are separately excluded from score contributions."
+}

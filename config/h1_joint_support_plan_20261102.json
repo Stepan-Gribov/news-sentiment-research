@@ -1,0 +1,124 @@
+{
+  "spec_id": "H1_JOINT_FUND_ROWS_AND_INTERVALS_V1",
+  "status": "FIXED_BEFORE_NEW_COMBINATION_COEFFICIENTS",
+  "authorizing_request": "Combine minimum fund rows and minimum reporting periods simultaneously; evaluate two-sided H1 tests without guaranteeing significance.",
+  "output_root": "./analysis_outputs/h1_joint_support_20261102",
+  "input_panel": "./analysis_outputs/h1_entries_trim_20261102/samples/AUGMENTED_P99.parquet",
+  "expected_primary_rows": 221899,
+  "base_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_net_fund_fe_20261030.py",
+  "macro_runner_helper": "./analysis_outputs/h1_macro_no_time_20261031/code/run_h1_macro_no_time_20261031.py",
+  "prior_support_summary": "./analysis_outputs/h1_support_sensitivity_20261102/summary.json",
+  "prior_support_coefficients": "./analysis_outputs/h1_support_sensitivity_20261102/coefficients.csv",
+  "expected_source_sha256": {
+    "input_panel": "8bd9cfd2eef8668036c8c6c95c9863d8edbc1923d2c4d627d5b1306d03cfd43c",
+    "base_helper": "2a2eeb05f28919272f055c79657396c2fbc072ebeebb45b13b1964ca64ccef9e",
+    "macro_runner_helper": "5bf42c98b0078e817df3fb4018c457250ae58dbebfe9dbff2eb675408680510a",
+    "prior_support_summary": "9625c74668d464f8aae821600710546ff41ed52c63506a62e648b9fa4293437b",
+    "prior_support_coefficients": "3c86ea7e2a9853c32a51ba175f79bb6bf519261518e0b69ba75df49f2d0b70fd"
+  },
+  "baseline_controls": [
+    "opening_weight",
+    "closing_log_NAV",
+    "closing_HHI",
+    "log_news_count_interval",
+    "log_interval_days",
+    "bond_indicator"
+  ],
+  "macro_controls": [
+    "Imoex",
+    "imoex_ret",
+    "Ruonia",
+    "USD_RUB",
+    "RVI",
+    "Flow_billion_RUB",
+    "unique_funds",
+    "dummy_mar2014",
+    "dummy_feb2022",
+    "dummy_sep2018"
+  ],
+  "planned_models": [
+    "REFERENCE_AUGMENTED_P99",
+    "JOINT_ROWS_30_INTERVALS_12",
+    "JOINT_ROWS_30_INTERVALS_24",
+    "JOINT_ROWS_30_INTERVALS_36",
+    "JOINT_ROWS_60_INTERVALS_12",
+    "JOINT_ROWS_60_INTERVALS_24",
+    "JOINT_ROWS_60_INTERVALS_36"
+  ],
+  "fund_rows_thresholds": [
+    30,
+    60
+  ],
+  "fund_intervals_thresholds": [
+    12,
+    24,
+    36
+  ],
+  "combination_operator": "AND",
+  "support_count_rule": "Count each fund's row_id and distinct interval_id once on the full unchanged source; apply every AND combination independently, without iterative recounting.",
+  "support_scope": "Current news-covered macro-complete estimation observations; reporting periods are not necessarily calendar months or the entire fund lifetime.",
+  "primary_test": "Two-sided native NetSentiment coefficient p-value, with unchanged fund/company clustered covariance.",
+  "fund_FE": true,
+  "time_FE": false,
+  "clusters": [
+    "fund_id",
+    "company_id"
+  ],
+  "cluster_time": false,
+  "outcome_and_controls_unchanged": true,
+  "conditional_entries_100_unchanged": true,
+  "upper_cutoff_percent_unchanged": 322.7771642245575,
+  "minimum_model_rows": 30,
+  "cache_policy": "Reuse only an exactly matching sorted row_id set and hash from frozen prior results with identical outcome, controls, source hash, FE and covariance; verify the prior exact sample. Record provenance. Identical masks are aliases, not independent evidence.",
+  "prefit_sample_counts": {
+    "JOINT_ROWS_30_INTERVALS_12": {
+      "rows": 211907,
+      "funds": 369
+    },
+    "JOINT_ROWS_30_INTERVALS_24": {
+      "rows": 190470,
+      "funds": 236
+    },
+    "JOINT_ROWS_30_INTERVALS_36": {
+      "rows": 170677,
+      "funds": 181
+    },
+    "JOINT_ROWS_60_INTERVALS_12": {
+      "rows": 210945,
+      "funds": 347
+    },
+    "JOINT_ROWS_60_INTERVALS_24": {
+      "rows": 190220,
+      "funds": 230
+    },
+    "JOINT_ROWS_60_INTERVALS_36": {
+      "rows": 170677,
+      "funds": 181
+    }
+  },
+  "prefit_new_unique_masks": 3,
+  "prefit_aliases": {
+    "JOINT_ROWS_30_INTERVALS_24": "MIN_FUND_INTERVALS_24",
+    "JOINT_ROWS_30_INTERVALS_36": "MIN_FUND_INTERVALS_36",
+    "JOINT_ROWS_60_INTERVALS_36": "MIN_FUND_INTERVALS_36"
+  },
+  "multiple_testing": {
+    "method": "Holm step-down",
+    "within_current_six_slots": true,
+    "conservative_previous_eight_plus_current_six_slots": true,
+    "primary_pooled_unique_samples": true,
+    "deduplication_key": "Exact source-row hash with identical estimator and test",
+    "expected_unique_pooled_tests": 11,
+    "reference_excluded": true,
+    "scope_limit": "These families cover the previous eight support/quality restrictions and current combinations; they do not adjust all historical H1 experimentation."
+  },
+  "independent_qa_models": [
+    "JOINT_ROWS_30_INTERVALS_24",
+    "JOINT_ROWS_60_INTERVALS_24"
+  ],
+  "report_every_combination": true,
+  "do_not_promote_lowest_p_to_primary": true,
+  "stop_after_six_combinations": true,
+  "interpretation": "Exploratory combined-support sensitivity after earlier results; no guaranteed p<0.05 and no selective reporting.",
+  "protected_inputs_prior_outputs_live_LLM_unchanged": true
+}
